@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.strongloop.android.loopback.ModelRepository;
 import com.strongloop.android.loopback.callbacks.ListCallback;
+import com.strongloop.android.loopback.callbacks.ObjectCallback;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        final Businesse.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Businesse.Repository.class);
+        final Businesse.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Businesse.Repository.class);
 //        Businesse b = new Businesse();
 //        b.name = "android";
 //        b.description = "android description";
@@ -48,28 +49,28 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
-        RestHelper.getRestService().businesseFindAll().enqueue(new Callback<List<Businesse>>() {
-            @Override
-            public void onResponse(Call<List<Businesse>> call, Response<List<Businesse>> response) {
-                Toast.makeText(MainActivity.this, "count:" + response.body().size(), Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onFailure(Call<List<Businesse>> call, Throwable t) {
-
-            }
-        });
-//        repository.findAll(new ListCallback<Businesse>() {
+//        RestHelper.getRestService().businesseFindAll().enqueue(new Callback<List<Businesse>>() {
 //            @Override
-//            public void onSuccess(List<Businesse> objects) {
-//                Toast.makeText(MainActivity.this, "count:" + objects.size(), Toast.LENGTH_LONG).show();
+//            public void onResponse(Call<List<Businesse>> call, Response<List<Businesse>> response) {
+//                Toast.makeText(MainActivity.this, "count:" + response.body().size(), Toast.LENGTH_LONG).show();
 //            }
 //
 //            @Override
-//            public void onError(Throwable t) {
+//            public void onFailure(Call<List<Businesse>> call, Throwable t) {
 //
 //            }
 //        });
 
+        repository.getById("57a4ed29713f951ee89f6815", new ObjectCallback<Businesse>() {
+            @Override
+            public void onSuccess(Businesse object) {
+                Toast.makeText(MainActivity.this, "object:" + object.name, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                Toast.makeText(MainActivity.this, "onError", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

@@ -22,6 +22,7 @@ public class GuideApplication extends Application {
     public static RestAdapter getLoopBackAdapter() {
         if (adapter == null) {
             adapter = new RestAdapter(context, "http://139.59.153.64:3000/api");
+            adapter.setAccessToken("kx9tUi1U9b3kSV2CNL54eUTQC37BBjLiOnZ2MRmd9tLH21XKljf8xd8lh7R9M7d3");
         }
 
         return adapter;
