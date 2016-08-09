@@ -12,6 +12,7 @@ import com.strongloop.android.remoting.adapters.Adapter;
 import com.strongloop.android.remoting.adapters.RestContract;
 import com.strongloop.android.remoting.adapters.RestContractItem;
 
+import java.io.Serializable;
 import java.net.InterfaceAddress;
 import java.util.HashMap;
 import java.util.List;
@@ -23,10 +24,11 @@ import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
  * Created by amin on 08/05/2016.
  */
 
-public class Businesse extends Model {
-    public interface callback{
+public class Businesse extends Model implements Serializable {
+    public interface callback {
         void onSuccess(Businesse businnes);
-        void onError (Throwable t);
+
+        void onError(Throwable t);
     }
 
     public String name;
@@ -69,6 +71,7 @@ public class Businesse extends Model {
 
             return contract;
         }
+
         public void getById(String id, ObjectCallback<Businesse> callback) {
             invokeStaticMethod("getById", ImmutableMap.of("id", id),
                     new JsonObjectParser<Businesse>(this, callback));

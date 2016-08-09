@@ -3,7 +3,7 @@
     package="amir.app.business">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    
+
     <application
         android:name=".GuideApplication"
         android:allowBackup="true"
@@ -18,6 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".BusinessActivity" />
     </application>
 
 </manifest>
