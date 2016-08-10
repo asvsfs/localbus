@@ -25,17 +25,44 @@ import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
  */
 
 public class Businesse extends Model implements Serializable {
+    private String name;
+    private Location location;
+    private String description;
+    private List<String> images;
+    private String id;
+    private String userid;
+
+    public String getName() {
+        return name;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
     public interface callback {
         void onSuccess(Businesse businnes);
 
         void onError(Throwable t);
     }
 
-    public String name;
-    public Location location;
-    public String description;
-    public List<String> images;
-    public String id;
 
     public void setName(String name) {
         this.name = name;
@@ -47,6 +74,10 @@ public class Businesse extends Model implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
     public void setImages(List<String> images) {

@@ -14,8 +14,8 @@ import java.util.List;
 
 import amir.app.business.R;
 import amir.app.business.models.Businesse;
+import amir.app.business.models.Comment;
 import amir.app.business.widget.FarsiTextView;
-import amir.app.business.widget.SquareImageViewHeight_Based;
 import amir.app.business.widget.SquareImageViewWidth_Based;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,18 +24,18 @@ import butterknife.ButterKnife;
  * Created by amin on 08/08/2016.
  */
 
-public class BusinessHorizontalListAdapter extends RecyclerView.Adapter<BusinessHorizontalListAdapter.ViewHolder> {
+public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.ViewHolder> {
     public interface OnItemClickListener {
-        void onItemClick(Businesse businesse);
+        void onItemClick(Comment comment);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @BindView(R.id.imgbusiness)
-        SquareImageViewHeight_Based imgbusiness;
         @BindView(R.id.txtname)
         FarsiTextView txtname;
-        @BindView(R.id.txtdesc)
-        FarsiTextView txtdesc;
+        @BindView(R.id.txtdate)
+        FarsiTextView txtdate;
+        @BindView(R.id.txtcoment)
+        FarsiTextView txtcoment;
 
         ViewHolder(View view) {
             super(view);
@@ -58,7 +58,7 @@ public class BusinessHorizontalListAdapter extends RecyclerView.Adapter<Business
 
     Context context;
     LayoutInflater inflater;
-    List<Businesse> items;
+    List<Comment> items;
 
     DisplayImageOptions options;
 
@@ -66,7 +66,7 @@ public class BusinessHorizontalListAdapter extends RecyclerView.Adapter<Business
         this.mItemClickListener = mItemClickListener;
     }
 
-    public BusinessHorizontalListAdapter(Context context, List<Businesse> items) {
+    public CommentListAdapter(Context context, List<Comment> items) {
         this.context = context;
         this.items = items;
         inflater = ((Activity) context).getLayoutInflater();
@@ -83,19 +83,18 @@ public class BusinessHorizontalListAdapter extends RecyclerView.Adapter<Business
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
-                inflate(R.layout.business_horizontal_card_view, viewGroup, false);
+                inflate(R.layout.comments_row, viewGroup, false);
 
         return new ViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int i) {
-        final Businesse b = items.get(i);
+        final Comment b = items.get(i);
 
-        holder.txtname.setText(b.getName());
-        holder.txtdesc.setText(b.getDescription());
+//        holder.txtname.setText(b.get());
+//        holder.txtdate.setText(b.getDescription());
 
-//        ImageLoader.getInstance().displayImage(b.images.get(0), holder.imgavatar, options);
     }
 
     @Override

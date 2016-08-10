@@ -26,15 +26,17 @@
             android:layout_height="wrap_content"
             android:background="#aaa">
 
-            <ImageView
+            <view
+                class="amir.app.business.widget.SquareImageViewWidth_Based"
                 android:id="@+id/imggallery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#eee"
                 android:scaleType="centerCrop"
-                android:src="@drawable/adver">
+                android:src="@drawable/business_logo"
+                android:padding="50dp">
 
-            </ImageView>
+            </view>
 
             <TextView
                 android:id="@+id/txtdistance"

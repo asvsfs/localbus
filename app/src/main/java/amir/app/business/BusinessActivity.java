@@ -1,5 +1,6 @@
 package amir.app.business;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +20,7 @@ import amir.app.business.models.Businesse;
 import amir.app.business.widget.FarsiTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by amin on 08/09/2016.
@@ -52,7 +54,7 @@ public class BusinessActivity extends AppCompatActivity {
 
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(businesse.name);
+        getSupportActionBar().setTitle(businesse.getName());
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -93,5 +95,10 @@ public class BusinessActivity extends AppCompatActivity {
         });
     }
 
+    @OnClick(R.id.btncomments)
+    public void btncomment() {
+        Intent intent = new Intent(this, CommentActivity.class);
+        startActivity(intent);
+    }
 
 }

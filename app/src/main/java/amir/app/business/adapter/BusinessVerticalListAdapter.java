@@ -91,8 +91,8 @@ public class BusinessVerticalListAdapter extends RecyclerView.Adapter<BusinessVe
     public void onBindViewHolder(ViewHolder holder, int i) {
         final Businesse b = items.get(i);
 
-        holder.txtname.setText(b.name);
-        holder.txtdesc.setText(b.description);
+        holder.txtname.setText(b.getName());
+        holder.txtdesc.setText(b.getDescription());
 
 //        ImageLoader.getInstance().displayImage(b.images.get(0), holder.imgavatar, options);
     }

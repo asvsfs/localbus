@@ -20,6 +20,7 @@
         </activity>
 
         <activity android:name=".BusinessActivity" />
+        <activity android:name=".CommentActivity" />
     </application>
 
 </manifest>

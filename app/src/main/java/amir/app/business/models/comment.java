@@ -7,13 +7,30 @@ import com.strongloop.android.loopback.ModelRepository;
  * Created by amin on 08/05/2016.
  */
 
-public class comment extends Model {
+public class Comment extends Model {
+
     public String customerId;
     public String text;
 
-    public static class Repository extends ModelRepository<comment> {
+    public String getText() {
+        return text;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public static class Repository extends ModelRepository<Comment> {
         public Repository() {
-            super("comment", "comments", comment.class);
+            super("comment", "comments", Comment.class);
         }
     }
 }
