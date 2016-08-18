@@ -9,8 +9,8 @@ import com.strongloop.android.loopback.ModelRepository;
 
 public class Comment extends Model {
 
-    public String customerId;
-    public String text;
+    private String customerId;
+    private String text;
 
     public String getText() {
         return text;

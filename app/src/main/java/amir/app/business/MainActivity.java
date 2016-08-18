@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.app_name);
 
+        //init procedure
         init_bottombar();
         init_layout();
 
@@ -94,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
         load_business_list();
     }
 
+    //load business list via api
+    //read all business and fill list
     private void load_business_list() {
         Businesse.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Businesse.Repository.class);
 
@@ -138,17 +141,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //start business page
     private void switch_to_business_page(Businesse businesse) {
         Intent intent = new Intent(this, BusinessActivity.class);
         intent.putExtra("business", businesse);
         startActivity(intent);
     }
 
+    //setup recyclerview lists
     private void init_layout() {
         topRecyclerview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         businessRecyclerview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
 
+    //setup bottom icon tab
     private void init_bottombar() {
         bottombar.setTabMode(TabLayout.MODE_FIXED);
 
@@ -159,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
         bottombar.addTab(bottombar.newTab().setCustomView(getTabView(R.drawable.ic_person_black_24dp)));
     }
 
+    //create tab child of bottom icon
     private View getTabView(int drawable) {
         ImageView tab = (ImageView) LayoutInflater.from(this).inflate(R.layout.bottombar_tabview_layout, null);
         tab.setImageResource(drawable);

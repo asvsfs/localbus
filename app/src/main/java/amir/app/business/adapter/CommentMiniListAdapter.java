@@ -13,10 +13,8 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import java.util.List;
 
 import amir.app.business.R;
-import amir.app.business.models.Businesse;
 import amir.app.business.models.Comment;
 import amir.app.business.widget.FarsiTextView;
-import amir.app.business.widget.SquareImageViewWidth_Based;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -24,16 +22,12 @@ import butterknife.ButterKnife;
  * Created by amin on 08/08/2016.
  */
 
-public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.ViewHolder> {
+public class CommentMiniListAdapter extends RecyclerView.Adapter<CommentMiniListAdapter.ViewHolder> {
     public interface OnItemClickListener {
         void onItemClick(Comment comment);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @BindView(R.id.txtname)
-        FarsiTextView txtname;
-        @BindView(R.id.txtdate)
-        FarsiTextView txtdate;
         @BindView(R.id.txtcoment)
         FarsiTextView txtcoment;
 
@@ -53,20 +47,19 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         }
     }
 
-    static OnItemClickListener mItemClickListener;
-    Adapter adapter;
+    private static OnItemClickListener mItemClickListener;
 
-    Context context;
-    LayoutInflater inflater;
-    List<Comment> items;
+    private Context context;
+    private LayoutInflater inflater;
+    private List<Comment> items;
 
-    DisplayImageOptions options;
+    private DisplayImageOptions options;
 
     public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
         this.mItemClickListener = mItemClickListener;
     }
 
-    public CommentListAdapter(Context context, List<Comment> items) {
+    public CommentMiniListAdapter(Context context, List<Comment> items) {
         this.context = context;
         this.items = items;
         inflater = ((Activity) context).getLayoutInflater();
@@ -83,17 +76,15 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
-                inflate(R.layout.comments_row, viewGroup, false);
+                inflate(R.layout.comments_mini_row, viewGroup, false);
 
         return new ViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int i) {
-        final Comment b = items.get(i);
+        Comment b = items.get(i);
 
-//        holder.txtname.setText(b.get());
-//        holder.txtdate.setText(b.getDescription());
         holder.txtcoment.setText(b.getText());
 
     }

@@ -20,6 +20,7 @@ public class widgettools {
             _typeface[1] = Typeface.createFromAsset(context.getAssets(), "fonts/" + fontname[1]);
             _typeface[2] = Typeface.createFromAsset(context.getAssets(), "fonts/" + fontname[2]);
             _typeface[3] = Typeface.createFromAsset(context.getAssets(), "fonts/" + fontname[3]);
+            _typeface[4] = Typeface.createFromAsset(context.getAssets(), "fonts/" + fontname[4]);
         }
 
 //        Log.i("bold", Boolean.toString(isbold));

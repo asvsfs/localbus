@@ -36,7 +36,6 @@ public class FarsiTextView extends TextView {
     public FarsiTextView(Context context) {
         super(context);
         _context = context;
-//        rebuildfont();
     }
 
     public FarsiTextView(Context context, AttributeSet attrs) {

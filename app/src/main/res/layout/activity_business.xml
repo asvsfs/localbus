@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,7 +12,7 @@
         android:background="?colorPrimary"
         app:theme="@style/AppTheme" />
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
@@ -24,108 +25,275 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#aaa">
+            android:background="#ccc">
 
-            <view
-                class="amir.app.business.widget.SquareImageViewWidth_Based"
-                android:id="@+id/imggallery"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#eee"
-                android:scaleType="centerCrop"
-                android:src="@drawable/business_logo"
-                android:padding="50dp">
+                android:orientation="vertical">
 
-            </view>
 
-            <TextView
-                android:id="@+id/txtdistance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/txtname"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:padding="10dp"
-                android:text="1.5km"
-                android:textColor="#fff" />
+                <RelativeLayout
+                    android:id="@+id/header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <view
-                android:id="@+id/txtname"
-                class="amir.app.business.widget.FarsiTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/imggallery"
-                android:background="#eee"
-                android:gravity="right|center_vertical"
-                android:padding="10dp"
-                android:singleLine="true"
-                android:text="نام کسب و کار"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                app:FarsiTypeface="IRANSansBold"
-                android:textColor="#000" />
+                    <view
+                        android:id="@+id/imggallery"
+                        class="amir.app.business.widget.SquareImageViewWidth_Based"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#eee"
+                        android:padding="50dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/business_logo">
 
-            <view
-                android:id="@+id/txtdesc"
-                FarsiTypeface="IRANSans"
-                class="amir.app.business.widget.FarsiTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/txtname"
-                android:background="#eee"
-                android:gravity="top|right"
-                android:lines="5"
-                android:padding="10dp"
-                android:singleLine="false"
-                android:text="توضیحات"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                app:FarsiTypeface="IRANSansBold"
-                android:textColor="#000"
-                android:layout_marginTop="1dp" />
+                    </view>
 
-            <view
-                android:id="@+id/txtsimilar"
-                class="amir.app.business.widget.FarsiTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@id/txtdesc"
-                android:layout_marginTop="1dp"
-                android:gravity="right|center_vertical"
-                android:padding="10dp"
-                android:singleLine="true"
-                android:text="موارد مشابه"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                app:FarsiTypeface="IRANSansBold"
-                android:textColor="#000"
-                android:background="#ddd" />
+                    <RatingBar
+                        android:id="@+id/ratingbar"
+                        style="@android:style/Widget.Holo.Light.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:numStars="5" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/similarRecyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/txtsimilar"
-                android:background="#ddd"
-                app:layout_constraintTop_toBottomOf="@+id/adverPager">
+                    <ImageView
+                        android:id="@+id/btnlike"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_margin="10dp"
+                        android:background="#ddd"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_favorite_grey_500_18dp" />
 
-            </android.support.v7.widget.RecyclerView>
+                    <TextView
+                        android:id="@+id/txtdistance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:padding="10dp"
+                        android:text="1.5km"
+                        android:textColor="#000" />
 
-            <Button
-                android:id="@+id/btncomments"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/txtname"
-                android:padding="10dp"
-                android:text="نظرات" />
+                    <ImageView
+                        android:id="@+id/btnshare"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/btnlike"
+                        android:layout_alignStart="@+id/btnlike"
+                        android:layout_below="@+id/btnlike"
+                        android:background="#ddd"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_share_grey_500_18dp" />
+
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <view
+                        android:id="@+id/txtname"
+                        class="amir.app.business.widget.FarsiTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_weight="1"
+                        android:background="#eee"
+                        android:gravity="right|center_vertical"
+                        android:padding="10dp"
+                        android:singleLine="true"
+                        android:text="نام کسب و کار"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#000"
+                        app:FarsiTypeface="IRANSansBold" />
+
+                    <view
+                        android:id="@+id/txtverification"
+                        class="amir.app.business.widget.FarsiTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_weight="1"
+                        android:background="#eee"
+                        android:gravity="right|center_vertical"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:singleLine="true"
+                        android:text="(تایید شده)"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#888"
+                        android:textSize="12sp"
+                        app:FarsiTypeface="IRANSansBold" />
+                </LinearLayout>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/DescriptionCard">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <Button
+                            android:id="@+id/btncomments"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:padding="10dp"
+                            android:text="نظرات" />
+
+                        <view
+                            android:id="@+id/txtdesc"
+                            FarsiTypeface="IRANSans"
+                            class="amir.app.business.widget.FarsiTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#eee"
+                            android:gravity="top|right"
+                            android:lines="5"
+                            android:padding="10dp"
+                            android:singleLine="false"
+                            android:text="توضیحات"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="#000"
+                            app:FarsiTypeface="IRANSansBold"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true" />
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/commentCard">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/btnmap"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:padding="10dp"
+                            android:text="نقشه" />
+
+                        <view
+                            android:id="@+id/txtlastcomments"
+                            FarsiTypeface="IRANSans"
+                            class="amir.app.business.widget.FarsiTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:background="#eee"
+                            android:gravity="top|right"
+                            android:padding="10dp"
+                            android:text="آخرین نظرات"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="#555"
+                            app:FarsiTypeface="IRANSansBold" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/lastcommentRecyclerview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/txtlastcomments"
+                            android:background="#eee"
+                            tools:listitem="@layout/comments_mini_row" />
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/mapCard">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/SimilarCard">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <view
+                            android:id="@+id/txtsimilar"
+                            class="amir.app.business.widget.FarsiTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_below="@id/txtdesc"
+                            android:background="#eee"
+                            android:gravity="right|center_vertical"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:text="موارد مشابه"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="#555"
+                            app:FarsiTypeface="IRANSansBold" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/similarRecyclerview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/txtsimilar"
+                            android:background="#eee">
+
+                        </android.support.v7.widget.RecyclerView>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
         </RelativeLayout>
-    </ScrollView>
+
+
+    </android.support.v4.widget.NestedScrollView>
 
 </RelativeLayout>

@@ -11,18 +11,17 @@
         android:layout_height="wrap_content"
         android:background="#eee"
         android:gravity="right|center_vertical"
-        android:padding="10dp"
         android:text="نام نظر دهنده"
         android:textAppearance="?android:attr/textAppearanceSmall"
         app:FarsiTypeface="IRANSansLight"
         android:textColor="#000"
-        android:layout_weight="1"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:singleLine="false" />
+        android:singleLine="false"
+        android:padding="5dp" />
 
     <view
         android:id="@+id/txtdate"
@@ -31,18 +30,17 @@
         android:layout_height="wrap_content"
         android:background="#eee"
         android:gravity="right|center_vertical"
-        android:padding="10dp"
         android:text="تاریخ نظر"
         android:textAppearance="?android:attr/textAppearanceSmall"
         app:FarsiTypeface="IRANSans"
         android:textColor="#000"
-        android:layout_weight="1"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:singleLine="false"
-        android:layout_below="@+id/txtname" />
+        android:layout_below="@+id/txtname"
+        android:padding="5dp" />
 
     <view
         android:id="@+id/txtcoment"
