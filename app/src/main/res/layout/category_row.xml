@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <view
+        class="amir.app.business.widget.SquareRelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="2dp">
+
+        <view
+            android:id="@+id/txtname"
+            class="amir.app.business.widget.FarsiTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtdate"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:gravity="right|center_vertical"
+            android:padding="10dp"
+            android:singleLine="false"
+            android:text="تجارت"
+            android:textAlignment="center"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#000"
+            app:FarsiTypeface="IRANSansBold" />
+
+    </view>
+</RelativeLayout>

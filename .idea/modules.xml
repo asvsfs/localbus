@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Navigator_library/Navigator_library.iml" filepath="$PROJECT_DIR$/Navigator_library/Navigator_library.iml" />
       <module fileurl="file://$PROJECT_DIR$/amir.app.business.iml" filepath="$PROJECT_DIR$/amir.app.business.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

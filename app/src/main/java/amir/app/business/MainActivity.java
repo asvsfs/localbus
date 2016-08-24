@@ -2,37 +2,43 @@ package amir.app.business;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.strongloop.android.loopback.callbacks.ListCallback;
+
+import org.fingerlinks.mobile.android.navigator.Navigator;
 
 import java.util.List;
 
 import amir.app.business.adapter.BusinessHorizontalListAdapter;
 import amir.app.business.adapter.BusinessVerticalListAdapter;
+import amir.app.business.fragments.baseFragment;
+import amir.app.business.fragments.fragment_category;
+import amir.app.business.fragments.fragment_home;
+import amir.app.business.fragments.fragment_search;
 import amir.app.business.models.Businesse;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
-    //    @BindView(R.id.adverPager)
-//    ViewPager adverPager;
-    @BindView(R.id.topRecyclerview)
-    RecyclerView topRecyclerview;
     @BindView(R.id.bottombar)
     TabLayout bottombar;
-    @BindView(R.id.businessRecyclerview)
-    RecyclerView businessRecyclerview;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+
+    private baseFragment currentfragment;
+    boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +46,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(R.string.app_name);
+//        setSupportActionBar(toolbar);
+//        toolbar.setTitle(R.string.app_name);
 
         //init procedure
         init_bottombar();
-        init_layout();
 
+        //set default fragment to home page
+        switchfragment(new fragment_home(), true);
 //        Businesse b = new Businesse();
 //        b.name = "android";
 //        b.description = "android description";
@@ -92,67 +99,8 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
-        load_business_list();
     }
 
-    //load business list via api
-    //read all business and fill list
-    private void load_business_list() {
-        Businesse.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Businesse.Repository.class);
-
-        repository.findAll(new ListCallback<Businesse>() {
-            @Override
-            public void onSuccess(List<Businesse> businesses) {
-                for (int i = 0; i < 10; i++) {
-                    Businesse b = new Businesse();
-                    b.setName("business " + i);
-                    b.setDescription("description " + i);
-                    businesses.add(b);
-                }
-
-                //setup top businesses view
-                BusinessHorizontalListAdapter topadapter = new BusinessHorizontalListAdapter(MainActivity.this, businesses);
-                topadapter.setOnItemClickListener(new BusinessHorizontalListAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(Businesse businesse) {
-                        switch_to_business_page(businesse);
-                    }
-                });
-                topRecyclerview.setAdapter(topadapter);
-                topRecyclerview.setNestedScrollingEnabled(false);
-
-
-                //setup main businesses view
-                BusinessVerticalListAdapter mainadapter = new BusinessVerticalListAdapter(MainActivity.this, businesses);
-                mainadapter.setOnItemClickListener(new BusinessVerticalListAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(Businesse businesse) {
-                        switch_to_business_page(businesse);
-                    }
-                });
-                businessRecyclerview.setAdapter(mainadapter);
-                businessRecyclerview.setNestedScrollingEnabled(false);
-            }
-
-            @Override
-            public void onError(Throwable t) {
-
-            }
-        });
-    }
-
-    //start business page
-    private void switch_to_business_page(Businesse businesse) {
-        Intent intent = new Intent(this, BusinessActivity.class);
-        intent.putExtra("business", businesse);
-        startActivity(intent);
-    }
-
-    //setup recyclerview lists
-    private void init_layout() {
-        topRecyclerview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        businessRecyclerview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-    }
 
     //setup bottom icon tab
     private void init_bottombar() {
@@ -163,15 +111,126 @@ public class MainActivity extends AppCompatActivity {
         bottombar.addTab(bottombar.newTab().setCustomView(getTabView(R.drawable.ic_search_black_24dp)));
         bottombar.addTab(bottombar.newTab().setCustomView(getTabView(R.drawable.ic_notifications_black_24dp)));
         bottombar.addTab(bottombar.newTab().setCustomView(getTabView(R.drawable.ic_person_black_24dp)));
+
+        bottombar.setOnTabSelectedListener(bottombarTabListener);
+
     }
 
     //create tab child of bottom icon
     private View getTabView(int drawable) {
-        ImageView tab = (ImageView) LayoutInflater.from(this).inflate(R.layout.bottombar_tabview_layout, null);
+        ImageView tab = (ImageView) LayoutInflater.from(this).inflate(R.layout.view_bottombar_tab_layout, null);
         tab.setImageResource(drawable);
 
-//        tab.setOnTouchListener(tabTouchListener);
+        tab.setOnTouchListener(tabTouchListener);
 
         return tab;
+    }
+
+    View.OnTouchListener tabTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            return !view.isEnabled();
+        }
+    };
+
+    TabLayout.OnTabSelectedListener bottombarTabListener = new TabLayout.OnTabSelectedListener() {
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+            switch (tab.getPosition()) {
+                case 0: //home
+                    switchfragment(new fragment_home(), true);
+                    break;
+
+                case 1: //category
+                    switchfragment(new fragment_category(), true);
+                    break;
+
+                case 2: //search
+                    switchfragment(new fragment_search(), true);
+                    break;
+            }
+        }
+
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {
+        }
+
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {
+        }
+    };
+
+    public void switchfragment(baseFragment fragment, boolean addtostack) {
+        String tag = fragment.getClass().toString();
+
+        if (Navigator.with(this).utils().canGoBackToSpecificPoint(tag, R.id.container, getSupportFragmentManager()))
+            Navigator.with(this).utils().goBackToSpecificPoint(tag);
+        else
+            Navigator.with(this)
+                    .build() //Enter in navigation mode
+                    .goTo(fragment, R.id.container)
+                    .tag(tag)
+//                    .animation(R.anim.fadein, R.anim.fadeout, R.anim.fadein, R.anim.fadeout)
+                    .addToBackStack() //add backstack
+                    .replace() //CommitType
+                    .commit(); //commit operation
+
+        currentfragment = fragment;
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fm = getSupportFragmentManager();
+        int count = fm.getBackStackEntryCount();
+
+        if (count == 0) {
+            if (doubleBackToExitPressedOnce) {
+                finish();
+                super.onBackPressed();
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "برای خروج دوباره کلید back را بزنید", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
+        } else {
+            if (Navigator.with(this).utils().canGoBack(getSupportFragmentManager())) {
+                Navigator.with(this)
+                        .utils()
+                        .goToPreviousBackStack();
+
+                currentfragment = (baseFragment) fm.getFragments().get(fm.getBackStackEntryCount() - 2);
+                String tag = currentfragment.getTag().toString();
+                if (tag.equals(fragment_home.class.toString()))
+                    bottombar.setScrollPosition(0, 0, true);
+                else if (tag.equals(fragment_category.class.toString()))
+                    bottombar.setScrollPosition(1, 0, true);
+                else if (tag.equals(fragment_search.class.toString()))
+                    bottombar.setScrollPosition(2, 0, true);
+
+            } else {
+                if (doubleBackToExitPressedOnce)
+                    Navigator.with(this).utils().finishWithAnimation();
+
+                this.doubleBackToExitPressedOnce = true;
+                Toast.makeText(this, "برای خروج دوباره کلید back را بزنید", Toast.LENGTH_SHORT).show();
+
+                new Handler().postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        doubleBackToExitPressedOnce = false;
+                    }
+                }, 2000);
+
+            }
+        }
     }
 }

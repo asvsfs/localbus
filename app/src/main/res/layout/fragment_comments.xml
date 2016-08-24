@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,7 +12,7 @@
         android:background="?colorPrimary"
         app:theme="@style/AppTheme"
         app:title="عنوان کسب و کار"
-        app:titleTextColor="#000" />
+        app:titleTextColor="#fff" />
 
     <LinearLayout
         android:id="@+id/ratelayout"
@@ -81,6 +82,6 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/ratelayout"
         android:layout_marginTop="1dp"
-         />
+        tools:listitem="@layout/comments_row" />
 
 </RelativeLayout>

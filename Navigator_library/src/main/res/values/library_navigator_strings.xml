@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="define_navigator">year;owner</string>
+    <string name="library_navigator_author">Fingerlinks</string>
+    <string name="library_navigator_authorWebsite">http://www.fingerlinks.org/</string>
+    <string name="library_navigator_libraryName">Navigator</string>
+    <string name="library_navigator_libraryDescription">Navigator is a library allows you easily develop an Android application which only navigated by Fragments.</string>
+    <string name="library_navigator_libraryVersion">0.1.2</string>
+    <string name="library_navigator_isOpenSource">true</string>
+    <string name="library_navigator_repositoryLink">https://bitbucket.org/fingerlinks/navigator</string>
+    <string name="library_navigator_licenseId">apache_2_0</string>
+    <string name="library_navigator_owner">Fingerlinks</string>
+    <string name="library_navigator_year">2016</string>
+</resources>

@@ -29,6 +29,7 @@ public class Businesse extends Model implements Serializable {
     private Location location;
     private String description;
     private List<String> images;
+    private String category;
     private String id;
     private String userid;
 
@@ -48,7 +49,10 @@ public class Businesse extends Model implements Serializable {
         return images;
     }
 
-    @Override
+    public String getCategory() {
+        return category;
+    }
+
     public String getId() {
         return id;
     }
@@ -57,19 +61,16 @@ public class Businesse extends Model implements Serializable {
         return userid;
     }
 
-    public interface callback {
-        void onSuccess(Businesse businnes);
-
-        void onError(Throwable t);
-    }
-
-
     public void setName(String name) {
         this.name = name;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public void setId(String id) {
