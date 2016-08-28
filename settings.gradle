@@ -1,1 +1,1 @@
-include ':app', ':Navigator_library'
+include ':app', ':Navigator_library', ':material-dialogslibrary', ':sweet_alert_dialog_library'

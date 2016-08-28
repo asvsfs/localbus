@@ -22,8 +22,11 @@ import amir.app.business.adapter.BusinessHorizontalListAdapter;
 import amir.app.business.adapter.CategoryListAdapter;
 import amir.app.business.models.Businesse;
 import amir.app.business.models.Category;
+import amir.app.business.splash;
+import amir.app.business.util;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by amin on 08/20/2016.
@@ -62,42 +65,7 @@ public class fragment_category extends baseFragment {
     }
 
     private void load_category_list() {
-//        List<Category> items = new ArrayList<>();
-//        Category category = new Category();
-//        category.setName("تجارت");
-//        items.add(category);
-//
-//        category = new Category();
-//        category.setName("کسب و کار");
-//        items.add(category);
-//
-//        category = new Category();
-//        category.setName("روستایی");
-//        items.add(category);
-//
-//        category = new Category();
-//        category.setName("خانوادگی");
-//        items.add(category);
-//
-//        category = new Category();
-//        category.setName("فن آوری");
-//        items.add(category);
-//
-//        category = new Category();
-//        category.setName("بانکداری");
-//        items.add(category);
-//
-//        category = new Category();
-//        category.setName("مشاغل آزاد");
-//        items.add(category);
-
-        //setup top category view
-//        CategoryListAdapter catadapter = new CategoryListAdapter(getActivity(), items);
-//        categoryresyclerview.setAdapter(catadapter);
-//        categoryresyclerview.setNestedScrollingEnabled(false);
-
-
-        GridLayoutManager layoutManager = new GridLayoutManager (getActivity(), 2, LinearLayoutManager.VERTICAL, false);
+        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
         categoryresyclerview.setLayoutManager(layoutManager);
 
         Category.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Category.Repository.class);
@@ -121,7 +89,12 @@ public class fragment_category extends baseFragment {
 
             @Override
             public void onError(Throwable t) {
-
+                util.alerdialog(getActivity(), "بستن", "خطا در ارتباط با شبکه", "خطا", new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        getactivity().onBackPressed();
+                    }
+                }, SweetAlertDialog.ERROR_TYPE);
             }
         });
     }

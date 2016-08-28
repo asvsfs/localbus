@@ -9,7 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        app:cardBackgroundColor="#fff">
+        app:cardBackgroundColor="#fff"
+        android:foreground="@drawable/card_color_selector">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -25,15 +26,16 @@
                     android:id="@+id/imgbusiness"
                     class="amir.app.business.widget.SquareImageViewHeight_Based"
                     android:layout_width="wrap_content"
-                    android:layout_height="150dp"
+                    android:layout_height="100dp"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center_horizontal"
-                    android:padding="10dp"
                     android:scaleType="centerInside"
-                    android:src="@drawable/business_logo" />
+                    android:src="@drawable/business_logo"
+                    android:padding="10dp" />
 
                 <view
+                    app:FarsiTypeface="IRANSansMedium"
                     android:id="@+id/txtname"
                     class="amir.app.business.widget.FarsiTextView"
                     android:layout_width="match_parent"
@@ -47,6 +49,7 @@
                     android:textColor="#6d6d6d" />
 
                 <view
+                    app:FarsiTypeface="IRANSans"
                     android:id="@+id/txtdesc"
                     class="amir.app.business.widget.FarsiTextView"
                     android:layout_width="match_parent"

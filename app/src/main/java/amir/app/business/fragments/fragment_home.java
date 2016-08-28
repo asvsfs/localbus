@@ -1,10 +1,11 @@
 package amir.app.business.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,8 +29,8 @@ import butterknife.ButterKnife;
  */
 
 public class fragment_home extends baseFragment {
-//    @BindView(R.id.adverPager)
-//    ImageView adverPager;
+    @BindView(R.id.adverPager)
+    ImageView adverPager;
     @BindView(R.id.txttoptitle)
     FarsiTextView txttoptitle;
     @BindView(R.id.topRecyclerview)
@@ -41,14 +42,16 @@ public class fragment_home extends baseFragment {
 
     BusinessHorizontalListAdapter topadapter;
     BusinessVerticalListAdapter mainadapter;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, null);
-
         ButterKnife.bind(this, view);
 
+        //setup init views
         init_layout();
 
         //load business list via api
@@ -60,7 +63,7 @@ public class fragment_home extends baseFragment {
     //setup recyclerview lists
     private void init_layout() {
         topRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        businessRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        businessRecyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false));
     }
 
 

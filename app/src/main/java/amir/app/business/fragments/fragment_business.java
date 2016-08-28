@@ -1,11 +1,17 @@
 package amir.app.business.fragments;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,6 +27,7 @@ import amir.app.business.GuideApplication;
 import amir.app.business.R;
 import amir.app.business.adapter.BusinessHorizontalListAdapter;
 import amir.app.business.models.Businesse;
+import amir.app.business.util;
 import amir.app.business.widget.FarsiTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,6 +77,8 @@ public class fragment_business extends baseFragment {
         View view = inflater.inflate(R.layout.fragment_business, null);
 
         ButterKnife.bind(this, view);
+
+        setHasOptionsMenu(true);
 
         //config toolbar
         getactivity().setSupportActionBar(toolbar);
@@ -130,4 +139,23 @@ public class fragment_business extends baseFragment {
         switchfragment(new fragment_comment(), true);
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_business, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_question:
+                View content = LayoutInflater.from(getActivity()).inflate(R.layout.view_business_question, null);
+                util.contentdialog(getActivity(), content, "پرسش از کسب و کار", "ارسال", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

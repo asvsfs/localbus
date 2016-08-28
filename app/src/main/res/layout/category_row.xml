@@ -8,7 +8,8 @@
         class="amir.app.business.widget.SquareRelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="2dp">
+        android:layout_margin="2dp"
+        android:background="#fff">
 
         <view
             android:id="@+id/txtname"
@@ -22,7 +23,7 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/txtdate"
             android:layout_weight="1"
-            android:background="#fff"
+            android:background="@drawable/card_color_selector"
             android:gravity="right|center_vertical"
             android:padding="10dp"
             android:singleLine="false"

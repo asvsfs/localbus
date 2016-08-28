@@ -98,24 +98,15 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways">
 
-            <!--<ImageView-->
-                <!--android:id="@+id/adverPager"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="200dp"-->
-                <!--android:background="#eee"-->
-                <!--android:scaleType="centerCrop"-->
-                <!--android:src="@drawable/adver"-->
-                <!--app:layout_collapseMode="parallax"-->
-                <!--tools:layout_editor_absoluteX="0dp"-->
-                <!--tools:layout_editor_absoluteY="0dp" />-->
-
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@android:color/transparent"
                 android:theme="?attr/actionBarTheme"
-                 />
+                app:theme="@style/AppTheme"
+                app:title="@string/app_name"
+                app:titleTextColor="#000" />
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 </android.support.design.widget.CoordinatorLayout>

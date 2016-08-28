@@ -5,6 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/Navigator_library/Navigator_library.iml" filepath="$PROJECT_DIR$/Navigator_library/Navigator_library.iml" />
       <module fileurl="file://$PROJECT_DIR$/amir.app.business.iml" filepath="$PROJECT_DIR$/amir.app.business.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/material-dialogslibrary/material-dialogslibrary.iml" filepath="$PROJECT_DIR$/material-dialogslibrary/material-dialogslibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sweet_alert_dialog_library/sweet_alert_dialog_library.iml" filepath="$PROJECT_DIR$/sweet_alert_dialog_library/sweet_alert_dialog_library.iml" />
     </modules>
   </component>
 </project>

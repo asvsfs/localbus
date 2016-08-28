@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import amir.app.business.models.Admin;
 import amir.app.business.models.Token;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by amin on 08/24/2016.
@@ -35,7 +36,12 @@ public class splash extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable t) {
-
+                        util.alerdialog(splash.this, "بستن", "خطا در ارتباط با شبکه", "خطا", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                finish();
+                            }
+                        }, SweetAlertDialog.ERROR_TYPE);
                     }
                 });
             }

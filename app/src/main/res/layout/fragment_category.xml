@@ -11,7 +11,7 @@
         android:background="?colorPrimary"
         app:theme="@style/AppTheme"
         app:title="فهرست"
-        app:titleTextColor="#000" />
+        app:titleTextColor="#fff" />
 
     <RelativeLayout
         android:layout_width="match_parent"
