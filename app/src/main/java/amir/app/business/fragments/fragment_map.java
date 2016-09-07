@@ -32,81 +32,62 @@ import amir.app.business.GuideApplication;
 import amir.app.business.R;
 import amir.app.business.adapter.BusinessHorizontalListAdapter;
 import amir.app.business.models.Businesse;
-import amir.app.business.models.Location;
 import amir.app.business.widget.FarsiTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by amin on 08/20/2016.
  */
 
-public class fragment_home extends baseFragment {
+public class fragment_map extends baseFragment {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.adverPager)
-    ImageView adverPager;
-    @BindView(R.id.txttoptitle)
-    FarsiTextView txttoptitle;
-    @BindView(R.id.topRecyclerview)
-    RecyclerView topRecyclerview;
-    @BindView(R.id.businessRecyclerview)
-    RecyclerView businessRecyclerview;
+
     @BindView(R.id.mapview)
     MapView mapview;
-    @BindView(R.id.scrollview)
-    NestedScrollView scrollview;
-    @BindView(R.id.imgfull)
-    ImageView imgfull;
 
     List<Businesse> businesses;
     GoogleMap map;
-    BusinessHorizontalListAdapter topadapter;
-    BusinessHorizontalListAdapter mainadapter;
+
+
+    public fragment_map newInstance(List<Businesse> businesses) {
+        fragment_map f = new fragment_map();
+        f.businesses = businesses;
+
+        return f;
+    }
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, null);
+        View view = inflater.inflate(R.layout.fragment_map, null);
         ButterKnife.bind(this, view);
 
         //config toolbar
         getactivity().setSupportActionBar(toolbar);
-        getactivity().getSupportActionBar().setTitle(R.string.app_name);
-        getactivity().getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(false);
-        getactivity().getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getactivity().getSupportActionBar().setTitle("نقشه کسب و کار");
+        getactivity().getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        getactivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //setup back button on toolbar
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getactivity().onBackPressed();
+            }
+        });
 
         setup_map_view(savedInstanceState);
 
-        //setup init views
-        init_layout();
-
         //load business list via api
-        load_business_list();
+        setup_marker_list();
 
         return view;
     }
 
     private void setup_map_view(@Nullable Bundle savedInstanceState) {
         mapview.onCreate(savedInstanceState);
-
-        mapview.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_MOVE:
-                        scrollview.requestDisallowInterceptTouchEvent(true);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        scrollview.requestDisallowInterceptTouchEvent(true);
-                        break;
-                }
-                return mapview.onTouchEvent(event);
-            }
-        });
 
         // Gets to GoogleMap from the MapView and does initialization stuff
         map = mapview.getMap();
@@ -121,81 +102,10 @@ public class fragment_home extends baseFragment {
 //        map.animateCamera(cameraUpdate);
     }
 
-    //setup recyclerview lists
-    private void init_layout() {
-        topRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        businessRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-    }
-
-
-    //read all business and fill list
-    private void load_business_list() {
-        if (businesses != null) {
-            setup_adapter_and_views();
-            return;
-        }
-
-        Businesse.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Businesse.Repository.class);
-
-        repository.findAll(new ListCallback<Businesse>() {
-            @Override
-            public void onSuccess(List<Businesse> items) {
-                businesses = items;
-
-                for (int i = 0; i < 10; i++) {
-                    Businesse b = new Businesse();
-                    b.setName("business " + i);
-                    b.setDescription("description " + i);
-
-                    Location location = new Location();
-                    location.lat = (int) (32 + i * Math.random());
-                    location.lng = (int) (52 + i * Math.random());
-
-                    b.setLocation(location);
-                    businesses.add(b);
-                }
-
-                setup_adapter_and_views();
-
-            }
-
-            @Override
-            public void onError(Throwable t) {
-
-            }
-        });
-    }
-
-    private void setup_adapter_and_views() {
-        //setup top businesses view
-        topadapter = new BusinessHorizontalListAdapter(getActivity(), businesses);
-        topadapter.setOnItemClickListener(new BusinessHorizontalListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Businesse businesse) {
-                switch_to_business_page(businesse);
-            }
-        });
-        topRecyclerview.setAdapter(topadapter);
-        topRecyclerview.setNestedScrollingEnabled(false);
-
-
-        //setup main businesses view
-        mainadapter = new BusinessHorizontalListAdapter(getActivity(), businesses);
-        mainadapter.setOnItemClickListener(new BusinessHorizontalListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Businesse businesse) {
-                switch_to_business_page(businesse);
-            }
-        });
-        businessRecyclerview.setAdapter(mainadapter);
-        businessRecyclerview.setNestedScrollingEnabled(false);
-
-        setup_marker_list();
-    }
-
     public void switch_to_business_page(Businesse businesse) {
         switchfragment(new fragment_business().newInstance(businesse), true);
     }
+
 
     @Override
     public void onResume() {
@@ -221,11 +131,6 @@ public class fragment_home extends baseFragment {
         mapview.onLowMemory();
     }
 
-    @OnClick(R.id.imgfull)
-    public void fullscreen() {
-        switchfragment(new fragment_map().newInstance(businesses), true);
-    }
-
     private void setup_marker_list() {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
@@ -244,8 +149,8 @@ public class fragment_home extends baseFragment {
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 0);
         try {
             map.moveCamera(cu);
-        } catch (Exception ignored) {
         }
+        catch (Exception ignored){}
 
         map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
@@ -259,4 +164,5 @@ public class fragment_home extends baseFragment {
             }
         });
     }
+
 }

@@ -1,12 +1,9 @@
 package amir.app.business.fragments;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,6 +16,15 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.strongloop.android.loopback.callbacks.ListCallback;
 
 import java.util.List;
@@ -62,8 +68,11 @@ public class fragment_business extends baseFragment {
     ImageView btnlike;
     @BindView(R.id.btnshare)
     ImageView btnshare;
+    @BindView(R.id.mapview)
+    MapView mapview;
 
     Businesse businesse;
+    GoogleMap map;
 
     public static fragment_business newInstance(Businesse business) {
         fragment_business fragment = new fragment_business();
@@ -77,6 +86,8 @@ public class fragment_business extends baseFragment {
         View view = inflater.inflate(R.layout.fragment_business, null);
 
         ButterKnife.bind(this, view);
+
+        setup_map_view(savedInstanceState);
 
         setHasOptionsMenu(true);
 
@@ -100,7 +111,44 @@ public class fragment_business extends baseFragment {
         //load three lastest comment about this business
         load_latest_comments_list();
 
+        setup_marker_list();
         return view;
+    }
+
+    private void setup_marker_list() {
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
+        if (businesse.getLocation() != null) {
+            Marker marker = map.addMarker(new MarkerOptions()
+                    .position(new LatLng(businesse.getLocation().lat, businesse.getLocation().lng))
+                    .title(businesse.getName())
+                    .snippet(businesse.getDescription()));
+
+            CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(new LatLng(businesse.getLocation().lat, businesse.getLocation().lng), 10);
+            try {
+                map.moveCamera(cu);
+
+            } catch (Exception ignored) {
+            }
+        }
+
+    }
+
+    private void setup_map_view(@Nullable Bundle savedInstanceState) {
+        mapview.onCreate(savedInstanceState);
+
+        // Gets to GoogleMap from the MapView and does initialization stuff
+        map = mapview.getMap();
+        map.getUiSettings().setMyLocationButtonEnabled(false);
+        map.setMyLocationEnabled(true);
+
+        // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
+        MapsInitializer.initialize(this.getActivity());
+
+        // Updates the location and zoom of the MapView
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(43.1, -87.9), 10);
+        map.animateCamera(cameraUpdate);
+
     }
 
     private void load_latest_comments_list() {
@@ -157,5 +205,29 @@ public class fragment_business extends baseFragment {
                 });
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapview.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapview.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapview.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapview.onLowMemory();
     }
 }

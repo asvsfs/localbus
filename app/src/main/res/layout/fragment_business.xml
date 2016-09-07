@@ -245,8 +245,9 @@
                         android:orientation="vertical"
                         android:background="#eee">
 
-                        <com.google.android.gms.maps.MapView
-                            android:id="@+id/map"
+                        <view
+                            class="amir.app.business.widget.CustomMapView"
+                            android:id="@+id/mapview"
                             android:layout_width="match_parent"
                             android:layout_height="200dp"
                             android:layout_margin="5dp"
