@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_question"
-        android:icon="@drawable/ic_question_answer_white_24dp"
-        android:title="سوال کنید"
+        android:title="Question"
+        app:actionLayout="@layout/menu_actionbar_question"
         app:showAsAction="always" />
 </menu>

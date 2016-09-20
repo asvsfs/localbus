@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import amir.app.business.models.Admin;
 import amir.app.business.models.Token;
@@ -36,7 +35,7 @@ public class splash extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable t) {
-                        util.alerdialog(splash.this, "بستن", "خطا در ارتباط با شبکه", "خطا", new SweetAlertDialog.OnSweetClickListener() {
+                        util.alertDialog(splash.this, "بستن", "خطا در ارتباط با شبکه", "خطا", new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
                                 finish();

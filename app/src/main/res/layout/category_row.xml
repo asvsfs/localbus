@@ -11,27 +11,43 @@
         android:layout_margin="2dp"
         android:background="#fff">
 
-        <view
-            android:id="@+id/txtname"
-            class="amir.app.business.widget.FarsiTextView"
+        <RelativeLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/txtdate"
-            android:layout_weight="1"
-            android:background="@drawable/card_color_selector"
-            android:gravity="right|center_vertical"
-            android:padding="10dp"
-            android:singleLine="false"
-            android:text="تجارت"
-            android:textAlignment="center"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#000"
-            app:FarsiTypeface="IRANSansBold" />
+            android:background="@drawable/card_color_selector">
+
+            <ImageView
+                app:srcCompat="@drawable/business_logo"
+                android:id="@+id/imageView"
+                android:layout_weight="1"
+                android:layout_centerHorizontal="true"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentTop="true"
+                android:layout_above="@+id/txtname" />
+
+            <view
+                android:id="@+id/txtname"
+                class="amir.app.business.widget.FarsiTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right|center_vertical"
+                android:singleLine="false"
+                android:text="تجارت"
+                android:textAlignment="center"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#000"
+                app:FarsiTypeface="IRANSans"
+                android:layout_weight="1"
+                android:lines="2"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+        </RelativeLayout>
+
 
     </view>
+
+
 </RelativeLayout>

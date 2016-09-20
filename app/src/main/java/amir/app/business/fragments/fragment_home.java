@@ -2,9 +2,6 @@ package amir.app.business.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +17,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -42,7 +40,7 @@ import butterknife.OnClick;
  * Created by amin on 08/20/2016.
  */
 
-public class fragment_home extends baseFragment {
+public class fragment_home extends baseFragment implements OnMapReadyCallback {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.adverPager)
@@ -80,8 +78,7 @@ public class fragment_home extends baseFragment {
 
         setup_map_view(savedInstanceState);
 
-        //setup init views
-        init_layout();
+
 
         //load business list via api
         load_business_list();
@@ -109,9 +106,7 @@ public class fragment_home extends baseFragment {
         });
 
         // Gets to GoogleMap from the MapView and does initialization stuff
-        map = mapview.getMap();
-        map.getUiSettings().setMyLocationButtonEnabled(false);
-        map.setMyLocationEnabled(true);
+        mapview.getMapAsync(this);
 
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
         MapsInitializer.initialize(this.getActivity());
@@ -167,6 +162,9 @@ public class fragment_home extends baseFragment {
     }
 
     private void setup_adapter_and_views() {
+        //setup init views
+        init_layout();
+
         //setup top businesses view
         topadapter = new BusinessHorizontalListAdapter(getActivity(), businesses);
         topadapter.setOnItemClickListener(new BusinessHorizontalListAdapter.OnItemClickListener() {
@@ -194,7 +192,7 @@ public class fragment_home extends baseFragment {
     }
 
     public void switch_to_business_page(Businesse businesse) {
-        switchfragment(new fragment_business().newInstance(businesse), true);
+        switchFragment(new fragment_business().newInstance(businesse), true);
     }
 
     @Override
@@ -223,7 +221,7 @@ public class fragment_home extends baseFragment {
 
     @OnClick(R.id.imgfull)
     public void fullscreen() {
-        switchfragment(new fragment_map().newInstance(businesses), true);
+        switchFragment(new fragment_map().newInstance(businesses), true);
     }
 
     private void setup_marker_list() {
@@ -252,11 +250,18 @@ public class fragment_home extends baseFragment {
             public void onInfoWindowClick(Marker marker) {
                 for (Businesse business : businesses) {
                     if (business.getLocation() != null && business.getLocation().lat == marker.getPosition().latitude && business.getLocation().lng == marker.getPosition().longitude) {
-                        switchfragment(new fragment_business().newInstance(business), true);
+                        switchFragment(new fragment_business().newInstance(business), true);
                         break;
                     }
                 }
             }
         });
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+        map.getUiSettings().setMyLocationButtonEnabled(false);
+        map.setMyLocationEnabled(true);
     }
 }

@@ -8,8 +8,34 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff"
-        android:layout_marginBottom="1dp">
+        android:layout_marginBottom="1dp"
+        android:background="#fff">
+
+        <view
+            class="amir.app.business.widget.RoundedLetterView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:rlv_backgroundColorValue="#faa"
+            app:rlv_titleColor="#000"
+            app:rlv_titleText="-"
+            app:rlv_titleSize="20sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/txtplus" />
+
+        <view
+            class="amir.app.business.widget.RoundedLetterView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:rlv_backgroundColorValue="#afa"
+            app:rlv_titleColor="#000"
+            app:rlv_titleText="+"
+            app:rlv_titleSize="20sp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/txtminus"
+            android:layout_toRightOf="@+id/txtplus"
+            android:layout_toEndOf="@+id/txtplus"
+            android:layout_marginLeft="10dp" />
 
         <view
             android:id="@+id/txtcoment"
@@ -18,14 +44,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
+            android:layout_below="@+id/imgavatar"
             android:layout_marginBottom="1dp"
             android:gravity="right|center_vertical"
             android:padding="10dp"
             android:text="متن نظر متن نظر متن نظر متن نظرمتن نظر متن نظرمتن نظر متن نظرمتن نظر متن نظرمتن نظر متن نظر متن نظر متن نظرمتن نظر متن نظرمتن نظر متن نظرمتن نظر متن نظر"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="#000"
-            app:FarsiTypeface="IRANSansMedium"
-            android:layout_below="@+id/imgavatar" />
+            app:FarsiTypeface="IRANSansMedium" />
 
         <amir.app.business.widget.CircleImageView
             android:id="@+id/imgavatar"
@@ -35,43 +61,43 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_gravity="center_horizontal"
+            android:layout_margin="5dp"
             android:scaleType="centerCrop"
             android:src="@drawable/amin"
             app:border_color="#fff"
-            app:border_width="4dp"
-            android:layout_margin="5dp" />
+            app:border_width="4dp" />
 
         <view
             android:id="@+id/txtname"
             class="amir.app.business.widget.FarsiTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/imgavatar"
+            android:layout_toStartOf="@+id/imgavatar"
             android:gravity="right|center_vertical"
             android:padding="5dp"
             android:singleLine="false"
             android:text="امین تقدسی"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="#000"
-            app:FarsiTypeface="IRANSansBold"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/imgavatar"
-            android:layout_toStartOf="@+id/imgavatar" />
+            app:FarsiTypeface="IRANSansBold" />
 
         <view
             android:id="@+id/txtdate"
             class="amir.app.business.widget.FarsiTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imgavatar"
+            android:layout_toLeftOf="@+id/imgavatar"
+            android:layout_toStartOf="@+id/imgavatar"
             android:gravity="right|center_vertical"
             android:padding="5dp"
             android:singleLine="false"
             android:text="10 مرداد 95"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="#555"
-            app:FarsiTypeface="IRANSans"
-            android:layout_alignBottom="@+id/imgavatar"
-            android:layout_toLeftOf="@+id/imgavatar"
-            android:layout_toStartOf="@+id/imgavatar" />
+            app:FarsiTypeface="IRANSans" />
     </RelativeLayout>
 
 </RelativeLayout>

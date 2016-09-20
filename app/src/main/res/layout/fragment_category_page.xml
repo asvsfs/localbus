@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="fill_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#ccc"
+        app:theme="@style/AppTheme"
+        app:subtitleTextColor="#000"
+         />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/toolbar">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ccc"
+            android:layout_below="@+id/toolbar"
+            android:layout_alignParentBottom="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="#ccc">
+
+                    <view
+                        android:id="@+id/txtname"
+                        class="amir.app.business.widget.FarsiTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_weight="1"
+                        android:gravity="right|center_vertical"
+                        android:singleLine="true"
+                        android:text="طلافروشی"
+                        android:textAppearance="@android:style/TextAppearance.Material.Large"
+                        app:FarsiTypeface="IRANSansBold"
+                        android:textColor="#000"
+                        app:cardPreventCornerOverlap="true"
+                        android:paddingBottom="20dp"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="#aaa"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"></LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:padding="10dp">
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+
+                            <view
+                                android:id="@+id/view3"
+                                class="amir.app.business.widget.FarsiTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_weight="1"
+                                android:singleLine="true"
+                                android:text="تعداد کسب و کار"
+                                android:textAppearance="@android:style/TextAppearance.Material.Small"
+                                app:FarsiTypeface="IRANSansBold"
+                                android:gravity="center"
+                                android:textColor="#333" />
+
+                            <view
+                                android:id="@+id/view2"
+                                class="amir.app.business.widget.FarsiTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_weight="1"
+                                android:singleLine="true"
+                                android:text="1,234"
+                                android:textAppearance="@android:style/TextAppearance.Material.Small"
+                                app:FarsiTypeface="IRANSansBold"
+                                android:gravity="center"
+                                android:textColor="#000" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/SimilarCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <view
+                            android:id="@+id/txttoptitle"
+                            class="amir.app.business.widget.FarsiTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:background="#eee"
+                            android:gravity="right|center_vertical"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:text="برترین‌ها"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="#000"
+                            app:FarsiTypeface="IRANSansBold" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/topRecyclerview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/adverPager"
+                            android:background="#eee"
+                            tools:layout_editor_absoluteX="0dp" />
+
+                        <view
+                            android:id="@+id/txtsimilar"
+                            class="amir.app.business.widget.FarsiTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_below="@id/txtdesc"
+                            android:background="#eee"
+                            android:gravity="right|center_vertical"
+                            android:padding="10dp"
+                            android:singleLine="true"
+                            android:text="کسب و کارهای موجود"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="#555"
+                            app:FarsiTypeface="IRANSansBold" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/businessRecyclerview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/txtsimilar"
+                            android:background="#eee">
+
+                        </android.support.v7.widget.RecyclerView>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</RelativeLayout>

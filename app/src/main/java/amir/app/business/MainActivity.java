@@ -1,39 +1,31 @@
 package amir.app.business;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.strongloop.android.loopback.callbacks.ListCallback;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.fingerlinks.mobile.android.navigator.Navigator;
 
-import java.util.List;
-
-import amir.app.business.adapter.BusinessHorizontalListAdapter;
-import amir.app.business.adapter.BusinessVerticalListAdapter;
 import amir.app.business.fragments.baseFragment;
 import amir.app.business.fragments.fragment_category;
 import amir.app.business.fragments.fragment_home;
 import amir.app.business.fragments.fragment_search;
-import amir.app.business.models.Businesse;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "InstanceID";
     @BindView(R.id.bottombar)
     TabLayout bottombar;
 
@@ -53,7 +45,9 @@ public class MainActivity extends AppCompatActivity {
         init_bottombar();
 
         //set default fragment to home page
-        switchfragment(new fragment_home(), true);
+        switchFragment(new fragment_home(), true);
+
+        Log.d(TAG, "InstanceID token: " + FirebaseInstanceId.getInstance().getToken());
 //        Businesse b = new Businesse();
 //        b.name = "android";
 //        b.description = "android description";
@@ -138,15 +132,15 @@ public class MainActivity extends AppCompatActivity {
         public void onTabSelected(TabLayout.Tab tab) {
             switch (tab.getPosition()) {
                 case 0: //home
-                    switchfragment(new fragment_home(), true);
+                    switchFragment(new fragment_home(), true);
                     break;
 
                 case 1: //category
-                    switchfragment(new fragment_category(), true);
+                    switchFragment(new fragment_category(), true);
                     break;
 
                 case 2: //search
-                    switchfragment(new fragment_search(), true);
+                    switchFragment(new fragment_search(), true);
                     break;
             }
         }
@@ -160,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    public void switchfragment(baseFragment fragment, boolean addtostack) {
+    public void switchFragment(baseFragment fragment, boolean addtostack) {
         String tag = fragment.getClass().toString();
 
         if (Navigator.with(this).utils().canGoBackToSpecificPoint(tag, R.id.container, getSupportFragmentManager()))

@@ -1,7 +1,9 @@
 package amir.app.business.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -16,11 +18,14 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.fenchtose.tooltip.Tooltip;
+import com.fenchtose.tooltip.TooltipAnimation;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -43,7 +48,7 @@ import butterknife.OnClick;
  * Created by amin on 08/09/2016.
  */
 
-public class fragment_business extends baseFragment {
+public class fragment_business extends baseFragment implements OnMapReadyCallback {
     @BindView(R.id.imggallery)
     ImageView imggallery;
     @BindView(R.id.txtdistance)
@@ -73,6 +78,8 @@ public class fragment_business extends baseFragment {
 
     Businesse businesse;
     GoogleMap map;
+
+    boolean tooltipshown;
 
     public static fragment_business newInstance(Businesse business) {
         fragment_business fragment = new fragment_business();
@@ -111,7 +118,7 @@ public class fragment_business extends baseFragment {
         //load three lastest comment about this business
         load_latest_comments_list();
 
-        setup_marker_list();
+
         return view;
     }
 
@@ -138,16 +145,7 @@ public class fragment_business extends baseFragment {
         mapview.onCreate(savedInstanceState);
 
         // Gets to GoogleMap from the MapView and does initialization stuff
-        map = mapview.getMap();
-        map.getUiSettings().setMyLocationButtonEnabled(false);
-        map.setMyLocationEnabled(true);
-
-        // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
-        MapsInitializer.initialize(this.getActivity());
-
-        // Updates the location and zoom of the MapView
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(43.1, -87.9), 10);
-        map.animateCamera(cameraUpdate);
+        mapview.getMapAsync(this);
 
     }
 
@@ -183,27 +181,42 @@ public class fragment_business extends baseFragment {
     }
 
     @OnClick(R.id.btncomments)
-    public void btncomment() {
-        switchfragment(new fragment_comment(), true);
+    public void btnComment() {
+        switchFragment(new fragment_comment(), true);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_business, menu);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_question:
+        MenuItem quetion = menu.findItem(R.id.action_question);
+        quetion.getActionView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 View content = LayoutInflater.from(getActivity()).inflate(R.layout.view_business_question, null);
-                util.contentdialog(getActivity(), content, "پرسش از کسب و کار", "ارسال", new View.OnClickListener() {
+                util.contentDialog(getActivity(), content, "پرسش از کسب و کار", "ارسال", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
                     }
                 });
+            }
+        });
+
+        if (!tooltipshown) {
+            tooltipshown = true;
+            util.showTooltip(getactivity(), (ViewGroup) getView(), quetion.getActionView(), "برای طرح پرسش از اینجا اقدام کنید");
         }
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
     }
 
@@ -230,4 +243,21 @@ public class fragment_business extends baseFragment {
         super.onLowMemory();
         mapview.onLowMemory();
     }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+        map.getUiSettings().setMyLocationButtonEnabled(false);
+        map.setMyLocationEnabled(true);
+
+        // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
+        MapsInitializer.initialize(this.getActivity());
+
+        // Updates the location and zoom of the MapView
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(43.1, -87.9), 10);
+        map.animateCamera(cameraUpdate);
+
+        setup_marker_list();
+    }
+
 }

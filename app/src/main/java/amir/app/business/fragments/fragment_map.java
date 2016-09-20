@@ -2,37 +2,26 @@ package amir.app.business.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.strongloop.android.loopback.callbacks.ListCallback;
 
 import java.util.List;
 
-import amir.app.business.GuideApplication;
 import amir.app.business.R;
-import amir.app.business.adapter.BusinessHorizontalListAdapter;
 import amir.app.business.models.Businesse;
-import amir.app.business.widget.FarsiTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -40,7 +29,7 @@ import butterknife.ButterKnife;
  * Created by amin on 08/20/2016.
  */
 
-public class fragment_map extends baseFragment {
+public class fragment_map extends baseFragment implements OnMapReadyCallback {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -80,8 +69,7 @@ public class fragment_map extends baseFragment {
 
         setup_map_view(savedInstanceState);
 
-        //load business list via api
-        setup_marker_list();
+
 
         return view;
     }
@@ -90,9 +78,7 @@ public class fragment_map extends baseFragment {
         mapview.onCreate(savedInstanceState);
 
         // Gets to GoogleMap from the MapView and does initialization stuff
-        map = mapview.getMap();
-        map.getUiSettings().setMyLocationButtonEnabled(false);
-        map.setMyLocationEnabled(true);
+        mapview.getMapAsync(this);
 
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
         MapsInitializer.initialize(this.getActivity());
@@ -103,7 +89,7 @@ public class fragment_map extends baseFragment {
     }
 
     public void switch_to_business_page(Businesse businesse) {
-        switchfragment(new fragment_business().newInstance(businesse), true);
+        switchFragment(new fragment_business().newInstance(businesse), true);
     }
 
 
@@ -149,15 +135,15 @@ public class fragment_map extends baseFragment {
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 0);
         try {
             map.moveCamera(cu);
+        } catch (Exception ignored) {
         }
-        catch (Exception ignored){}
 
         map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
                 for (Businesse business : businesses) {
                     if (business.getLocation() != null && business.getLocation().lat == marker.getPosition().latitude && business.getLocation().lng == marker.getPosition().longitude) {
-                        switchfragment(new fragment_business().newInstance(business), true);
+                        switchFragment(new fragment_business().newInstance(business), true);
                         break;
                     }
                 }
@@ -165,4 +151,13 @@ public class fragment_map extends baseFragment {
         });
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+        map.getUiSettings().setMyLocationButtonEnabled(false);
+        map.setMyLocationEnabled(true);
+
+        //load business list via api
+        setup_marker_list();
+    }
 }

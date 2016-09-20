@@ -3,20 +3,19 @@ package amir.app.business;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,8 +23,9 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+import com.fenchtose.tooltip.Tooltip;
+import com.fenchtose.tooltip.TooltipAnimation;
 
-import amir.app.business.widget.FarsiTextView;
 import amir.app.business.widget.widgettools;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -34,7 +34,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  */
 public class util {
 
-    public static int getbestcols(Context context) {
+    public static int getBestCols(Context context) {
         float scalefactor = context.getResources().getDisplayMetrics().density * 120;
         int number = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth();
         return (int) ((float) number / (float) scalefactor);
@@ -57,15 +57,15 @@ public class util {
         return ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo() != null;
     }
 
-    public static void alerdialog(Context context, String title, int type) {
-        alerdialog(context, "بستن", title, "", null, type);
+    public static void alertDialog(Context context, String title, int type) {
+        alertDialog(context, "بستن", title, "", null, type);
     }
 
-    public static void alerdialog(Context context, String confirmtext, String title, int type) {
-        alerdialog(context, confirmtext, title, "", null, type);
+    public static void alertDialog(Context context, String confirmtext, String title, int type) {
+        alertDialog(context, confirmtext, title, "", null, type);
     }
 
-    public static void alerdialog(Context context, String confirmtext, String title, String content, final SweetAlertDialog.OnSweetClickListener listener, int type) {
+    public static void alertDialog(Context context, String confirmtext, String title, String content, final SweetAlertDialog.OnSweetClickListener listener, int type) {
         try {
             new SweetAlertDialog(context, type)
                     .setContentText(content)
@@ -85,7 +85,7 @@ public class util {
         }
     }
 
-    public static void confirmdialog(Context context, String oktext, String canceltext, String title, String content, final SweetAlertDialog.OnSweetClickListener oklistener, int type) {
+    public static void confirmDialog(Context context, String oktext, String canceltext, String title, String content, final SweetAlertDialog.OnSweetClickListener oklistener, int type) {
         new SweetAlertDialog(context, type)
                 .setContentText(content)
                 .setTitleText(title)
@@ -146,12 +146,12 @@ public class util {
     }
 
 
-    public static MaterialDialog progressdialog(Context context, String title, String content) {
-        return progressdialog(context, title, content, null);
+    public static MaterialDialog progressDialog(Context context, String title, String content) {
+        return progressDialog(context, title, content, null);
     }
 
 
-    public static MaterialDialog progressdialog(Context context, String title, String content, final View.OnClickListener onClickListener) {
+    public static MaterialDialog progressDialog(Context context, String title, String content, final View.OnClickListener onClickListener) {
         MaterialDialog dlg = new MaterialDialog.Builder(context)
                 .title(title)
                 .titleGravity(GravityEnum.END)
@@ -183,7 +183,7 @@ public class util {
         return dlg;
     }
 
-    public static MaterialDialog contentdialog(Context context, View contentview, String title, String positiveText, final View.OnClickListener onClickListener) {
+    public static MaterialDialog contentDialog(Context context, View contentview, String title, String positiveText, final View.OnClickListener onClickListener) {
         MaterialDialog dlg = new MaterialDialog.Builder(context)
                 .title(title)
                 .titleGravity(GravityEnum.END)
@@ -232,5 +232,24 @@ public class util {
         }
     }
 
+    public static void showTooltip(Activity activity, ViewGroup root, @NonNull View anchor, String text) {
+        TextView textView = (TextView) activity.getLayoutInflater().inflate(R.layout.tooltip_textview, null);
+        textView.setText(text);
 
+        Resources resources = activity.getResources();
+        int tipSizeSmall = resources.getDimensionPixelSize(R.dimen.tip_dimen_small);
+        int tipSizeRegular = resources.getDimensionPixelSize(R.dimen.tip_dimen_regular);
+        int tipRadius = resources.getDimensionPixelOffset(R.dimen.tip_radius);
+
+        new Tooltip.Builder(activity)
+                .anchor(anchor, Tooltip.BOTTOM)
+                .animate(new TooltipAnimation(TooltipAnimation.REVEAL))
+                .autoAdjust(true)
+                .autoCancel(10000)
+                .content(textView)
+//                .withPadding(getResources().getDimensionPixelOffset(R.dimen.menu_tooltip_padding))
+                .withTip(new Tooltip.Tip(tipSizeSmall, tipSizeSmall, resources.getColor(R.color.colorPrimaryDark)))
+                .into(root)
+                .show();
+    }
 }

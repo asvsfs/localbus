@@ -15,7 +15,7 @@ public class baseFragment extends Fragment {
         return ((MainActivity) getActivity());
     }
 
-    public void switchfragment(baseFragment fragment, boolean addtostack) {
-        ((MainActivity) getActivity()).switchfragment(fragment, addtostack);
+    public void switchFragment(baseFragment fragment, boolean addtostack) {
+        ((MainActivity) getActivity()).switchFragment(fragment, addtostack);
     }
 }
