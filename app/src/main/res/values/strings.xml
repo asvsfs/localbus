@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Jobs</string>
+    <string name="server">http://139.59.153.64:3000</string>
 </resources>

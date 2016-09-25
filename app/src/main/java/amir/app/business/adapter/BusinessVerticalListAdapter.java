@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 
+import com.bumptech.glide.Glide;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import java.util.List;
@@ -88,13 +89,18 @@ public class BusinessVerticalListAdapter extends RecyclerView.Adapter<BusinessVe
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int i) {
-        final Businesse b = items.get(i);
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        final Businesse b = items.get(position);
 
         holder.txtname.setText(b.getName());
         holder.txtdesc.setText(b.getDescription());
 
-//        ImageLoader.getInstance().displayImage(b.images.get(0), holder.imgavatar, options);
+        List<String> images = b.getImages();
+        if (images != null && images.size() > 0)
+            Glide.with(context)
+                    .load(context.getString(R.string.server) + images.get(0))
+                    .into(holder.imgbusiness);
+
     }
 
     @Override

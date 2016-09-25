@@ -31,8 +31,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center_horizontal"
                     android:scaleType="centerInside"
-                    android:src="@drawable/business_logo"
-                    android:padding="10dp" />
+                    android:src="@drawable/business_logo" />
 
                 <view
                     app:FarsiTypeface="IRANSansMedium"

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 
+import com.bumptech.glide.Glide;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import java.util.List;
@@ -60,8 +61,6 @@ public class BusinessHorizontalListAdapter extends RecyclerView.Adapter<Business
     LayoutInflater inflater;
     List<Businesse> items;
 
-    DisplayImageOptions options;
-
     public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
         this.mItemClickListener = mItemClickListener;
     }
@@ -71,16 +70,10 @@ public class BusinessHorizontalListAdapter extends RecyclerView.Adapter<Business
         this.items = items;
         inflater = ((Activity) context).getLayoutInflater();
 
-        options = new DisplayImageOptions.Builder()
-                .resetViewBeforeLoading(true)
-                .cacheInMemory(true) // default
-                .cacheOnDisk(true)
-//                .showImageOnFail(R.drawable.icon_shop_avatar)
-                .build(); // default
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
                 inflate(R.layout.business_horizontal_card_view, viewGroup, false);
@@ -89,13 +82,17 @@ public class BusinessHorizontalListAdapter extends RecyclerView.Adapter<Business
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int i) {
-        final Businesse b = items.get(i);
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        final Businesse b = items.get(position);
 
         holder.txtname.setText(b.getName());
         holder.txtdesc.setText(b.getDescription());
 
-//        ImageLoader.getInstance().displayImage(b.images.get(0), holder.imgavatar, options);
+        List<String> images = b.getImages();
+        if (images != null && images.size() > 0)
+            Glide.with(context)
+                    .load(context.getString(R.string.server) + images.get(0))
+                    .into(holder.imgbusiness);
     }
 
     @Override

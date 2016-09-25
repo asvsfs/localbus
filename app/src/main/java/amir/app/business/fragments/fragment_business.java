@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.fenchtose.tooltip.Tooltip;
 import com.fenchtose.tooltip.TooltipAnimation;
 import com.google.android.gms.maps.CameraUpdate;
@@ -118,8 +119,17 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
         //load three lastest comment about this business
         load_latest_comments_list();
 
+        load_business_images();
 
         return view;
+    }
+
+    private void load_business_images() {
+        List<String> images = businesse.getImages();
+        if (images != null && images.size() > 0)
+            Glide.with(getActivity())
+                    .load(getactivity().getString(R.string.server) + images.get(0))
+                    .into(imggallery);
     }
 
     private void setup_marker_list() {
