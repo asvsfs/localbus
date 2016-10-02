@@ -9,9 +9,9 @@
         android:id="@+id/toolbar"
         android:layout_width="fill_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#ccc"
+        android:background="?colorPrimary"
         app:theme="@style/AppTheme"
-        app:subtitleTextColor="#000"
+        app:titleTextColor="#fff"
          />
 
     <android.support.v4.widget.NestedScrollView
@@ -39,35 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:background="#ccc">
-
-                    <view
-                        android:id="@+id/txtname"
-                        class="amir.app.business.widget.FarsiTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_weight="1"
-                        android:gravity="right|center_vertical"
-                        android:singleLine="true"
-                        android:text="طلافروشی"
-                        android:textAppearance="@android:style/TextAppearance.Material.Large"
-                        app:FarsiTypeface="IRANSansBold"
-                        android:textColor="#000"
-                        app:cardPreventCornerOverlap="true"
-                        android:paddingBottom="20dp"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp" />
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_weight="1"
-                        android:background="#aaa"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"></LinearLayout>
+                    android:background="@color/colorPrimary">
 
                     <LinearLayout
                         android:orientation="horizontal"

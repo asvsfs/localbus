@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 
 import com.bumptech.glide.Glide;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
@@ -17,7 +17,6 @@ import amir.app.business.R;
 import amir.app.business.models.Businesse;
 import amir.app.business.widget.FarsiTextView;
 import amir.app.business.widget.SquareImageViewHeight_Based;
-import amir.app.business.widget.SquareImageViewWidth_Based;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -90,7 +89,7 @@ public class BusinessHorizontalListAdapter extends RecyclerView.Adapter<Business
 
         List<String> images = b.getImages();
         if (images != null && images.size() > 0)
-            Glide.with(context)
+            Glide.with(context.getApplicationContext())
                     .load(context.getString(R.string.server) + images.get(0))
                     .into(holder.imgbusiness);
     }

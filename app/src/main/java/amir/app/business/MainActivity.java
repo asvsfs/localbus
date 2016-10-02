@@ -13,6 +13,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
+import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import org.fingerlinks.mobile.android.navigator.Navigator;
 
@@ -31,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
     private baseFragment currentfragment;
     boolean doubleBackToExitPressedOnce = false;
+
+    ImageLoaderConfiguration configuration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
                         .goToPreviousBackStack();
 
                 currentfragment = (baseFragment) fm.getFragments().get(fm.getBackStackEntryCount() - 2);
+
                 String tag = currentfragment.getTag().toString();
                 if (tag.equals(fragment_home.class.toString()))
                     bottombar.setScrollPosition(0, 0, true);

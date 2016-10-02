@@ -48,9 +48,6 @@ import butterknife.OnClick;
  */
 
 public class fragment_category_page extends baseFragment {
-    @BindView(R.id.txtname)
-    FarsiTextView txtname;
-
     @BindView(R.id.businessRecyclerview)
     RecyclerView businessRecyclerview;
     @BindView(R.id.topRecyclerview)
@@ -77,11 +74,9 @@ public class fragment_category_page extends baseFragment {
 
         //config toolbar
         getactivity().setSupportActionBar(toolbar);
-        getactivity().getSupportActionBar().setTitle("");
+        getactivity().getSupportActionBar().setTitle(category.getName());
         getactivity().getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getactivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        txtname.setText(category.getName());
 
         //setup back button on toolbar
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

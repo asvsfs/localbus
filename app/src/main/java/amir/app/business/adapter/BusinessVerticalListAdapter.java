@@ -10,6 +10,7 @@ import android.widget.Adapter;
 
 import com.bumptech.glide.Glide;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
@@ -97,7 +98,7 @@ public class BusinessVerticalListAdapter extends RecyclerView.Adapter<BusinessVe
 
         List<String> images = b.getImages();
         if (images != null && images.size() > 0)
-            Glide.with(context)
+            Glide.with(context.getApplicationContext())
                     .load(context.getString(R.string.server) + images.get(0))
                     .into(holder.imgbusiness);
 

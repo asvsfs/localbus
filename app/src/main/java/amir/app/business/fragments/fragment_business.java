@@ -1,9 +1,7 @@
 package amir.app.business.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -19,8 +17,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.fenchtose.tooltip.Tooltip;
-import com.fenchtose.tooltip.TooltipAnimation;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,6 +27,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.strongloop.android.loopback.callbacks.ListCallback;
 
 import java.util.List;
@@ -127,7 +124,7 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
     private void load_business_images() {
         List<String> images = businesse.getImages();
         if (images != null && images.size() > 0)
-            Glide.with(getActivity())
+            Glide.with(getContext().getApplicationContext())
                     .load(getactivity().getString(R.string.server) + images.get(0))
                     .into(imggallery);
     }

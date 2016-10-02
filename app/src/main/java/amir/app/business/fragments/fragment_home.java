@@ -2,6 +2,7 @@ package amir.app.business.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,13 +25,16 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.strongloop.android.loopback.callbacks.ListCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
+import amir.app.business.adapter.AdverListAdapter;
 import amir.app.business.adapter.BusinessHorizontalListAdapter;
 import amir.app.business.models.Businesse;
 import amir.app.business.models.Location;
+import amir.app.business.widget.CircleIndicator;
 import amir.app.business.widget.FarsiTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,7 +48,7 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.adverPager)
-    ImageView adverPager;
+    ViewPager adverPager;
     @BindView(R.id.txttoptitle)
     FarsiTextView txttoptitle;
     @BindView(R.id.topRecyclerview)
@@ -57,12 +61,13 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
     NestedScrollView scrollview;
     @BindView(R.id.imgfull)
     ImageView imgfull;
+    @BindView(R.id.indicator)
+    CircleIndicator indicator;
 
     List<Businesse> businesses;
     GoogleMap map;
     BusinessHorizontalListAdapter topadapter;
     BusinessHorizontalListAdapter mainadapter;
-
 
     @Nullable
     @Override
@@ -78,12 +83,22 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
 
         setup_map_view(savedInstanceState);
 
-
-
         //load business list via api
         load_business_list();
 
+        load_advers();
         return view;
+    }
+
+    private void load_advers() {
+        List<String> adver = new ArrayList<>();
+
+        adver.add("test");
+        adver.add("test");
+        adver.add("test");
+
+        adverPager.setAdapter(new AdverListAdapter(getactivity(), adver));
+        indicator.setViewPager(adverPager);
     }
 
     private void setup_map_view(@Nullable Bundle savedInstanceState) {
@@ -204,6 +219,7 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
     @Override
     public void onPause() {
         super.onPause();
+
         mapview.onPause();
     }
 
