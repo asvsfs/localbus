@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
  * Created by amin on 08/08/2016.
  */
 
-public class AdverListAdapter extends PagerAdapter {
+public class GalleryListAdapter extends PagerAdapter {
     class ViewHolder {
         @BindView(R.id.imgadver)
         ImageView imgadver;
@@ -35,7 +35,7 @@ public class AdverListAdapter extends PagerAdapter {
     List<String> items;
     Context context;
 
-    public AdverListAdapter(Context context, List<String> items) {
+    public GalleryListAdapter(Context context, List<String> items) {
         this.context = context;
         this.items = items;
     }
@@ -50,10 +50,6 @@ public class AdverListAdapter extends PagerAdapter {
                     .load(context.getString(R.string.server) + items.get(position))
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.imgadver);
-
-        Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
-
-        holder.imgadver.getLayoutParams().height = display.getWidth() / 2;
 
         container.addView(view);
         return view;

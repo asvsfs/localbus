@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/material-dialogslibrary" />
             <option value="$PROJECT_DIR$/sweet_alert_dialog_library" />
+            <option value="$PROJECT_DIR$/taptargetview_library" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

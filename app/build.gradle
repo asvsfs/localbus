@@ -46,5 +46,6 @@ dependencies {
     compile 'com.google.firebase:firebase-core:9.0.0'
     compile 'com.fenchtose:tooltip:0.1.5'
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile project(':taptargetview_library')
 }
 

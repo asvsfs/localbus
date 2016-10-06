@@ -19,5 +19,6 @@
         android:layout_margin="16dp"
         android:hint="متن پرسش را وارد کنید"
         android:textColorHint="#888"
-        android:textColor="#000" />
+        android:textColor="#000"
+        android:minLines="5" />
 </RelativeLayout>

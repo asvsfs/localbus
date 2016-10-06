@@ -101,6 +101,9 @@ public class Businesse extends Model implements Serializable {
             contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:id", "GET"),
                     getClassName() + ".getById");
 
+            contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/searchBusiness", "GET"),
+                    getClassName() + ".search");
+
             return contract;
         }
 
@@ -108,6 +111,15 @@ public class Businesse extends Model implements Serializable {
             invokeStaticMethod("getById", ImmutableMap.of("id", id),
                     new JsonObjectParser<Businesse>(this, callback));
         }
+
+        public void search(int page, String text, ListCallback<Businesse> callback) {
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("page", page);
+            params.put("text", text);
+
+            invokeStaticMethod("searchBusiness", params, new JsonArrayParser<Businesse>(this, callback));
+        }
+
     }
 
 

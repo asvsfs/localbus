@@ -4,6 +4,8 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -13,7 +15,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.strongloop.android.loopback.callbacks.ListCallback;
+
+import java.util.List;
+
+import amir.app.business.GuideApplication;
 import amir.app.business.R;
+import amir.app.business.adapter.BusinessVerticalListAdapter;
+import amir.app.business.models.Businesse;
+import amir.app.business.models.Location;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -24,6 +34,12 @@ import butterknife.ButterKnife;
 public class fragment_search extends baseFragment {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.recyclerview)
+    RecyclerView recyclerview;
+
+    List<Businesse> businesses;
+    BusinessVerticalListAdapter adapter;
+    SearchView searchView = null;
 
     @Nullable
     @Override
@@ -59,15 +75,79 @@ public class fragment_search extends baseFragment {
 
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
 
-        SearchView searchView = null;
         if (searchItem != null) {
             searchView = (SearchView) searchItem.getActionView();
         }
         if (searchView != null) {
+            searchView.setIconifiedByDefault(false);
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    search(query);
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    return false;
+                }
+            });
         }
 
-        searchView.setIconifiedByDefault(false);
-//        return super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    private void search(String query) {
+        Businesse.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Businesse.Repository.class);
+        repository.search(0, query, new ListCallback<Businesse>() {
+            public void onSuccess(List<Businesse> items) {
+                businesses = items;
+
+                for (int i = 0; i < 10; i++) {
+                    Businesse b = new Businesse();
+                    b.setName("business " + i);
+                    b.setDescription("description " + i);
+
+                    Location location = new Location();
+                    location.lat = (int) (32 + i * Math.random());
+                    location.lng = (int) (52 + i * Math.random());
+
+                    b.setLocation(location);
+                    businesses.add(b);
+                }
+
+                setup_adapter_and_views();
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
+    }
+
+    private void setup_adapter_and_views() {
+        //setup init views
+        init_layout();
+
+        //setup top businesses view
+        adapter = new BusinessVerticalListAdapter(getActivity(), businesses);
+        adapter.setOnItemClickListener(new BusinessVerticalListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Businesse businesse) {
+                switch_to_business_page(businesse);
+            }
+        });
+        recyclerview.setAdapter(adapter);
+        recyclerview.setNestedScrollingEnabled(false);
+    }
+
+    //setup recyclerview lists
+    private void init_layout() {
+        recyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+    }
+
+    private void switch_to_business_page(Businesse businesse) {
+        switchFragment(new fragment_business().newInstance(businesse), true);
     }
 }

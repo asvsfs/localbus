@@ -38,16 +38,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <view
-                        android:id="@+id/imggallery"
-                        class="amir.app.business.widget.SquareImageViewWidth_Based"
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/imagePager"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#eee"
+                        android:background="@color/white_gray_color"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/business_logo">
+                        android:src="@drawable/adver"
+                        app:layout_collapseMode="parallax"
+                        >
 
-                    </view>
+                    </android.support.v4.view.ViewPager>
+
+                    <view
+                        class="amir.app.business.widget.CircleIndicator"
+                        android:id="@+id/indicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_alignParentBottom="false"
+                        android:layout_marginBottom="10dp"
+                        android:layout_alignBottom="@+id/imagePager" />
 
                     <RatingBar
                         android:id="@+id/ratingbar"
@@ -59,42 +69,50 @@
                         android:layout_weight="1"
                         android:numStars="5" />
 
-                    <ImageView
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white_gray_color">
+
+                    <Button
                         android:id="@+id/btnlike"
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
                         android:layout_margin="10dp"
-                        android:background="#ddd"
                         android:padding="10dp"
-                        android:src="@drawable/ic_favorite_grey_500_18dp" />
-
-                    <TextView
-                        android:id="@+id/txtdistance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:padding="10dp"
-                        android:text="1.5km"
-                        android:textColor="#000" />
+                        android:drawableLeft="@drawable/ic_favorite_red_a700_18dp"
+                        android:textColor="#000"
+                        android:background="@null"
+                        android:layout_width="60dp"
+                        android:text="99" />
 
                     <ImageView
                         android:id="@+id/btnshare"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignLeft="@+id/btnlike"
-                        android:layout_alignStart="@+id/btnlike"
-                        android:layout_below="@+id/btnlike"
-                        android:background="#ddd"
                         android:padding="10dp"
-                        android:src="@drawable/ic_share_grey_500_18dp" />
+                        android:src="@drawable/ic_share_grey_500_18dp"
+                        android:layout_alignTop="@+id/btnlike"
+                        android:layout_toLeftOf="@+id/btnlike"
+                        android:layout_toStartOf="@+id/btnlike"
+                        android:layout_alignBottom="@+id/btnlike" />
 
+                    <TextView
+                        android:id="@+id/txtdistance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="1.5km"
+                        android:textColor="#000"
+                        android:layout_alignBottom="@+id/btnshare"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
                 </RelativeLayout>
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -109,7 +127,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
                         android:layout_weight="1"
-                        android:background="#eee"
+                        android:background="@color/white_gray_color"
                         android:gravity="right|center_vertical"
                         android:padding="10dp"
                         android:singleLine="true"
@@ -126,7 +144,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
                         android:layout_weight="1"
-                        android:background="#eee"
+                        android:background="@color/white_gray_color"
                         android:gravity="right|center_vertical"
                         android:paddingBottom="10dp"
                         android:paddingLeft="10dp"
@@ -142,11 +160,7 @@
                 <android.support.v7.widget.CardView
                     android:id="@+id/DescriptionCard"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="5dp">
+                    android:layout_height="match_parent">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -161,7 +175,7 @@
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentTop="true"
-                            android:background="#eee"
+                            android:background="@color/white_gray_color"
                             android:gravity="top|right"
                             android:lines="5"
                             android:padding="10dp"
@@ -180,12 +194,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp">
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#eee">
+                        android:background="@color/white_gray_color">
 
                         <Button
                             android:id="@+id/btncomments"
@@ -205,7 +220,7 @@
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentTop="true"
-                            android:background="#eee"
+                            android:background="@color/white_gray_color"
                             android:gravity="top|right"
                             android:padding="10dp"
                             android:text="آخرین نظر"
@@ -222,7 +237,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentStart="true"
-                            android:background="#eee"
+                            android:background="@color/white_gray_color"
                             android:textColor="#000"
                             android:padding="5dp"
                             android:layout_below="@+id/btncomments" />
@@ -242,7 +257,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:background="#eee">
+                        android:background="@color/white_gray_color">
+
+                        <Button
+                            android:id="@+id/btnroute"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:text="مسیریابی"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true" />
 
                         <view
                             class="amir.app.business.widget.CustomMapView"
@@ -275,7 +300,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_below="@id/txtdesc"
-                            android:background="#eee"
+                            android:background="@color/white_gray_color"
                             android:gravity="right|center_vertical"
                             android:padding="10dp"
                             android:singleLine="true"
@@ -289,7 +314,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/txtsimilar"
-                            android:background="#eee">
+                            android:background="@color/white_gray_color">
 
                         </android.support.v7.widget.RecyclerView>
                     </LinearLayout>

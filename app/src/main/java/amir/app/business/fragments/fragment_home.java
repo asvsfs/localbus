@@ -1,5 +1,8 @@
 package amir.app.business.fragments;
 
+import android.content.Context;
+import android.location.Criteria;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -24,6 +27,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.strongloop.android.loopback.callbacks.ListCallback;
+import com.strongloop.android.loopback.callbacks.ObjectCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,9 +87,6 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
 
         setup_map_view(savedInstanceState);
 
-        //load business list via api
-        load_business_list();
-
         load_advers();
         return view;
     }
@@ -93,9 +94,11 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
     private void load_advers() {
         List<String> adver = new ArrayList<>();
 
-        adver.add("test");
-        adver.add("test");
-        adver.add("test");
+        //template
+        adver.add("");
+        adver.add("");
+        adver.add("");
+        //template
 
         adverPager.setAdapter(new AdverListAdapter(getactivity(), adver));
         indicator.setViewPager(adverPager);
@@ -126,9 +129,6 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
         MapsInitializer.initialize(this.getActivity());
 
-        // Updates the location and zoom of the MapView
-//        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(43.1, -87.9), 10);
-//        map.animateCamera(cameraUpdate);
     }
 
     //setup recyclerview lists
@@ -146,7 +146,6 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
         }
 
         Businesse.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Businesse.Repository.class);
-
         repository.findAll(new ListCallback<Businesse>() {
             @Override
             public void onSuccess(List<Businesse> items) {
@@ -257,7 +256,12 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
         LatLngBounds bounds = builder.build();
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 0);
         try {
-            map.moveCamera(cu);
+//            map.moveCamera(cu);
+
+            // Updates the location and zoom of the MapView
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(bounds.getCenter(), 8);
+            map.animateCamera(cameraUpdate);
+
         } catch (Exception ignored) {
         }
 
@@ -277,7 +281,20 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        map.getUiSettings().setMyLocationButtonEnabled(false);
+        map.getUiSettings().setMyLocationButtonEnabled(true);
         map.setMyLocationEnabled(true);
+
+        LocationManager locationManager = (LocationManager)
+                getactivity().getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+
+        android.location.Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+
+        map.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude) , 10) );
+
+        //load business list via api
+        load_business_list();
     }
 }

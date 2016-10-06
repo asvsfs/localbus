@@ -1,10 +1,17 @@
 package amir.app.business.fragments;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,8 +22,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetView;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,17 +36,22 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.strongloop.android.loopback.callbacks.ListCallback;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
+import amir.app.business.adapter.AdverListAdapter;
 import amir.app.business.adapter.BusinessHorizontalListAdapter;
+import amir.app.business.adapter.GalleryListAdapter;
 import amir.app.business.models.Businesse;
 import amir.app.business.util;
+import amir.app.business.widget.CircleIndicator;
 import amir.app.business.widget.FarsiTextView;
+import amir.app.business.widget.widgettools;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -47,8 +61,10 @@ import butterknife.OnClick;
  */
 
 public class fragment_business extends baseFragment implements OnMapReadyCallback {
-    @BindView(R.id.imggallery)
-    ImageView imggallery;
+    @BindView(R.id.imagePager)
+    ViewPager imagePager;
+    @BindView(R.id.indicator)
+    CircleIndicator indicator;
     @BindView(R.id.txtdistance)
     TextView txtdistance;
     @BindView(R.id.txtname)
@@ -68,11 +84,13 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
     @BindView(R.id.ratingbar)
     RatingBar ratingbar;
     @BindView(R.id.btnlike)
-    ImageView btnlike;
+    Button btnlike;
     @BindView(R.id.btnshare)
     ImageView btnshare;
     @BindView(R.id.mapview)
     MapView mapview;
+    @BindView(R.id.btnroute)
+    Button btnroute;
 
     Businesse businesse;
     GoogleMap map;
@@ -92,7 +110,6 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
 
         ButterKnife.bind(this, view);
 
-        setup_map_view(savedInstanceState);
 
         setHasOptionsMenu(true);
 
@@ -110,6 +127,9 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
             }
         });
 
+
+        setup_map_view(savedInstanceState);
+
         //load business list via api
         load_similar_business_list();
 
@@ -123,10 +143,22 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
 
     private void load_business_images() {
         List<String> images = businesse.getImages();
-        if (images != null && images.size() > 0)
-            Glide.with(getContext().getApplicationContext())
-                    .load(getactivity().getString(R.string.server) + images.get(0))
-                    .into(imggallery);
+
+        //template
+        if (images == null || images.size() == 0) {
+            images = new ArrayList<>();
+
+            images.add("");
+            images.add("");
+            images.add("");
+        }
+        //template
+
+        imagePager.setAdapter(new GalleryListAdapter(getactivity(), images));
+        indicator.setViewPager(imagePager);
+
+        Display display = getactivity().getWindowManager().getDefaultDisplay();
+        imagePager.getLayoutParams().height = display.getWidth();
     }
 
     private void setup_marker_list() {
@@ -154,6 +186,8 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
         // Gets to GoogleMap from the MapView and does initialization stuff
         mapview.getMapAsync(this);
 
+//       mapview.setClickable(false);
+        mapview.getMap().getUiSettings().setScrollGesturesEnabled(false);
     }
 
     private void load_latest_comments_list() {
@@ -217,7 +251,25 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
 
         if (!tooltipshown) {
             tooltipshown = true;
-            util.showTooltip(getactivity(), (ViewGroup) getView(), quetion.getActionView(), "برای طرح پرسش از اینجا اقدام کنید");
+
+            TapTargetView.showFor(getactivity(),
+                    TapTarget.forView(quetion.getActionView(), "پرسش از کسب و کار", "برای طرح پرسش از اینجا اقدام کنید")
+                            // All options below are optional
+                            .textTypeface(widgettools.typeface(getActivity(), 4))
+                            .outerCircleColor(R.color.white_gray_color)
+                            .targetCircleColor(R.color.colorAccent)
+                            .textColor(android.R.color.black)
+                            .drawShadow(true)
+                            .cancelable(true)
+                            .tintTarget(true),
+                    new TapTargetView.Listener() {
+                        @Override
+                        public void onTargetClick(TapTargetView view) {
+                            super.onTargetClick(view);      // This call is optional
+                        }
+                    });
+
+//            util.showTooltip(getactivity(), (ViewGroup) getView(), quetion.getActionView(), "برای طرح پرسش از اینجا اقدام کنید");
         }
     }
 
@@ -267,4 +319,21 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
         setup_marker_list();
     }
 
+
+    @OnClick(R.id.btnroute)
+    public void route() {
+        String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", 12f, 2f, businesse.getName());
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException ex) {
+            try {
+                Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                startActivity(unrestrictedIntent);
+            } catch (ActivityNotFoundException innerEx) {
+                Toast.makeText(getActivity(), "لطفا ابتدا اپلیکیشن گوگل-مپ را نصب کنید", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 }

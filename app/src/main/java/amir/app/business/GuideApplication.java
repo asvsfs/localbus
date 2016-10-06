@@ -2,6 +2,7 @@ package amir.app.business;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import com.strongloop.android.loopback.RestAdapter;
 
@@ -28,7 +29,6 @@ public class GuideApplication extends Application {
             adapter = new RestAdapter(context, context.getString(R.string.server) + "/api");
 //            adapter.setAccessToken("");
         }
-
         return adapter;
     }
 }
