@@ -10,6 +10,11 @@
         android:glEsVersion="0x00020000"
         android:required="true" />
 
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:name=".GuideApplication"
         android:allowBackup="true"
@@ -18,18 +23,31 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBLnHMQqIxlMT7ZH5TlM3TS_IKvKbAF-d4" />
+         <meta-data
+         android:name="com.google.android.geo.API_KEY"
+         android:value="AIzaSyBLnHMQqIxlMT7ZH5TlM3TS_IKvKbAF-d4" />
 
-        <activity android:name=".splash">
+        <!--<meta-data-->
+            <!--android:name="com.google.android.geo.API_KEY"-->
+            <!--android:value="AIzaSyAuxJnqkqNbWo7fAr10q4gMpvkqaoJkXOc" />-->
+
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".splash">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
 
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
         <activity android:name=".MainActivity" />
 
         <!-- [START firebase_service] -->
@@ -40,6 +58,7 @@
         </service>
         <!-- [END firebase_service] -->
 
+
         <!-- [START firebase_iid_service] -->
         <service android:name=".MyFirebaseInstanceIDService">
             <intent-filter>
@@ -47,6 +66,7 @@
             </intent-filter>
         </service>
         <!-- [END firebase_iid_service] -->
+
     </application>
 
 </manifest>
