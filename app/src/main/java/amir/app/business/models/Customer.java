@@ -70,9 +70,9 @@ public class Customer extends Model implements Serializable {
     }
 
 
-    public static class Repository extends ModelRepository<Admin> {
+    public static class Repository extends ModelRepository<Customer> {
         public Repository() {
-            super("Customer", "Users", Admin.class);
+            super("Customer", "Customers", Customer.class);
         }
 
         public RestContract createContract() {
@@ -84,14 +84,14 @@ public class Customer extends Model implements Serializable {
             return contract;
         }
 
-        public void loginUser(String username, String password,
+        public void loginUser(String username, String password,Boolean isEmail,
                               final Admin.LoginCallback callback) {
 
             String android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
                     Settings.Secure.ANDROID_ID);
 
             HashMap<String, Object> params = new HashMap<String, Object>();
-            params.put("username", username);
+            params.put(isEmail ? "email": "username", username);
             params.put("password", password);
             params.put("deviceId", android_id);
 

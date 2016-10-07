@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
-        mPasswordView = (EditText) findViewById(R.id.password_input);
+        mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -112,8 +112,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        final String email = mEmailView.getText().toString();
+        final String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -148,8 +148,35 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    final Customer.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Customer.Repository.class);
+                    repository.loginUser(email, password,true, new Admin.LoginCallback() {
+                        @Override
+                        public void onSuccess(Token token) {
+                            showProgress(false);
+                            GuideApplication.getLoopBackAdapter().setAccessToken(token.id);
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+                            showProgress(false);
+                            util.alertDialog(LoginActivity.this, "بستن", "خطا در ارتباط با شبکه", "خطا", new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    finish();
+                                }
+                            }, SweetAlertDialog.ERROR_TYPE);
+                        }
+                    });
+                }
+            }, 2000);
+
+//            mAuthTask = new UserLoginTask(email, password);
+//            mAuthTask.execute((Void) null);
         }
     }
 
@@ -273,30 +300,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             try {
                 //Network access.
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        final Customer.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Customer.Repository.class);
-                        repository.loginUser(mEmail, mPassword, new Admin.LoginCallback() {
-                            @Override
-                            public void onSuccess(Token token) {
-                                GuideApplication.getLoopBackAdapter().setAccessToken(token.id);
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                finish();
-                            }
 
-                            @Override
-                            public void onError(Throwable t) {
-                                util.alertDialog(LoginActivity.this, "بستن", "خطا در ارتباط با شبکه", "خطا", new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                        finish();
-                                    }
-                                }, SweetAlertDialog.ERROR_TYPE);
-                            }
-                        });
-                    }
-                }, 2000);
 
             } catch (Exception e) {
                 return false;
