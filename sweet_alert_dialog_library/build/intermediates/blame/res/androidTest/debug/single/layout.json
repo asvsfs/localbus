@@ -6,5 +6,13 @@
     {
         "merged": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\content_dialog.xml",
         "source": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\layout\\content_dialog.xml"
+    },
+    {
+        "merged": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\content_dialog.xml",
+        "source": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\layout\\content_dialog.xml"
+    },
+    {
+        "merged": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\alert_dialog.xml",
+        "source": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\layout\\alert_dialog.xml"
     }
 ]

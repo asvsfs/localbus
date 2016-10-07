@@ -4,6 +4,10 @@
         "source": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\drawable\\blue_button_background.xml"
     },
     {
+        "merged": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\warning_circle.xml",
+        "source": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\drawable\\warning_circle.xml"
+    },
+    {
         "merged": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\error_center_x.xml",
         "source": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\drawable\\error_center_x.xml"
     },
@@ -16,6 +20,18 @@
         "source": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\drawable\\success_circle.xml"
     },
     {
+        "merged": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\success_circle.xml",
+        "source": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\drawable\\success_circle.xml"
+    },
+    {
+        "merged": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\error_center_x.xml",
+        "source": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\drawable\\error_center_x.xml"
+    },
+    {
+        "merged": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\dialog_background.xml",
+        "source": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\drawable\\dialog_background.xml"
+    },
+    {
         "merged": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\error_circle.xml",
         "source": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\drawable\\error_circle.xml"
     },
@@ -24,8 +40,20 @@
         "source": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\drawable\\dialog_background.xml"
     },
     {
+        "merged": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\success_bow.xml",
+        "source": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\drawable\\success_bow.xml"
+    },
+    {
+        "merged": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\warning_sigh.xml",
+        "source": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\drawable\\warning_sigh.xml"
+    },
+    {
         "merged": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\gray_button_background.xml",
         "source": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\drawable\\gray_button_background.xml"
+    },
+    {
+        "merged": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\error_circle.xml",
+        "source": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\drawable\\error_circle.xml"
     },
     {
         "merged": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\warning_sigh.xml",
@@ -34,6 +62,18 @@
     {
         "merged": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\red_button_background.xml",
         "source": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\drawable\\red_button_background.xml"
+    },
+    {
+        "merged": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\red_button_background.xml",
+        "source": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\drawable\\red_button_background.xml"
+    },
+    {
+        "merged": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\blue_button_background.xml",
+        "source": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\drawable\\blue_button_background.xml"
+    },
+    {
+        "merged": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\gray_button_background.xml",
+        "source": "C:\\Projects\\bazari\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\drawable\\gray_button_background.xml"
     },
     {
         "merged": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\warning_circle.xml",
