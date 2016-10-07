@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
+import amir.app.business.adapter.BusinessHorizontalListAdapter;
 import amir.app.business.adapter.BusinessVerticalListAdapter;
 import amir.app.business.models.Businesse;
 import amir.app.business.models.Location;
@@ -38,7 +40,7 @@ public class fragment_search extends baseFragment {
     RecyclerView recyclerview;
 
     List<Businesse> businesses;
-    BusinessVerticalListAdapter adapter;
+    BusinessHorizontalListAdapter adapter;
     SearchView searchView = null;
 
     @Nullable
@@ -63,6 +65,8 @@ public class fragment_search extends baseFragment {
             }
         });
 
+        if (businesses != null)
+            setup_adapter_and_views();
 
         return view;
     }
@@ -99,7 +103,7 @@ public class fragment_search extends baseFragment {
 
     private void search(String query) {
         Businesse.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Businesse.Repository.class);
-        repository.search(0, query, new ListCallback<Businesse>() {
+        repository.searchBusiness(0, query, new ListCallback<Businesse>() {
             public void onSuccess(List<Businesse> items) {
                 businesses = items;
 
@@ -131,8 +135,8 @@ public class fragment_search extends baseFragment {
         init_layout();
 
         //setup top businesses view
-        adapter = new BusinessVerticalListAdapter(getActivity(), businesses);
-        adapter.setOnItemClickListener(new BusinessVerticalListAdapter.OnItemClickListener() {
+        adapter = new BusinessHorizontalListAdapter(getActivity(), businesses);
+        adapter.setOnItemClickListener(new BusinessHorizontalListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Businesse businesse) {
                 switch_to_business_page(businesse);
@@ -144,7 +148,7 @@ public class fragment_search extends baseFragment {
 
     //setup recyclerview lists
     private void init_layout() {
-        recyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 3, LinearLayoutManager.VERTICAL, false));
     }
 
     private void switch_to_business_page(Businesse businesse) {
