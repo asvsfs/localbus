@@ -102,7 +102,7 @@ public class Businesse extends Model implements Serializable {
                     getClassName() + ".getById");
 
             contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/searchBusiness", "GET"),
-                    getClassName() + ".search");
+                    getClassName() + ".searchBusiness");
 
             return contract;
         }
@@ -112,7 +112,7 @@ public class Businesse extends Model implements Serializable {
                     new JsonObjectParser<Businesse>(this, callback));
         }
 
-        public void search(int page, String text, ListCallback<Businesse> callback) {
+        public void searchBusiness(int page, String text, ListCallback<Businesse> callback) {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("page", page);
             params.put("text", text);
