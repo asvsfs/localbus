@@ -6,10 +6,6 @@ import android.util.Log;
 
 import com.strongloop.android.loopback.RestAdapter;
 
-import amir.app.business.models.Admin;
-import amir.app.business.models.Businesse;
-import amir.app.business.models.User;
-
 /**
  * Created by amin on 08/05/2016.
  */

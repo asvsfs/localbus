@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_sign_in">ورود</string>
+    <string name="action_sign_in_short">ورود</string>
+    <string name="error_field_required">این فیلد باید پر باشد</string>
+    <string name="error_incorrect_password">پسورد غلط است</string>
+    <string name="error_invalid_email">ایمیل آدرس صحیح نمیباشد</string>
+    <string name="error_invalid_password">طول پسورد کم است</string>
+    <string name="permission_rationale"></string>
+    <string name="prompt_email">ایمیل</string>
+    <string name="prompt_password">پسورد</string>
+</resources>
