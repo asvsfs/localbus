@@ -3,6 +3,7 @@ package amir.app.business;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,10 +30,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.strongloop.android.loopback.AccessToken;
+import com.strongloop.android.loopback.RestAdapter;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import amir.app.business.models.Admin;
+import amir.app.business.callbacks.SimpleCallback;
 import amir.app.business.models.Customer;
 import amir.app.business.models.Token;
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -64,6 +71,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -90,6 +98,26 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        //Check Current Auth Token to see if it's still valid to use
+        showProgress(true);
+        RestAdapter add = GuideApplication.getLoopBackAdapter();
+        Customer.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Customer.Repository.class);
+        repository.authCheck(new SimpleCallback() {
+            @Override
+            public void onSuccess(String response) {
+                showProgress(false);
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                showProgress(false);
+                Log.w("SIMPLE CALLBACK", t.toString());
+            }
+        });
+
     }
 
     private void populateAutoComplete() {
@@ -139,7 +167,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             focusView = mEmailView;
             cancel = true;
         }
-
+        final Activity thisActivity = this;
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -152,7 +180,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 @Override
                 public void run() {
                     final Customer.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Customer.Repository.class);
-                    repository.loginUser(email, password,true, new Admin.LoginCallback() {
+                    repository.loginUserA(email, password,true, new Customer.LoginCallback() {
                         @Override
                         public void onSuccess(Token token) {
                             showProgress(false);

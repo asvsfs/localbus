@@ -3,9 +3,18 @@ package amir.app.business.models;
 import android.accounts.AccountManager;
 import android.provider.Settings;
 
+import com.strongloop.android.loopback.AccessToken;
 import com.strongloop.android.loopback.Model;
 import com.strongloop.android.loopback.ModelRepository;
+import com.strongloop.android.loopback.User;
 import com.strongloop.android.loopback.UserRepository;
+import com.strongloop.android.loopback.callbacks.EmptyResponseParser;
+import com.strongloop.android.loopback.callbacks.JsonArrayParser;
+import com.strongloop.android.loopback.callbacks.JsonObjectParser;
+import com.strongloop.android.loopback.callbacks.ListCallback;
+import com.strongloop.android.loopback.callbacks.ObjectCallback;
+import com.strongloop.android.loopback.callbacks.VoidCallback;
+import com.strongloop.android.remoting.JsonUtil;
 import com.strongloop.android.remoting.adapters.Adapter;
 import com.strongloop.android.remoting.adapters.RestContract;
 import com.strongloop.android.remoting.adapters.RestContractItem;
@@ -15,16 +24,26 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
+
+import amir.app.business.callbacks.EmptyCallback;
+import amir.app.business.callbacks.SimpleCallback;
 
 /**
  * Created by amin on 08/05/2016.
  */
 
-public class Customer extends Model implements Serializable {
+public class Customer extends User {
+
+    public interface LoginCallback {
+        public void onSuccess(Token token);
+        public void onError(Throwable t);
+    }
+
     private String realm;
     private String username;
     private String email;
-    private String emailVerified;
+    private Boolean emailVerified;
     private String id;
     private AccountManager mAccountManager;
 
@@ -52,11 +71,11 @@ public class Customer extends Model implements Serializable {
         this.email = email;
     }
 
-    public String getEmailVerified() {
+    public Boolean getEmailVerified() {
         return emailVerified;
     }
 
-    public void setEmailVerified(String emailVerified) {
+    public void setEmailVerified(Boolean emailVerified) {
         this.emailVerified = emailVerified;
     }
 
@@ -70,7 +89,7 @@ public class Customer extends Model implements Serializable {
     }
 
 
-    public static class Repository extends ModelRepository<Customer> {
+    public static class Repository extends UserRepository<Customer> {
         public Repository() {
             super("Customer", "Customers", Customer.class);
         }
@@ -81,11 +100,16 @@ public class Customer extends Model implements Serializable {
             contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/login", "POST"),
                     getClassName() + ".login");
 
+            contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/authCheck", "GET"),
+                    getClassName() + ".authCheck");
+
             return contract;
         }
-
-        public void loginUser(String username, String password,Boolean isEmail,
-                              final Admin.LoginCallback callback) {
+        public void authCheck(SimpleCallback callback){
+            invokeStaticMethod("authCheck", null, new EmptyCallback(callback));
+        }
+        public void loginUserA(String username, String password,Boolean isEmail,
+                              final Customer.LoginCallback callback) {
 
             String android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
                     Settings.Secure.ANDROID_ID);
@@ -108,11 +132,13 @@ public class Customer extends Model implements Serializable {
                             Token token = new Token();
                             try {
                                 token.id = response.getString("id");
+                                token.userId = response.getString("userId");
+                                callback.onSuccess(token);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
-                            callback.onSuccess(token);
+                            setCurrentUserId(token.userId);
                         }
                     });
         }
