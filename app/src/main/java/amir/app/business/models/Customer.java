@@ -46,6 +46,7 @@ public class Customer extends User {
     private Boolean emailVerified;
     private String id;
     private AccountManager mAccountManager;
+    private String token ;
 
     public String getRealm() {
         return realm;
@@ -90,6 +91,8 @@ public class Customer extends User {
 
 
     public static class Repository extends UserRepository<Customer> {
+
+        private String token ;
         public Repository() {
             super("Customer", "Customers", Customer.class);
         }
@@ -97,8 +100,8 @@ public class Customer extends User {
         public RestContract createContract() {
             RestContract contract = super.createContract();
 
-            contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/login", "POST"),
-                    getClassName() + ".login");
+//            contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/login", "POST"),
+//                    getClassName() + ".login");
 
             contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/authCheck", "GET"),
                     getClassName() + ".authCheck");
@@ -110,7 +113,7 @@ public class Customer extends User {
         }
         public void loginUserA(String username, String password,Boolean isEmail,
                               final Customer.LoginCallback callback) {
-
+            final Repository rep = this;
             String android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
                     Settings.Secure.ANDROID_ID);
 
@@ -132,6 +135,7 @@ public class Customer extends User {
                             Token token = new Token();
                             try {
                                 token.id = response.getString("id");
+                                rep.token = token.id;
                                 token.userId = response.getString("userId");
                                 callback.onSuccess(token);
                             } catch (JSONException e) {
