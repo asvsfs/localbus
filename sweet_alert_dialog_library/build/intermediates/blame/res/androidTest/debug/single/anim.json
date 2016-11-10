@@ -1,26 +1,26 @@
 [
     {
-        "merged": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\error_frame_in.xml",
-        "source": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\anim\\error_frame_in.xml"
+        "merged": "H:\\workspace\\localbus\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\success_mask_layout.xml",
+        "source": "H:\\workspace\\localbus\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\anim\\success_mask_layout.xml"
     },
     {
-        "merged": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\success_mask_layout.xml",
-        "source": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\anim\\success_mask_layout.xml"
+        "merged": "H:\\workspace\\localbus\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\error_x_in.xml",
+        "source": "H:\\workspace\\localbus\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\anim\\error_x_in.xml"
     },
     {
-        "merged": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\modal_out.xml",
-        "source": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\anim\\modal_out.xml"
+        "merged": "H:\\workspace\\localbus\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\error_frame_in.xml",
+        "source": "H:\\workspace\\localbus\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\anim\\error_frame_in.xml"
     },
     {
-        "merged": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\success_bow_roate.xml",
-        "source": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\anim\\success_bow_roate.xml"
+        "merged": "H:\\workspace\\localbus\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\success_bow_roate.xml",
+        "source": "H:\\workspace\\localbus\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\anim\\success_bow_roate.xml"
     },
     {
-        "merged": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\error_x_in.xml",
-        "source": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\anim\\error_x_in.xml"
+        "merged": "H:\\workspace\\localbus\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\modal_out.xml",
+        "source": "H:\\workspace\\localbus\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\anim\\modal_out.xml"
     },
     {
-        "merged": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\modal_in.xml",
-        "source": "H:\\workspace\\amir.app.business\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\anim\\modal_in.xml"
+        "merged": "H:\\workspace\\localbus\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\modal_in.xml",
+        "source": "H:\\workspace\\localbus\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\anim\\modal_in.xml"
     }
 ]

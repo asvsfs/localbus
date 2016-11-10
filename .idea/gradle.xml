@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/material-dialogslibrary" />
             <option value="$PROJECT_DIR$/sweet_alert_dialog_library" />
             <option value="$PROJECT_DIR$/taptargetview_library" />
+            <option value="$PROJECT_DIR$/validation-komensky library" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

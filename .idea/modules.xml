@@ -3,11 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Navigator_library/Navigator_library.iml" filepath="$PROJECT_DIR$/Navigator_library/Navigator_library.iml" />
-      <module fileurl="file://$PROJECT_DIR$/amir.app.business.iml" filepath="$PROJECT_DIR$/amir.app.business.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/localbus.iml" filepath="$PROJECT_DIR$/localbus.iml" />
       <module fileurl="file://$PROJECT_DIR$/material-dialogslibrary/material-dialogslibrary.iml" filepath="$PROJECT_DIR$/material-dialogslibrary/material-dialogslibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/sweet_alert_dialog_library/sweet_alert_dialog_library.iml" filepath="$PROJECT_DIR$/sweet_alert_dialog_library/sweet_alert_dialog_library.iml" />
       <module fileurl="file://$PROJECT_DIR$/taptargetview_library/taptargetview_library.iml" filepath="$PROJECT_DIR$/taptargetview_library/taptargetview_library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/validation-komensky library/validation-komensky library.iml" filepath="$PROJECT_DIR$/validation-komensky library/validation-komensky library.iml" />
     </modules>
   </component>
 </project>
