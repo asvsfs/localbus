@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.strongloop.android.loopback.callbacks.ListCallback;
 
@@ -32,6 +33,8 @@ public class fragment_category extends baseFragment {
     RecyclerView categoryresyclerview;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.progress)
+    ProgressBar progress;
 
     @Nullable
     @Override
@@ -78,10 +81,14 @@ public class fragment_category extends baseFragment {
                 });
                 categoryresyclerview.setAdapter(catadapter);
                 categoryresyclerview.setNestedScrollingEnabled(false);
+
+                progress.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(Throwable t) {
+                progress.setVisibility(View.GONE);
+
                 util.alertDialog(getActivity(), "بستن", "خطا در ارتباط با شبکه", "خطا", new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {

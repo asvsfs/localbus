@@ -17,7 +17,6 @@
         android:ems="10"
         android:gravity="top|right|center_vertical"
         android:layout_margin="16dp"
-        android:hint="متن پرسش را وارد کنید"
         android:textColorHint="#888"
         android:textColor="#000"
         android:minLines="5" />

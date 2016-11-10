@@ -28,6 +28,8 @@ import com.fenchtose.tooltip.TooltipAnimation;
 
 import amir.app.business.widget.widgettools;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import eu.inmite.android.lib.validations.form.FormValidator;
+import eu.inmite.android.lib.validations.form.callback.SimpleErrorPopupCallback;
 
 /**
  * Created by amin on 17/05/2015.
@@ -251,5 +253,10 @@ public class util {
                 .withTip(new Tooltip.Tip(tipSizeSmall, tipSizeSmall, resources.getColor(R.color.colorPrimaryDark)))
                 .into(root)
                 .show();
+    }
+
+    public static boolean isValid(Context context) {
+        final boolean isValid = FormValidator.validate((Activity) context, new SimpleErrorPopupCallback(context, true));
+        return isValid;
     }
 }

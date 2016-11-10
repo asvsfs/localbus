@@ -69,8 +69,6 @@ public class fragment_map extends baseFragment implements OnMapReadyCallback {
 
         setup_map_view(savedInstanceState);
 
-
-
         return view;
     }
 

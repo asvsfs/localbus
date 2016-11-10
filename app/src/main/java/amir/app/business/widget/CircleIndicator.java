@@ -245,7 +245,7 @@ public class CircleIndicator extends LinearLayout {
     };
 
     /**
-     * @deprecated User ViewPager addOnPageChangeListener
+     * @deprecated Customer ViewPager addOnPageChangeListener
      */
     @Deprecated public void setOnPageChangeListener(OnPageChangeListener onPageChangeListener) {
         if (mViewpager == null) {

@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -42,6 +43,7 @@ import amir.app.business.widget.FarsiTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by amin on 08/09/2016.
@@ -54,6 +56,8 @@ public class fragment_category_page extends baseFragment {
     RecyclerView topRecyclerview;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.progress)
+    ProgressBar progress;
 
     List<Businesse> businesse;
     GoogleMap map;
@@ -109,11 +113,20 @@ public class fragment_category_page extends baseFragment {
                     businesse.add(b);
                 }
 
+                progress.setVisibility(View.GONE);
                 setup_adapter_and_views();
             }
 
             @Override
             public void onError(Throwable t) {
+                progress.setVisibility(View.GONE);
+
+                util.alertDialog(getActivity(), "بستن", "خطا در ارتباط با شبکه", "خطا", new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        getactivity().onBackPressed();
+                    }
+                }, SweetAlertDialog.ERROR_TYPE);
             }
         });
     }

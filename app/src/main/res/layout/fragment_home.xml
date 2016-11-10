@@ -132,7 +132,6 @@
                 android:background="@color/white_gray_color">
 
 
-
                 <com.google.android.gms.maps.MapView
                     android:id="@+id/mapview"
                     android:layout_width="match_parent"

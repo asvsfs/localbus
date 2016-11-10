@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.strongloop.android.loopback.callbacks.ListCallback;
 
@@ -38,6 +39,8 @@ public class fragment_search extends baseFragment {
     Toolbar toolbar;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
+    @BindView(R.id.progress)
+    ProgressBar progress;
 
     List<Businesse> businesses;
     BusinessHorizontalListAdapter adapter;
@@ -102,24 +105,28 @@ public class fragment_search extends baseFragment {
     }
 
     private void search(String query) {
+        progress.setVisibility(View.VISIBLE);
+
         Businesse.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Businesse.Repository.class);
         repository.searchBusiness(0, query, new ListCallback<Businesse>() {
             public void onSuccess(List<Businesse> items) {
                 businesses = items;
 
-                for (int i = 0; i < 10; i++) {
-                    Businesse b = new Businesse();
-                    b.setName("business " + i);
-                    b.setDescription("description " + i);
-
-                    Location location = new Location();
-                    location.lat = (int) (32 + i * Math.random());
-                    location.lng = (int) (52 + i * Math.random());
-
-                    b.setLocation(location);
-                    businesses.add(b);
-                }
-
+//                Dummy for fill UI
+//                for (int i = 0; i < 10; i++) {
+//                    Businesse b = new Businesse();
+//                    b.setName("business " + i);
+//                    b.setDescription("description " + i);
+//
+//                    Location location = new Location();
+//                    location.lat = (int) (32 + i * Math.random());
+//                    location.lng = (int) (52 + i * Math.random());
+//
+//                    b.setLocation(location);
+//                    businesses.add(b);
+//                }
+//
+                progress.setVisibility(View.GONE);
                 setup_adapter_and_views();
             }
 

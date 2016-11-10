@@ -1,5 +1,6 @@
 package amir.app.business;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
@@ -23,6 +24,8 @@ import org.fingerlinks.mobile.android.navigator.Navigator;
 import amir.app.business.fragments.baseFragment;
 import amir.app.business.fragments.fragment_category;
 import amir.app.business.fragments.fragment_home;
+import amir.app.business.fragments.fragment_notification;
+import amir.app.business.fragments.fragment_profile;
 import amir.app.business.fragments.fragment_search;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -136,19 +139,7 @@ public class MainActivity extends AppCompatActivity {
     TabLayout.OnTabSelectedListener bottombarTabListener = new TabLayout.OnTabSelectedListener() {
         @Override
         public void onTabSelected(TabLayout.Tab tab) {
-            switch (tab.getPosition()) {
-                case 0: //home
-                    switchFragment(new fragment_home(), true);
-                    break;
-
-                case 1: //category
-                    switchFragment(new fragment_category(), true);
-                    break;
-
-                case 2: //search
-                    switchFragment(new fragment_search(), true);
-                    break;
-            }
+            chooseTab(tab.getPosition());
         }
 
         @Override
@@ -157,8 +148,33 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onTabReselected(TabLayout.Tab tab) {
+            chooseTab(tab.getPosition());
         }
     };
+
+    private void chooseTab(int position){
+        switch (position) {
+            case 0: //home
+                switchFragment(new fragment_home(), true);
+                break;
+
+            case 1: //category
+                switchFragment(new fragment_category(), true);
+                break;
+
+            case 2: //search
+                switchFragment(new fragment_search(), true);
+                break;
+
+            case 3: //notification
+                switchFragment(new fragment_notification(), true);
+                break;
+
+            case 4: //profile
+                switchFragment(new fragment_profile(), true);
+                break;
+        }
+    }
 
     public void switchFragment(baseFragment fragment, boolean addtostack) {
         String tag = fragment.getClass().toString();
@@ -176,6 +192,11 @@ public class MainActivity extends AppCompatActivity {
                     .commit(); //commit operation
 
         currentfragment = fragment;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        currentfragment.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

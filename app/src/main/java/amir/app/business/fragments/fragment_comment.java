@@ -80,16 +80,16 @@ public class fragment_comment extends baseFragment {
         repository.findAll(new ListCallback<Comment>() {
             @Override
             public void onSuccess(List<Comment> items) {
-                for (int i = 0; i < 10; i++) {
-                    Comment comment = new Comment();
+//                for (int i = 0; i < 10; i++) {
+//                    Comment comment = new Comment();
+//
+//                    comment.setText("خیلی خوب");
+//                    items.add(comment);
+//                }
 
-                    comment.setText("خیلی خوب");
-                    items.add(comment);
-                }
-
-                //setup top businesses view
-                CommentListAdapter topadapter = new CommentListAdapter(getActivity(), items);
-                commentresyclerview.setAdapter(topadapter);
+                //setup comment view
+                CommentListAdapter adapter = new CommentListAdapter(getActivity(), items);
+                commentresyclerview.setAdapter(adapter );
                 commentresyclerview.setNestedScrollingEnabled(false);
             }
 

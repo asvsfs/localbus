@@ -107,21 +107,21 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
     private void setup_map_view(@Nullable Bundle savedInstanceState) {
         mapview.onCreate(savedInstanceState);
 
-        mapview.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_MOVE:
-                        scrollview.requestDisallowInterceptTouchEvent(true);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        scrollview.requestDisallowInterceptTouchEvent(true);
-                        break;
-                }
-                return mapview.onTouchEvent(event);
-            }
-        });
+//        mapview.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_MOVE:
+//                        scrollview.requestDisallowInterceptTouchEvent(true);
+//                        break;
+//                    case MotionEvent.ACTION_UP:
+//                    case MotionEvent.ACTION_CANCEL:
+//                        scrollview.requestDisallowInterceptTouchEvent(true);
+//                        break;
+//                }
+//                return mapview.onTouchEvent(event);
+//            }
+//        });
 
         // Gets to GoogleMap from the MapView and does initialization stuff
         mapview.getMapAsync(this);
@@ -253,17 +253,18 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
             }
         }
 
-        LatLngBounds bounds = builder.build();
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 0);
-        try {
-//            map.moveCamera(cu);
-
-            // Updates the location and zoom of the MapView
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(bounds.getCenter(), 8);
-            map.animateCamera(cameraUpdate);
-
-        } catch (Exception ignored) {
-        }
+//
+//        LatLngBounds bounds = builder.build();
+//        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 0);
+//        try {
+////            map.moveCamera(cu);
+//
+//            // Updates the location and zoom of the MapView
+//            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(bounds.getCenter(), 8);
+//            map.animateCamera(cameraUpdate);
+//
+//        } catch (Exception ignored) {
+//        }
 
         map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
@@ -281,7 +282,9 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        map.getUiSettings().setMyLocationButtonEnabled(true);
+
+        map.getUiSettings().setMyLocationButtonEnabled(false);
+        map.getUiSettings().setAllGesturesEnabled(false);
         map.setMyLocationEnabled(true);
 
         LocationManager locationManager = (LocationManager)

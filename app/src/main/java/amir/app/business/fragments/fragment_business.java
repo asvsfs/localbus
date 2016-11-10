@@ -19,7 +19,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,17 +39,24 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.strongloop.android.loopback.callbacks.ListCallback;
+import com.strongloop.android.loopback.callbacks.ObjectCallback;
+import com.strongloop.android.loopback.callbacks.VoidCallback;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
 import amir.app.business.adapter.AdverListAdapter;
 import amir.app.business.adapter.BusinessHorizontalListAdapter;
 import amir.app.business.adapter.GalleryListAdapter;
+import amir.app.business.config;
 import amir.app.business.models.Businesse;
+import amir.app.business.models.Comment;
+import amir.app.business.models.Location;
 import amir.app.business.util;
 import amir.app.business.widget.CircleIndicator;
 import amir.app.business.widget.FarsiTextView;
@@ -55,6 +64,7 @@ import amir.app.business.widget.widgettools;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by amin on 08/09/2016.
@@ -79,8 +89,16 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
     FarsiTextView txtverification;
     @BindView(R.id.btncomments)
     Button btncomments;
+    @BindView(R.id.commentProgress)
+    ProgressBar commentProgress;
+    @BindView(R.id.commentInnerLayout)
+    View commentInnerLayout;
+    @BindView(R.id.btnSendComment)
+    ImageView btnSendComment;
     @BindView(R.id.txtlastcomment)
     TextView txtlastcomment;
+    @BindView(R.id.lastRatingBar)
+    RatingBar lastRatingBar;
     @BindView(R.id.ratingbar)
     RatingBar ratingbar;
     @BindView(R.id.btnlike)
@@ -94,8 +112,6 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
 
     Businesse businesse;
     GoogleMap map;
-
-    boolean tooltipshown;
 
     public static fragment_business newInstance(Businesse business) {
         fragment_business fragment = new fragment_business();
@@ -161,6 +177,7 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
         imagePager.getLayoutParams().height = display.getWidth();
     }
 
+    //Create Markers from Business Info on the map.
     private void setup_marker_list() {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
@@ -190,8 +207,25 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
         mapview.getMap().getUiSettings().setScrollGesturesEnabled(false);
     }
 
+    //load comments and select last comment to show on UI
     private void load_latest_comments_list() {
-        txtlastcomment.setText("خیلی خوب بود. کلی استفاده کردم. فقط ای کاش وقتش رو بیشتر میکردید چند روزی");
+        Comment.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Comment.Repository.class);
+        repository.getByBusinessId(businesse.getId(), new ListCallback<Comment>() {
+            @Override
+            public void onSuccess(List<Comment> comments) {
+                commentProgress.setVisibility(View.GONE);
+                commentInnerLayout.setVisibility(View.VISIBLE);
+
+                if (comments.size() > 0)
+                    txtlastcomment.setText(comments.get(0).getText());
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
+
     }
 
     private void load_similar_business_list() {
@@ -226,6 +260,43 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
         switchFragment(new fragment_comment(), true);
     }
 
+    @OnClick(R.id.btnSendComment)
+    public void btnSendComment() {
+        View content = LayoutInflater.from(getActivity()).inflate(R.layout.view_business_question, null);
+        final EditText editText = (EditText) content.findViewById(R.id.editText);
+        editText.setHint("نظر خود را بنویسید");
+
+        util.contentDialog(getActivity(), content, "نظر شما درباره این کسب و کار", "ثبت نظر", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Comment.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Comment.Repository.class);
+
+                Map<String, Object> param = new HashMap<String, Object>();
+                param.put("customerId", config.customer.getId());
+                param.put("text", editText.getText().toString());
+                param.put("businessId", businesse.getId());
+
+                Comment comment = repository.createObject(param);
+                comment.save(new VoidCallback() {
+                    @Override
+                    public void onSuccess() {
+                        util.alertDialog(getActivity(), "بستن", "", "ارسال شد", null, SweetAlertDialog.SUCCESS_TYPE);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        util.alertDialog(getActivity(), "بستن", "خطا در ارسال نظر", "خطا", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                getactivity().onBackPressed();
+                            }
+                        }, SweetAlertDialog.ERROR_TYPE);
+                    }
+                });
+            }
+        });
+    }
+
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
@@ -240,6 +311,9 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
             @Override
             public void onClick(View view) {
                 View content = LayoutInflater.from(getActivity()).inflate(R.layout.view_business_question, null);
+                EditText editText = (EditText) content.findViewById(R.id.editText);
+                editText.setHint("پرسش خود را بنویسید");
+
                 util.contentDialog(getActivity(), content, "پرسش از کسب و کار", "ارسال", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -249,8 +323,9 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
             }
         });
 
+        boolean tooltipshown = config.getValueAsBool(getActivity(), "businessQuestionShowCase");
         if (!tooltipshown) {
-            tooltipshown = true;
+            config.setValue(getActivity(), "businessQuestionShowCase", true);
 
             TapTargetView.showFor(getactivity(),
                     TapTarget.forView(quetion.getActionView(), "پرسش از کسب و کار", "برای طرح پرسش از اینجا اقدام کنید")
@@ -308,23 +383,47 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
         map = googleMap;
         map.getUiSettings().setMyLocationButtonEnabled(false);
         map.setMyLocationEnabled(true);
+        map.getUiSettings().setZoomControlsEnabled(true);
 
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
         MapsInitializer.initialize(this.getActivity());
 
-        // Updates the location and zoom of the MapView
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(43.1, -87.9), 10);
-        map.animateCamera(cameraUpdate);
+        //Check if business location is available
+        if (businesse.getLocation() != null) {
+            // Updates the location and zoom of the MapView
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(businesse.getLocation().lat, businesse.getLocation().lng), 10);
+            map.animateCamera(cameraUpdate);
 
-        setup_marker_list();
+            setup_marker_list();
+        } else {
+            //Hide Route feature from the map
+            btnroute.setVisibility(View.GONE);
+        }
     }
 
 
     @OnClick(R.id.btnroute)
     public void route() {
-        String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", 12f, 2f, businesse.getName());
+
+        //Temporary for show correct location and route feature
+        //======================================================
+        Location location = new Location();
+        location.lat = 32.6440555f;
+        location.lng = 51.6249668f;
+
+        businesse.setLocation(location);
+        //======================================================
+
+
+        String uri = String.format(Locale.ENGLISH,
+                "http://maps.google.com/maps?daddr=%f,%f",
+                businesse.getLocation().lat,
+                businesse.getLocation().lng,
+                businesse.getName());
+
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+
         try {
             startActivity(intent);
         } catch (ActivityNotFoundException ex) {
