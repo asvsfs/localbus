@@ -14,19 +14,16 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
-import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import org.fingerlinks.mobile.android.navigator.Navigator;
 
 import amir.app.business.fragments.baseFragment;
 import amir.app.business.fragments.fragment_category;
-import amir.app.business.fragments.fragment_home;
 import amir.app.business.fragments.fragment_notification;
 import amir.app.business.fragments.fragment_profile;
 import amir.app.business.fragments.fragment_search;
+import amir.app.business.fragments.product.fragment_home;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

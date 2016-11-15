@@ -24,9 +24,8 @@ import java.util.List;
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
 import amir.app.business.adapter.BusinessHorizontalListAdapter;
-import amir.app.business.adapter.BusinessVerticalListAdapter;
+import amir.app.business.fragments.business.fragment_business;
 import amir.app.business.models.Businesse;
-import amir.app.business.models.Location;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

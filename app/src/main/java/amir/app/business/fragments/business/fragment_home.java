@@ -1,4 +1,4 @@
-package amir.app.business.fragments;
+package amir.app.business.fragments.business;
 
 import android.content.Context;
 import android.location.Criteria;
@@ -11,12 +11,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -27,7 +25,6 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.strongloop.android.loopback.callbacks.ListCallback;
-import com.strongloop.android.loopback.callbacks.ObjectCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +33,8 @@ import amir.app.business.GuideApplication;
 import amir.app.business.R;
 import amir.app.business.adapter.AdverListAdapter;
 import amir.app.business.adapter.BusinessHorizontalListAdapter;
+import amir.app.business.fragments.baseFragment;
+import amir.app.business.fragments.fragment_map;
 import amir.app.business.models.Businesse;
 import amir.app.business.models.Location;
 import amir.app.business.widget.CircleIndicator;
@@ -76,7 +75,7 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, null);
+        View view = inflater.inflate(R.layout.fragment_business_home, null);
         ButterKnife.bind(this, view);
 
         //config toolbar

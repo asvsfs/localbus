@@ -59,5 +59,10 @@ public class Comment extends Model {
                     new JsonArrayParser<>(this, callback));
         }
 
+        public void getByProductId(String productid, ListCallback<Comment> callback) {
+            invokeStaticMethod("getByProductId", ImmutableMap.of("id", productid),
+                    new JsonArrayParser<>(this, callback));
+        }
+
     }
 }

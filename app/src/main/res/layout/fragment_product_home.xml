@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="false">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@android:color/transparent"
+                android:theme="?attr/actionBarTheme"
+                app:theme="@style/AppTheme"
+                app:title="@string/app_name"
+                app:titleTextColor="#000" />
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/adverPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="@color/white_gray_color"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/adver"
+                    app:layout_collapseMode="parallax"
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="0dp" >
+
+                </android.support.v4.view.ViewPager>
+
+                <view
+                    class="amir.app.business.widget.CircleIndicator"
+                    android:id="@+id/indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_alignParentBottom="false"
+                    android:layout_marginBottom="10dp"
+                    android:layout_alignBottom="@+id/adverPager" />
+
+            </RelativeLayout>
+
+            <view
+                android:id="@+id/txttoptitle"
+                class="amir.app.business.widget.FarsiTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@color/white_gray_color"
+                android:gravity="right|center_vertical"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:text="برترین‌ها"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#000"
+                app:FarsiTypeface="IRANSansBold" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/topRecyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/adverPager"
+                android:background="@color/white_gray_color"
+                tools:layout_editor_absoluteX="0dp">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <view
+                android:id="@+id/view"
+                class="amir.app.business.widget.FarsiTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@color/white_gray_color"
+                android:gravity="right|center_vertical"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:text="جدیدترین‌ها"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#000"
+                app:FarsiTypeface="IRANSansBold" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/productRecyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/bottombar"
+                android:layout_below="@+id/topRecyclerview"
+                android:background="@color/white_gray_color"
+                android:scrollbars="none" />
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</android.support.design.widget.CoordinatorLayout>

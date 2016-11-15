@@ -7,42 +7,24 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RatingBar;
-import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.strongloop.android.loopback.callbacks.ListCallback;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
 import amir.app.business.adapter.BusinessHorizontalListAdapter;
+import amir.app.business.fragments.business.fragment_business;
 import amir.app.business.models.Businesse;
 import amir.app.business.models.Category;
 import amir.app.business.util;
-import amir.app.business.widget.FarsiTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**

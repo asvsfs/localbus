@@ -20,16 +20,16 @@
         "source": "H:\\workspace\\localbus\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\drawable\\blue_button_background.xml"
     },
     {
+        "merged": "H:\\workspace\\localbus\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\warning_sigh.xml",
+        "source": "H:\\workspace\\localbus\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\drawable\\warning_sigh.xml"
+    },
+    {
         "merged": "H:\\workspace\\localbus\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\error_circle.xml",
         "source": "H:\\workspace\\localbus\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\drawable\\error_circle.xml"
     },
     {
         "merged": "H:\\workspace\\localbus\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\red_button_background.xml",
         "source": "H:\\workspace\\localbus\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\drawable\\red_button_background.xml"
-    },
-    {
-        "merged": "H:\\workspace\\localbus\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\warning_sigh.xml",
-        "source": "H:\\workspace\\localbus\\sweet_alert_dialog_library\\build\\intermediates\\bundles\\debug\\res\\drawable\\warning_sigh.xml"
     },
     {
         "merged": "H:\\workspace\\localbus\\sweet_alert_dialog_library\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\dialog_background.xml",

@@ -1,10 +1,5 @@
-package amir.app.business.fragments;
+package amir.app.business.fragments.product;
 
-import android.app.Activity;
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -24,39 +19,30 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetView;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.strongloop.android.loopback.callbacks.ListCallback;
-import com.strongloop.android.loopback.callbacks.ObjectCallback;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
-import amir.app.business.adapter.AdverListAdapter;
-import amir.app.business.adapter.BusinessHorizontalListAdapter;
 import amir.app.business.adapter.GalleryListAdapter;
+import amir.app.business.adapter.ProductHorizontalListAdapter;
 import amir.app.business.config;
-import amir.app.business.models.Businesse;
+import amir.app.business.fragments.baseFragment;
+import amir.app.business.fragments.fragment_comment;
 import amir.app.business.models.Comment;
-import amir.app.business.models.Location;
+import amir.app.business.models.Product;
 import amir.app.business.util;
 import amir.app.business.widget.CircleIndicator;
 import amir.app.business.widget.FarsiTextView;
@@ -70,13 +56,11 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  * Created by amin on 08/09/2016.
  */
 
-public class fragment_business extends baseFragment implements OnMapReadyCallback {
+public class fragment_product extends baseFragment implements OnMapReadyCallback {
     @BindView(R.id.imagePager)
     ViewPager imagePager;
     @BindView(R.id.indicator)
     CircleIndicator indicator;
-    @BindView(R.id.txtdistance)
-    TextView txtdistance;
     @BindView(R.id.txtname)
     FarsiTextView txtname;
     @BindView(R.id.txtdesc)
@@ -110,19 +94,19 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
     @BindView(R.id.btnroute)
     Button btnroute;
 
-    Businesse businesse;
+    Product product;
     GoogleMap map;
 
-    public static fragment_business newInstance(Businesse business) {
-        fragment_business fragment = new fragment_business();
-        fragment.businesse = business;
+    public static fragment_product newInstance(Product product) {
+        fragment_product fragment = new fragment_product();
+        fragment.product = product;
         return fragment;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_business, null);
+        View view = inflater.inflate(R.layout.fragment_product, null);
 
         ButterKnife.bind(this, view);
 
@@ -131,7 +115,7 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
 
         //config toolbar
         getactivity().setSupportActionBar(toolbar);
-        getactivity().getSupportActionBar().setTitle(businesse.getName());
+        getactivity().getSupportActionBar().setTitle(product.getName());
         getactivity().getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getactivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -146,19 +130,20 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
 
         setup_map_view(savedInstanceState);
 
-        //load business list via api
-        load_similar_business_list();
+        //load product list via api
+        load_similar_product_list();
 
-        //load three lastest comment about this business
+        //load three lastest comment about this product
         load_latest_comments_list();
 
-        load_business_images();
+        load_product_images();
 
         return view;
     }
 
-    private void load_business_images() {
-        List<String> images = businesse.getImages();
+    private void load_product_images() {
+//        List<String> images = product.getImages();
+        List<String> images = new ArrayList<>();
 
         //template
         if (images == null || images.size() == 0) {
@@ -177,25 +162,25 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
         imagePager.getLayoutParams().height = display.getWidth();
     }
 
-    //Create Markers from Business Info on the map.
-    private void setup_marker_list() {
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-
-        if (businesse.getLocation() != null) {
-            Marker marker = map.addMarker(new MarkerOptions()
-                    .position(new LatLng(businesse.getLocation().lat, businesse.getLocation().lng))
-                    .title(businesse.getName())
-                    .snippet(businesse.getDescription()));
-
-            CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(new LatLng(businesse.getLocation().lat, businesse.getLocation().lng), 10);
-            try {
-                map.moveCamera(cu);
-
-            } catch (Exception ignored) {
-            }
-        }
-
-    }
+    //Create Markers from product Info on the map.
+//    private void setup_marker_list() {
+//        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+//
+//        if (product.getLocation() != null) {
+//            Marker marker = map.addMarker(new MarkerOptions()
+//                    .position(new LatLng(product.getLocation().lat, product.getLocation().lng))
+//                    .title(product.getName())
+//                    .snippet(product.getDescription()));
+//
+//            CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(new LatLng(product.getLocation().lat, product.getLocation().lng), 10);
+//            try {
+//                map.moveCamera(cu);
+//
+//            } catch (Exception ignored) {
+//            }
+//        }
+//
+//    }
 
     private void setup_map_view(@Nullable Bundle savedInstanceState) {
         mapview.onCreate(savedInstanceState);
@@ -210,7 +195,7 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
     //load comments and select last comment to show on UI
     private void load_latest_comments_list() {
         Comment.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Comment.Repository.class);
-        repository.getByBusinessId(businesse.getId(), new ListCallback<Comment>() {
+        repository.getByProductId(product.getId(), new ListCallback<Comment>() {
             @Override
             public void onSuccess(List<Comment> comments) {
                 commentProgress.setVisibility(View.GONE);
@@ -228,23 +213,23 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
 
     }
 
-    private void load_similar_business_list() {
+    private void load_similar_product_list() {
         similarRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
-        Businesse.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Businesse.Repository.class);
+        Product.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Product.Repository.class);
 
-        repository.findAll(new ListCallback<Businesse>() {
+        repository.findAll(new ListCallback<Product>() {
             @Override
-            public void onSuccess(List<Businesse> items) {
+            public void onSuccess(List<Product> items) {
                 for (int i = 0; i < 10; i++) {
-                    Businesse b = new Businesse();
-                    b.setName("business " + i);
+                    Product b = new Product();
+                    b.setName("product " + i);
                     b.setDescription("description " + i);
                     items.add(b);
                 }
 
-                //setup top businesses view
-                BusinessHorizontalListAdapter topadapter = new BusinessHorizontalListAdapter(getActivity(), items);
+                //setup top product view
+                ProductHorizontalListAdapter topadapter = new ProductHorizontalListAdapter(getActivity(), items);
                 similarRecyclerview.setAdapter(topadapter);
                 similarRecyclerview.setNestedScrollingEnabled(false);
             }
@@ -262,11 +247,11 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
 
     @OnClick(R.id.btnSendComment)
     public void btnSendComment() {
-        View content = LayoutInflater.from(getActivity()).inflate(R.layout.view_business_question, null);
+        View content = LayoutInflater.from(getActivity()).inflate(R.layout.view_product_question, null);
         final EditText editText = (EditText) content.findViewById(R.id.editText);
         editText.setHint("نظر خود را بنویسید");
 
-        util.contentDialog(getActivity(), content, "نظر شما درباره این کسب و کار", "ثبت نظر", new View.OnClickListener() {
+        util.contentDialog(getActivity(), content, "نظر شما درباره محصول", "ثبت نظر", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Comment.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Comment.Repository.class);
@@ -274,7 +259,7 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
                 Map<String, Object> param = new HashMap<String, Object>();
                 param.put("customerId", config.customer.getId());
                 param.put("text", editText.getText().toString());
-                param.put("businessId", businesse.getId());
+                param.put("productId", product.getId());
 
                 Comment comment = repository.createObject(param);
                 comment.save(new VoidCallback() {
@@ -304,17 +289,17 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_business, menu);
+        inflater.inflate(R.menu.menu_product, menu);
 
         MenuItem quetion = menu.findItem(R.id.action_question);
         quetion.getActionView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                View content = LayoutInflater.from(getActivity()).inflate(R.layout.view_business_question, null);
+                View content = LayoutInflater.from(getActivity()).inflate(R.layout.view_product_question, null);
                 EditText editText = (EditText) content.findViewById(R.id.editText);
                 editText.setHint("پرسش خود را بنویسید");
 
-                util.contentDialog(getActivity(), content, "پرسش از کسب و کار", "ارسال", new View.OnClickListener() {
+                util.contentDialog(getActivity(), content, "پرسش از محصول", "ارسال", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
@@ -323,12 +308,12 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
             }
         });
 
-        boolean tooltipshown = config.getValueAsBool(getActivity(), "businessQuestionShowCase");
+        boolean tooltipshown = config.getValueAsBool(getActivity(), "productQuestionShowCase");
         if (!tooltipshown) {
-            config.setValue(getActivity(), "businessQuestionShowCase", true);
+            config.setValue(getActivity(), "productQuestionShowCase", true);
 
             TapTargetView.showFor(getactivity(),
-                    TapTarget.forView(quetion.getActionView(), "پرسش از کسب و کار", "برای طرح پرسش از اینجا اقدام کنید")
+                    TapTarget.forView(quetion.getActionView(), "پرسش از محصول", "برای طرح پرسش از اینجا اقدام کنید")
                             // All options below are optional
                             .textTypeface(widgettools.typeface(getActivity(), 4))
                             .outerCircleColor(R.color.white_gray_color)
@@ -389,50 +374,50 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
         MapsInitializer.initialize(this.getActivity());
 
         //Check if business location is available
-        if (businesse.getLocation() != null) {
-            // Updates the location and zoom of the MapView
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(businesse.getLocation().lat, businesse.getLocation().lng), 10);
-            map.animateCamera(cameraUpdate);
-
-            setup_marker_list();
-        } else {
-            //Hide Route feature from the map
-            btnroute.setVisibility(View.GONE);
-        }
+//        if (product.getLocation() != null) {
+//            // Updates the location and zoom of the MapView
+//            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(product.getLocation().lat, product.getLocation().lng), 10);
+//            map.animateCamera(cameraUpdate);
+//
+//            setup_marker_list();
+//        } else {
+//            //Hide Route feature from the map
+//            btnroute.setVisibility(View.GONE);
+//        }
     }
 
 
-    @OnClick(R.id.btnroute)
-    public void route() {
-
-        //Temporary for show correct location and route feature
-        //======================================================
-        Location location = new Location();
-        location.lat = 32.6440555f;
-        location.lng = 51.6249668f;
-
-        businesse.setLocation(location);
-        //======================================================
-
-
-        String uri = String.format(Locale.ENGLISH,
-                "http://maps.google.com/maps?daddr=%f,%f",
-                businesse.getLocation().lat,
-                businesse.getLocation().lng,
-                businesse.getName());
-
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-        intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
-
-        try {
-            startActivity(intent);
-        } catch (ActivityNotFoundException ex) {
-            try {
-                Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                startActivity(unrestrictedIntent);
-            } catch (ActivityNotFoundException innerEx) {
-                Toast.makeText(getActivity(), "لطفا ابتدا اپلیکیشن گوگل-مپ را نصب کنید", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
+//    @OnClick(R.id.btnroute)
+//    public void route() {
+//
+//        //Temporary for show correct location and route feature
+//        //======================================================
+//        Location location = new Location();
+//        location.lat = 32.6440555f;
+//        location.lng = 51.6249668f;
+//
+//        product.setLocation(location);
+//        //======================================================
+//
+//
+//        String uri = String.format(Locale.ENGLISH,
+//                "http://maps.google.com/maps?daddr=%f,%f",
+//                product.getLocation().lat,
+//                product.getLocation().lng,
+//                product.getName());
+//
+//        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+//        intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+//
+//        try {
+//            startActivity(intent);
+//        } catch (ActivityNotFoundException ex) {
+//            try {
+//                Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+//                startActivity(unrestrictedIntent);
+//            } catch (ActivityNotFoundException innerEx) {
+//                Toast.makeText(getActivity(), "لطفا ابتدا اپلیکیشن گوگل-مپ را نصب کنید", Toast.LENGTH_LONG).show();
+//            }
+//        }
+//    }
 }
