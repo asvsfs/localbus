@@ -127,6 +127,8 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
             }
         });
 
+        txtname.setText(product.getName());
+        txtdesc.setText(product.getDescription());
 
         setup_map_view(savedInstanceState);
 

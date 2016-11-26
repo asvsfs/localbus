@@ -69,6 +69,9 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
         getactivity().getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         load_advers();
+
+        //load product list via api
+        load_product_list();
         return view;
     }
 
@@ -175,7 +178,6 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
 
         map.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude) , 10) );
 
-        //load product list via api
-        load_product_list();
+
     }
 }

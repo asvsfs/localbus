@@ -1,8 +1,6 @@
 package amir.app.business;
 
-import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 
 import com.strongloop.android.loopback.RestAdapter;
 
@@ -12,7 +10,7 @@ import amir.app.business.models.Token;
  * Created by amin on 08/05/2016.
  */
 
-public class GuideApplication extends Application {
+public class GuideApplication extends com.activeandroid.app.Application {
     static RestAdapter adapter;
     static Context context;
 

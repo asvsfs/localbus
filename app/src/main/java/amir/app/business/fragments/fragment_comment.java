@@ -1,19 +1,14 @@
 package amir.app.business.fragments;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -23,9 +18,7 @@ import java.util.List;
 
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
-import amir.app.business.adapter.BusinessHorizontalListAdapter;
 import amir.app.business.adapter.CommentListAdapter;
-import amir.app.business.models.Businesse;
 import amir.app.business.models.Comment;
 import amir.app.business.widget.FarsiTextView;
 import butterknife.BindView;
@@ -47,6 +40,8 @@ public class fragment_comment extends baseFragment {
     FarsiTextView txtname;
     @BindView(R.id.commentresyclerview)
     RecyclerView commentresyclerview;
+    @BindView(R.id.progress)
+    ProgressBar progress;
 
     @Nullable
     @Override
@@ -89,8 +84,11 @@ public class fragment_comment extends baseFragment {
 
                 //setup comment view
                 CommentListAdapter adapter = new CommentListAdapter(getActivity(), items);
-                commentresyclerview.setAdapter(adapter );
+                commentresyclerview.setAdapter(adapter);
                 commentresyclerview.setNestedScrollingEnabled(false);
+
+                commentresyclerview.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.GONE);
             }
 
             @Override

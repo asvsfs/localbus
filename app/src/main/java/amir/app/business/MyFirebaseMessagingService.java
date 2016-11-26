@@ -13,6 +13,10 @@ import android.widget.Toast;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Calendar;
+
+import amir.app.business.models.db.Notification;
+
 /**
  * Created by amin on 05/27/2016.
  */
@@ -33,9 +37,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
 
-        String order_id = remoteMessage.getData().get("message");
-        sendNotification(this, order_id, "پیام جدید دریافت شد");
+        String message = remoteMessage.getData().get("message");
+        sendNotification(this, message, "پیام جدید دریافت شد");
 
+
+        //save received notification to database
+        Notification notification = new Notification();
+        notification.message = message;
+        notification.date = Calendar.getInstance().getTimeInMillis();
+        notification.save();
     }
     // [END receive_message]
 
