@@ -7,6 +7,7 @@ import com.strongloop.android.loopback.callbacks.JsonArrayParser;
 import com.strongloop.android.loopback.callbacks.JsonObjectParser;
 import com.strongloop.android.loopback.callbacks.ListCallback;
 import com.strongloop.android.loopback.callbacks.ObjectCallback;
+import com.strongloop.android.remoting.adapters.Adapter;
 import com.strongloop.android.remoting.adapters.RestContract;
 import com.strongloop.android.remoting.adapters.RestContractItem;
 
@@ -26,6 +27,7 @@ public class Product extends Model implements Serializable {
     private String owner;
     private String category;
     private String id;
+    private String qrcode;
 
     public String getName() {
         return name;
@@ -75,6 +77,14 @@ public class Product extends Model implements Serializable {
         this.id = id;
     }
 
+    public String getQrCode() {
+        return qrcode;
+    }
+
+    public void setQrCode(String qrcode) {
+        this.qrcode = qrcode;
+    }
+
     public static class Repository extends ModelRepository<Product> {
         public Repository() {
             super("Product", "Products", Product.class);
@@ -87,6 +97,12 @@ public class Product extends Model implements Serializable {
             contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:id", "GET"),
                     getClassName() + ".getById");
 
+            contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:id", "GET"),
+                    getClassName() + ".getByCustomerId");
+
+            contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:id", "GET"),
+                    getClassName() + ".getByQRCode");
+
             return contract;
         }
 
@@ -95,6 +111,15 @@ public class Product extends Model implements Serializable {
                     new JsonObjectParser<Product>(this, callback));
         }
 
+        public void getByCustomerId(String id, ListCallback<Product> callback) {
+            invokeStaticMethod("getByCustomerId", ImmutableMap.of("id", id),
+                    new JsonArrayParser<Product>(this, callback));
+        }
+
+        public void getByQRCode(String id, ObjectCallback<Product> callback) {
+            invokeStaticMethod("qrexists", ImmutableMap.of("code", id),
+                    new JsonObjectParser<Product>(this, callback));
+        }
     }
 
 

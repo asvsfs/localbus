@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +24,7 @@ import amir.app.business.LoginActivity;
 import amir.app.business.R;
 import amir.app.business.callbacks.SimpleCallback;
 import amir.app.business.config;
+import amir.app.business.management.activity.ProductManagerActivity;
 import amir.app.business.models.Customer;
 import amir.app.business.widget.CircleImageView;
 import butterknife.BindView;
@@ -52,12 +57,16 @@ public class fragment_profile extends baseFragment {
     EditText editMail;
     @BindView(R.id.btnReset)
     Button btnReset;
+    @BindView(R.id.btnProductManage)
+    Button btnProductManage;
     @BindView(R.id.profileInfo)
     LinearLayout profileInfo;
     @BindView(R.id.tablayout)
     TabLayout tablayout;
 
     Customer.Repository repository;
+    @BindView(R.id.viewpager)
+    ViewPager viewpager;
 
     @Nullable
     @Override
@@ -80,6 +89,8 @@ public class fragment_profile extends baseFragment {
 
         mainContent.setVisibility(View.GONE);
         btnlogin.setVisibility(View.GONE);
+        viewpager.setVisibility(View.GONE);
+        tablayout.setVisibility(View.GONE);
 
         repository = GuideApplication.getLoopBackAdapter().createRepository(Customer.Repository.class);
 
@@ -93,10 +104,20 @@ public class fragment_profile extends baseFragment {
             public void onError(Throwable t) {
                 loginProgress.setVisibility(View.GONE);
                 btnlogin.setVisibility(View.VISIBLE);
+
             }
         });
 
+
         return view;
+    }
+
+    private void load_tabs_fragments_list() {
+        viewpager.setAdapter(new pagerAdapter(getFragmentManager()));
+        tablayout.setupWithViewPager(viewpager);
+
+        viewpager.setVisibility(View.VISIBLE);
+        tablayout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -106,8 +127,9 @@ public class fragment_profile extends baseFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK)
+        if (resultCode == Activity.RESULT_OK) {
             load_user_info();
+        }
     }
 
     private void load_user_info() {
@@ -120,7 +142,7 @@ public class fragment_profile extends baseFragment {
 
                 btnlogin.setVisibility(config.token == null ? View.VISIBLE : View.GONE);
                 profileInfo.setVisibility(config.token == null ? View.GONE : View.VISIBLE);
-                tablayout.setVisibility(config.token == null ? View.GONE : View.VISIBLE);
+//                tablayout.setVisibility(config.token == null ? View.GONE : View.VISIBLE);
 
                 if (config.customer != null) {
                     editMail.setText(config.customer.getEmail());
@@ -130,6 +152,7 @@ public class fragment_profile extends baseFragment {
 
                 mainContent.setVisibility(View.VISIBLE);
 
+                load_tabs_fragments_list();
             }
 
             @Override
@@ -146,4 +169,37 @@ public class fragment_profile extends baseFragment {
     public void login() {
         getactivity().startActivityForResult(new Intent(getActivity(), LoginActivity.class), 1);
     }
+
+    @OnClick(R.id.btnProductManage)
+    public void productManage() {
+        getactivity().startActivity(new Intent(getActivity(), ProductManagerActivity.class));
+    }
+
+    private class pagerAdapter extends FragmentPagerAdapter {
+        String[] titles=new String[]{"دنبال شده‌ها"};
+        public pagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titles[position];
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:     //دنبال شده ها
+                    return new fragment_profile_follwing();
+            }
+
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return 1;
+        }
+    }
+
 }

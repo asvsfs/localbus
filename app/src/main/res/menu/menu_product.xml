@@ -2,6 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_basket"
+        android:title="Question"
+        android:icon="@drawable/ic_add_shopping_cart_white_24dp"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/action_question"
         android:title="Question"
         app:actionLayout="@layout/menu_actionbar_question"

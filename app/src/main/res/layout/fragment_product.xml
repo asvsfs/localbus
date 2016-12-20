@@ -63,7 +63,7 @@
                         android:id="@+id/ratingbar"
                         style="@android:style/Widget.Holo.Light.RatingBar.Small"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
@@ -76,6 +76,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white_gray_color">
+
+                    <view
+                        android:id="@+id/txtverification"
+                        class="amir.app.business.widget.FarsiTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_weight="1"
+                        android:gravity="right|center_vertical"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:singleLine="true"
+                        android:text="(تایید شده)"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#888"
+                        android:textSize="12sp"
+                        app:FarsiTypeface="IRANSansBold" />
 
                     <Button
                         android:id="@+id/btnlike"
@@ -137,25 +156,6 @@
                         android:textColor="#000"
                         app:FarsiTypeface="IRANSansBold" />
 
-                    <view
-                        android:id="@+id/txtverification"
-                        class="amir.app.business.widget.FarsiTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_weight="1"
-                        android:background="@color/white_gray_color"
-                        android:gravity="right|center_vertical"
-                        android:paddingBottom="10dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:singleLine="true"
-                        android:text="(تایید شده)"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#888"
-                        android:textSize="12sp"
-                        app:FarsiTypeface="IRANSansBold" />
                 </LinearLayout>
 
                 <android.support.v7.widget.CardView
@@ -193,7 +193,6 @@
                     android:id="@+id/commentCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_marginTop="5dp"
@@ -226,41 +225,41 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
+                                android:layout_toEndOf="@+id/lastRatingBar"
+                                android:layout_toRightOf="@+id/lastRatingBar"
                                 android:background="@color/white_gray_color"
                                 android:gravity="top|right"
                                 android:padding="10dp"
                                 android:text="آخرین نظر"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
                                 android:textColor="#555"
-                                app:FarsiTypeface="IRANSansBold"
-                                android:layout_toEndOf="@+id/lastRatingBar"
-                                android:layout_toRightOf="@+id/lastRatingBar" />
+                                app:FarsiTypeface="IRANSansBold" />
 
                             <view
-                                app:FarsiTypeface="IRANSans"
-                                tools:text="خیلی خوب بود. کلی استفاده کردم. فقط ای کاش وقتش رو بیشتر میکردید چند روزی"
-                                class="amir.app.business.widget.FarsiTextView"
                                 android:id="@+id/txtlastcomment"
+                                class="amir.app.business.widget.FarsiTextView"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentLeft="true"
                                 android:layout_alignParentStart="true"
+                                android:layout_below="@+id/btncomments"
                                 android:background="@color/white_gray_color"
-                                android:textColor="#000"
                                 android:padding="5dp"
-                                android:layout_below="@+id/btncomments" />
+                                android:textColor="#000"
+                                app:FarsiTypeface="IRANSans"
+                                tools:text="خیلی خوب بود. کلی استفاده کردم. فقط ای کاش وقتش رو بیشتر میکردید چند روزی" />
 
                             <RatingBar
                                 android:id="@+id/lastRatingBar"
                                 style="@android:style/Widget.Holo.Light.RatingBar.Small"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:numStars="5"
                                 android:layout_alignBottom="@+id/txtlastcomments"
-                                android:layout_toRightOf="@+id/btncomments"
+                                android:layout_marginBottom="11dp"
                                 android:layout_toEndOf="@+id/btncomments"
-                                android:layout_marginBottom="11dp" />
+                                android:layout_toRightOf="@+id/btncomments"
+                                android:layout_weight="1"
+                                android:numStars="5" />
                         </RelativeLayout>
 
                         <ProgressBar
@@ -268,8 +267,8 @@
                             style="?android:attr/progressBarStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_centerHorizontal="true" />
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true" />
 
                     </RelativeLayout>
 
@@ -281,33 +280,34 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp">
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:background="@color/white_gray_color">
+                        android:background="@color/white_gray_color"
+                        android:orientation="vertical">
 
                         <Button
                             android:id="@+id/btnroute"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:text="مسیریابی"
-                            android:layout_alignParentTop="true"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentStart="true"
-                            android:layout_margin="5dp" />
+                            android:layout_alignParentTop="true"
+                            android:layout_margin="5dp"
+                            android:padding="10dp"
+                            android:text="مسیریابی" />
 
                         <view
-                            class="amir.app.business.widget.CustomMapView"
                             android:id="@+id/mapview"
+                            class="amir.app.business.widget.CustomMapView"
                             android:layout_width="match_parent"
                             android:layout_height="200dp"
-                            android:layout_alignTop="@+id/btnroute"
                             android:layout_alignLeft="@+id/btnroute"
-                            android:layout_alignStart="@+id/btnroute" />
+                            android:layout_alignStart="@+id/btnroute"
+                            android:layout_alignTop="@+id/btnroute" />
 
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>

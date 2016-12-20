@@ -19,6 +19,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import org.fingerlinks.mobile.android.navigator.Navigator;
 
 import amir.app.business.fragments.baseFragment;
+import amir.app.business.fragments.fragment_basket;
 import amir.app.business.fragments.fragment_category;
 import amir.app.business.fragments.fragment_notification;
 import amir.app.business.fragments.fragment_profile;
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         bottombar.addTab(bottombar.newTab().setCustomView(getTabView(R.drawable.ic_search_black_24dp)));
         bottombar.addTab(bottombar.newTab().setCustomView(getTabView(R.drawable.ic_notifications_black_24dp)));
         bottombar.addTab(bottombar.newTab().setCustomView(getTabView(R.drawable.ic_person_black_24dp)));
+        bottombar.addTab(bottombar.newTab().setCustomView(getTabView(R.drawable.ic_shopping_basket_black_24dp)));
 
         bottombar.setOnTabSelectedListener(bottombarTabListener);
 
@@ -169,6 +171,10 @@ public class MainActivity extends AppCompatActivity {
 
             case 4: //profile
                 switchFragment(new fragment_profile(), true);
+                break;
+
+            case 5: //basket
+                switchFragment(new fragment_basket(), true);
                 break;
         }
     }

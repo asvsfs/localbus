@@ -2,10 +2,11 @@ package amir.app.business.widget;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-public class SquareImageViewHeight_Based extends ImageView {
+public class SquareImageViewHeight_Based extends AppCompatImageView {
     public boolean isInEditMode() {
         return true;
     }

@@ -3,6 +3,7 @@ package amir.app.business.fragments.product;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -30,6 +31,7 @@ import com.strongloop.android.loopback.callbacks.ListCallback;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +45,7 @@ import amir.app.business.fragments.baseFragment;
 import amir.app.business.fragments.fragment_comment;
 import amir.app.business.models.Comment;
 import amir.app.business.models.Product;
+import amir.app.business.models.db.Basket;
 import amir.app.business.util;
 import amir.app.business.widget.CircleIndicator;
 import amir.app.business.widget.FarsiTextView;
@@ -93,6 +96,8 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
     MapView mapview;
     @BindView(R.id.btnroute)
     Button btnroute;
+    @BindView(R.id.commentCard)
+    CardView commentCard;
 
     Product product;
     GoogleMap map;
@@ -109,7 +114,6 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
         View view = inflater.inflate(R.layout.fragment_product, null);
 
         ButterKnife.bind(this, view);
-
 
         setHasOptionsMenu(true);
 
@@ -157,7 +161,7 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
         }
         //template
 
-        imagePager.setAdapter(new GalleryListAdapter(getactivity(), images));
+        imagePager.setAdapter(new GalleryListAdapter(getactivity(), images, null));
         indicator.setViewPager(imagePager);
 
         Display display = getactivity().getWindowManager().getDefaultDisplay();
@@ -209,7 +213,8 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
 
             @Override
             public void onError(Throwable t) {
-
+                commentProgress.setVisibility(View.GONE);
+                commentCard.setVisibility(View.GONE);
             }
         });
 
@@ -249,6 +254,11 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
 
     @OnClick(R.id.btnSendComment)
     public void btnSendComment() {
+        if (config.customer == null) {
+            util.alertDialog(getActivity(), "بستن", "", "برای ثبت نظر باید وارد شوید", null, SweetAlertDialog.WARNING_TYPE);
+            return;
+        }
+
         View content = LayoutInflater.from(getActivity()).inflate(R.layout.view_product_question, null);
         final EditText editText = (EditText) content.findViewById(R.id.editText);
         editText.setHint("نظر خود را بنویسید");
@@ -338,7 +348,39 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_basket:
+                add_to_basket();
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void add_to_basket() {
+        View content = LayoutInflater.from(getActivity()).inflate(R.layout.view_product_count, null);
+        final EditText editText = (EditText) content.findViewById(R.id.editText);
+        editText.setText("1");
+        editText.setHint("تعداد خرید از محصول");
+
+        util.contentDialog(getActivity(), content, "تعداد خرید از محصول", "تایید", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (editText.getText().toString().isEmpty()) {
+                    util.alertDialog(getactivity(), "تعداد خرید محصول مشخص نشد.", SweetAlertDialog.WARNING_TYPE);
+                    return;
+                }
+
+                Basket basket = new Basket();
+                basket.name = product.getName();
+                basket.productid = product.getId();
+                basket.count = Integer.parseInt(editText.getText().toString());
+                basket.comment = "";
+                basket.price = product.getPrice();
+                basket.date = Calendar.getInstance().getTimeInMillis();
+                basket.save();
+
+                util.alertDialog(getactivity(), "بستن", "محصول به سبد خرید اضافه گردید", SweetAlertDialog.SUCCESS_TYPE);
+            }
+        });
     }
 
     @Override

@@ -15,4 +15,6 @@
     <string name="permission_rationale" translatable="false">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="emptyProductName">نام محصول وارد نشده است</string>
+    <string name="emptyProductDesc">شرح محصول وارد نشده است</string>
 </resources>

@@ -168,7 +168,7 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
         }
         //template
 
-        imagePager.setAdapter(new GalleryListAdapter(getactivity(), images));
+        imagePager.setAdapter(new GalleryListAdapter(getactivity(), images, null));
         indicator.setViewPager(imagePager);
 
         Display display = getactivity().getWindowManager().getDefaultDisplay();

@@ -32,12 +32,17 @@ public class GalleryListAdapter extends PagerAdapter {
         }
     }
 
+    String server;
     List<String> items;
     Context context;
 
-    public GalleryListAdapter(Context context, List<String> items) {
+    public GalleryListAdapter(Context context, List<String> items, String server) {
         this.context = context;
         this.items = items;
+        this.server = context.getString(R.string.server);
+
+        if (server != null)
+            this.server = server;
     }
 
     @Override
@@ -47,7 +52,7 @@ public class GalleryListAdapter extends PagerAdapter {
         ViewHolder holder = new ViewHolder(view);
         if (!items.get(position).equals(""))
             Glide.with(context.getApplicationContext())
-                    .load(context.getString(R.string.server) + items.get(position))
+                    .load(server + items.get(position))
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.imgadver);
 

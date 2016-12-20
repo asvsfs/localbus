@@ -1,1 +1,1 @@
-include ':app', ':Navigator_library', ':material-dialogslibrary', ':sweet_alert_dialog_library', ':taptargetview_library', ':validation-komensky library'
+include ':app', ':Navigator_library', ':material-dialogslibrary', ':sweet_alert_dialog_library', ':taptargetview_library', ':validation-komensky library', ':Spinner_library', ':image-chooser-library'

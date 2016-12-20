@@ -23,7 +23,7 @@
                 android:padding="10dp">
 
                 <view
-                    android:id="@+id/imgbusiness"
+                    android:id="@+id/imgproduct"
                     class="amir.app.business.widget.SquareImageViewHeight_Based"
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"

@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#777">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -19,7 +20,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/cardView"
         tools:listitem="@layout/management_product_card_view" />
 
     <ProgressBar
@@ -30,4 +31,33 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:visibility="visible" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_margin="8dp"
+        app:cardBackgroundColor="#fff">
+
+        <view
+            android:id="@+id/editname"
+            class="amir.app.business.widget.FarsiEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:drawableLeft="@android:drawable/ic_menu_search"
+            android:ems="10"
+            android:gravity="right|center_vertical"
+            android:hint="نام محصول را وارد کنید"
+            android:inputType="textPersonName"
+            android:paddingRight="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="#000"
+            android:textColorHint="#888" />
+
+    </android.support.v7.widget.CardView>
 </RelativeLayout>

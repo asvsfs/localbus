@@ -26,6 +26,8 @@ import com.afollestad.materialdialogs.Theme;
 import com.fenchtose.tooltip.Tooltip;
 import com.fenchtose.tooltip.TooltipAnimation;
 
+import java.util.List;
+
 import amir.app.business.widget.widgettools;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import eu.inmite.android.lib.validations.form.FormValidator;
@@ -211,6 +213,38 @@ public class util {
                 .cancelable(true)
                 .negativeText("انصراف")
                 .positiveText(positiveText)
+                .theme(Theme.LIGHT)
+                .show();
+
+        return dlg;
+    }
+
+    public static MaterialDialog listDialog(Context context, List<String> items, String title, final View.OnClickListener onClickListener) {
+        MaterialDialog dlg = new MaterialDialog.Builder(context)
+                .title(title)
+                .titleGravity(GravityEnum.END)
+                .itemsGravity(GravityEnum.END)
+                .contentGravity(GravityEnum.END)
+                .typeface(widgettools.typeface(context, 2), widgettools.typeface(context, 4))
+                .items(items.toArray(new String[items.size()]))
+                .cancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        if (onClickListener != null)
+                            onClickListener.onClick(null);
+                    }
+                })
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        if (onClickListener != null)
+                            onClickListener.onClick(dialog.getView());
+
+//                        super.onPositive(dialog);
+                    }
+                })
+                .cancelable(true)
+                .negativeText("انصراف")
                 .theme(Theme.LIGHT)
                 .show();
 
