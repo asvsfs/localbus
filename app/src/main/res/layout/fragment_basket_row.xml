@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#aaa">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#fff"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/imgproduct"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerInside"
+            android:src="@drawable/business_logo" />
+
+        <view
+            android:id="@+id/txtname"
+            class="amir.app.business.widget.FarsiTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/imgproduct"
+            android:layout_toStartOf="@+id/imgproduct"
+            android:gravity="right|center_vertical"
+            android:padding="5dp"
+            android:singleLine="false"
+            android:text="امین تقدسی"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#000"
+            app:FarsiTypeface="IRANSansBold" />
+
+        <view
+            android:id="@+id/txtcount"
+            class="amir.app.business.widget.FarsiTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtname"
+            android:layout_toLeftOf="@+id/imgproduct"
+            android:layout_toStartOf="@+id/imgproduct"
+            android:gravity="right|center_vertical"
+            android:padding="5dp"
+            android:singleLine="false"
+            android:text="1 عدد"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#555"
+            app:FarsiTypeface="IRANSans" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imgdelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:padding="8dp"
+        app:srcCompat="@android:drawable/ic_delete" />
+
+</RelativeLayout>
