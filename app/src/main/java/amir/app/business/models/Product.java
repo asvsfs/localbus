@@ -111,7 +111,7 @@ public class Product extends Model implements Serializable {
             contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:id", "GET"),
                     getClassName() + ".getByCustomerId");
 
-            contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:id", "GET"),
+            contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/qrexists", "GET"),
                     getClassName() + ".getByQRCode");
 
             return contract;

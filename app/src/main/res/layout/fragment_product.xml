@@ -178,7 +178,6 @@
                             android:layout_alignParentTop="true"
                             android:background="@color/white_gray_color"
                             android:gravity="top|right"
-                            android:lines="5"
                             android:padding="10dp"
                             android:singleLine="false"
                             android:text="توضیحات"

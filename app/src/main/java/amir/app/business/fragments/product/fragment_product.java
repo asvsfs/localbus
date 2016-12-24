@@ -42,7 +42,6 @@ import amir.app.business.adapter.GalleryListAdapter;
 import amir.app.business.adapter.ProductHorizontalListAdapter;
 import amir.app.business.config;
 import amir.app.business.fragments.baseFragment;
-import amir.app.business.fragments.fragment_comment;
 import amir.app.business.models.Comment;
 import amir.app.business.models.Product;
 import amir.app.business.models.db.Basket;
@@ -248,7 +247,7 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
 
     @OnClick(R.id.btncomments)
     public void btnComment() {
-        switchFragment(new fragment_comment(), true);
+        switchFragment(new fragment_comment().newInstance(product), true);
     }
 
     @OnClick(R.id.btnSendComment)

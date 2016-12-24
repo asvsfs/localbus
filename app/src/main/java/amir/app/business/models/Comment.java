@@ -47,9 +47,11 @@ public class Comment extends Model {
         public RestContract createContract() {
             RestContract contract = super.createContract();
 
-
             contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:id", "GET"),
                     getClassName() + ".getByBusinessId");
+
+            contract.addItem(new RestContractItem("/" + getNameForRestUrl()+"/getByProductId", "GET"),
+                    getClassName() + ".getByProductId");
 
             return contract;
         }

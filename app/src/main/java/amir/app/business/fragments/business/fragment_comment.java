@@ -1,4 +1,4 @@
-package amir.app.business.fragments;
+package amir.app.business.fragments.business;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,7 +19,10 @@ import java.util.List;
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
 import amir.app.business.adapter.CommentListAdapter;
+import amir.app.business.fragments.baseFragment;
+import amir.app.business.models.Businesse;
 import amir.app.business.models.Comment;
+import amir.app.business.models.Product;
 import amir.app.business.widget.FarsiTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +45,14 @@ public class fragment_comment extends baseFragment {
     RecyclerView commentresyclerview;
     @BindView(R.id.progress)
     ProgressBar progress;
+
+    Businesse businesse;
+
+    public static fragment_comment newInstance(Businesse businesse) {
+        fragment_comment fragment = new fragment_comment();
+        fragment.businesse = businesse;
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -72,7 +83,7 @@ public class fragment_comment extends baseFragment {
 
         Comment.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Comment.Repository.class);
 
-        repository.findAll(new ListCallback<Comment>() {
+        repository.getByBusinessId(businesse.getId().toString(), new ListCallback<Comment>() {
             @Override
             public void onSuccess(List<Comment> items) {
 //                for (int i = 0; i < 10; i++) {
