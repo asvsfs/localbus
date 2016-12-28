@@ -40,6 +40,14 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
                 android:text="وارد شوید" />
+
+            <Button
+                android:id="@+id/btnRegister"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btnlogin"
+                android:layout_centerHorizontal="true"
+                android:text="نام کاربری خود را بسازید" />
         </RelativeLayout>
 
         <RelativeLayout

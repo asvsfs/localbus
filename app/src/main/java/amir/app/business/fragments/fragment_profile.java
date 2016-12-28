@@ -24,6 +24,7 @@ import com.strongloop.android.loopback.callbacks.ObjectCallback;
 import amir.app.business.GuideApplication;
 import amir.app.business.LoginActivity;
 import amir.app.business.R;
+import amir.app.business.RegisterActivity;
 import amir.app.business.callbacks.SimpleCallback;
 import amir.app.business.config;
 import amir.app.business.management.activity.ProductManagerActivity;
@@ -51,6 +52,8 @@ public class fragment_profile extends baseFragment {
     CircleImageView imgavatar;
     @BindView(R.id.btnlogin)
     Button btnlogin;
+    @BindView(R.id.btnRegister)
+    Button btnRegister;
     @BindView(R.id.editName)
     EditText editName;
     @BindView(R.id.editPhone)
@@ -143,6 +146,7 @@ public class fragment_profile extends baseFragment {
                 loginProgress.setVisibility(View.GONE);
 
                 btnlogin.setVisibility(config.token == null ? View.VISIBLE : View.GONE);
+                btnRegister.setVisibility(config.token == null ? View.VISIBLE : View.GONE);
                 profileInfo.setVisibility(config.token == null ? View.GONE : View.VISIBLE);
 //                tablayout.setVisibility(config.token == null ? View.GONE : View.VISIBLE);
 
@@ -170,6 +174,11 @@ public class fragment_profile extends baseFragment {
     @OnClick(R.id.btnlogin)
     public void login() {
         getactivity().startActivityForResult(new Intent(getActivity(), LoginActivity.class), 1);
+    }
+
+    @OnClick(R.id.btnRegister)
+    public void register() {
+        getactivity().startActivityForResult(new Intent(getActivity(), RegisterActivity.class), 1);
     }
 
     @OnClick(R.id.btnProductManage)
