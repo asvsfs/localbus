@@ -39,7 +39,7 @@ public class GalleryListAdapter extends PagerAdapter {
     public GalleryListAdapter(Context context, List<String> items, String server) {
         this.context = context;
         this.items = items;
-        this.server = context.getString(R.string.server);
+        this.server = context.getString(R.string.server)+"/images/";
 
         if (server != null)
             this.server = server;

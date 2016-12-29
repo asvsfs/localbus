@@ -1,6 +1,7 @@
 package amir.app.business.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -22,6 +24,7 @@ import com.strongloop.android.loopback.callbacks.ObjectCallback;
 import amir.app.business.GuideApplication;
 import amir.app.business.LoginActivity;
 import amir.app.business.R;
+import amir.app.business.RegisterActivity;
 import amir.app.business.callbacks.SimpleCallback;
 import amir.app.business.config;
 import amir.app.business.management.activity.ProductManagerActivity;
@@ -49,6 +52,8 @@ public class fragment_profile extends baseFragment {
     CircleImageView imgavatar;
     @BindView(R.id.btnlogin)
     Button btnlogin;
+    @BindView(R.id.btnRegister)
+    Button btnRegister;
     @BindView(R.id.editName)
     EditText editName;
     @BindView(R.id.editPhone)
@@ -113,7 +118,7 @@ public class fragment_profile extends baseFragment {
     }
 
     private void load_tabs_fragments_list() {
-        viewpager.setAdapter(new pagerAdapter(getFragmentManager()));
+        viewpager.setAdapter(new pagerAdapter(getactivity()));
         tablayout.setupWithViewPager(viewpager);
 
         viewpager.setVisibility(View.VISIBLE);
@@ -141,6 +146,7 @@ public class fragment_profile extends baseFragment {
                 loginProgress.setVisibility(View.GONE);
 
                 btnlogin.setVisibility(config.token == null ? View.VISIBLE : View.GONE);
+                btnRegister.setVisibility(config.token == null ? View.VISIBLE : View.GONE);
                 profileInfo.setVisibility(config.token == null ? View.GONE : View.VISIBLE);
 //                tablayout.setVisibility(config.token == null ? View.GONE : View.VISIBLE);
 
@@ -170,15 +176,23 @@ public class fragment_profile extends baseFragment {
         getactivity().startActivityForResult(new Intent(getActivity(), LoginActivity.class), 1);
     }
 
+    @OnClick(R.id.btnRegister)
+    public void register() {
+        getactivity().startActivityForResult(new Intent(getActivity(), RegisterActivity.class), 1);
+    }
+
     @OnClick(R.id.btnProductManage)
     public void productManage() {
         getactivity().startActivity(new Intent(getActivity(), ProductManagerActivity.class));
     }
 
-    private class pagerAdapter extends FragmentPagerAdapter {
-        String[] titles=new String[]{"دنبال شده‌ها"};
-        public pagerAdapter(FragmentManager fm) {
-            super(fm);
+    private class pagerAdapter extends PagerAdapter {
+        private Context context;
+        int[] layouts = new int[]{R.layout.fragment_profile_follwing};
+        String[] titles = new String[]{"دنبال شده‌ها"};
+
+        public pagerAdapter(Context context) {
+            this.context = context;
         }
 
         @Override
@@ -187,18 +201,26 @@ public class fragment_profile extends baseFragment {
         }
 
         @Override
-        public Fragment getItem(int position) {
-            switch (position) {
-                case 0:     //دنبال شده ها
-                    return new fragment_profile_follwing();
-            }
+        public Object instantiateItem(ViewGroup collection, int position) {
+            LayoutInflater inflater = LayoutInflater.from(this.context);
+            ViewGroup layout = (ViewGroup) inflater.inflate(layouts[position], collection, false);
+            collection.addView(layout);
+            return layout;
+        }
 
-            return null;
+        @Override
+        public void destroyItem(ViewGroup collection, int position, Object view) {
+            collection.removeView((View) view);
         }
 
         @Override
         public int getCount() {
-            return 1;
+            return layouts.length;
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
         }
     }
 

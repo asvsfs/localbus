@@ -1,0 +1,235 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context="amir.app.business.LoginActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="fill_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?colorPrimary"
+        app:theme="@style/AppTheme" />
+
+    <!-- Login progress -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/white_gray_color">
+
+        <LinearLayout
+            android:id="@+id/registerInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical"
+            android:padding="32dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/imageView3"
+                    android:layout_toStartOf="@+id/imageView3"
+                    android:layout_weight="1"
+                    android:background="#ddd"
+                    android:editable="false"
+                    android:ems="10"
+                    android:hint="نام شما"
+                    android:inputType="textPersonName"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:text="امین"
+                    android:textColor="#000"
+                    android:textColorHint="#888" />
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/button"
+                    app:srcCompat="@drawable/ic_person_grey_500_24dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editusername"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/imageView3"
+                    android:layout_toStartOf="@+id/imageView3"
+                    android:layout_weight="1"
+                    android:background="#ddd"
+                    android:editable="false"
+                    android:ems="10"
+                    android:hint="نام کاربری"
+                    android:inputType="textPersonName"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:text="palize"
+                    android:textColor="#000"
+                    android:textColorHint="#888" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/button"
+                    app:srcCompat="@drawable/ic_key_grey_500_24dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/imageView3"
+                    android:layout_toStartOf="@+id/imageView3"
+                    android:layout_weight="1"
+                    android:background="#ddd"
+                    android:editable="false"
+                    android:ems="10"
+                    android:hint="رمز کاربری"
+                    android:inputType="textPersonName"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:text="dc17klm2"
+                    android:textColor="#000"
+                    android:textColorHint="#888" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/button"
+                    app:srcCompat="@drawable/ic_security_grey_500_24dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/imageView3"
+                    android:layout_toStartOf="@+id/imageView3"
+                    android:layout_weight="1"
+                    android:background="#ddd"
+                    android:editable="false"
+                    android:ems="10"
+                    android:hint="شماره موبایل (تلگرام)"
+                    android:inputType="textPersonName|number"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:text="09133052171"
+                    android:textColor="#000"
+                    android:textColorHint="#888" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/button"
+                    app:srcCompat="@drawable/ic_phone_android_grey_500_24dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editMail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/imageView3"
+                    android:layout_toStartOf="@+id/imageView3"
+                    android:layout_weight="1"
+                    android:background="#ddd"
+                    android:editable="false"
+                    android:ems="10"
+                    android:hint="ایمیل"
+                    android:inputType="textEmailAddress"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:text="palizesoftware@gmail.com"
+                    android:textColor="#000"
+                    android:textColorHint="#888" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/button"
+                    app:srcCompat="@drawable/ic_email_grey_500_24dp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageView2"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="ثبت" />
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

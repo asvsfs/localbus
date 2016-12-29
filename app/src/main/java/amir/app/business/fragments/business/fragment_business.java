@@ -51,7 +51,6 @@ import amir.app.business.adapter.BusinessHorizontalListAdapter;
 import amir.app.business.adapter.GalleryListAdapter;
 import amir.app.business.config;
 import amir.app.business.fragments.baseFragment;
-import amir.app.business.fragments.fragment_comment;
 import amir.app.business.models.Businesse;
 import amir.app.business.models.Comment;
 import amir.app.business.models.Location;

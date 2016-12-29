@@ -13,6 +13,7 @@ import com.strongloop.android.remoting.adapters.RestContractItem;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,13 +22,15 @@ import java.util.Map;
 
 public class Product extends Model implements Serializable {
 
+//    private String id;
     private String name;
     private String description;
     private int price;
     private String owner;
     private String category;
-    private String id;
     private String qrcode;
+    private List<String> images;
+
 
     public String getName() {
         return name;
@@ -69,25 +72,33 @@ public class Product extends Model implements Serializable {
         this.category = category;
     }
 
-    public String getId() {
-        return id;
-    }
+//    public String getId() {
+//        return id;
+//    }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+//    public void setId(String id) {
+//        this.id = id;
+//    }
 
-    public String getQrCode() {
+    public String getQrcode() {
         return qrcode;
     }
 
-    public void setQrCode(String qrcode) {
+    public void setQrcode(String qrcode) {
         this.qrcode = qrcode;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 
     public static class Repository extends ModelRepository<Product> {
         public Repository() {
-            super("Product", "Products", Product.class);
+            super("product", "products", Product.class);
         }
 
         @Override
@@ -100,7 +111,7 @@ public class Product extends Model implements Serializable {
             contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:id", "GET"),
                     getClassName() + ".getByCustomerId");
 
-            contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:id", "GET"),
+            contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/qrexists", "GET"),
                     getClassName() + ".getByQRCode");
 
             return contract;
@@ -109,6 +120,7 @@ public class Product extends Model implements Serializable {
         public void getById(String id, ObjectCallback<Product> callback) {
             invokeStaticMethod("getById", ImmutableMap.of("id", id),
                     new JsonObjectParser<Product>(this, callback));
+
         }
 
         public void getByCustomerId(String id, ListCallback<Product> callback) {

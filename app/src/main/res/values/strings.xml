@@ -17,4 +17,9 @@
     </string>
     <string name="emptyProductName">نام محصول وارد نشده است</string>
     <string name="emptyProductDesc">شرح محصول وارد نشده است</string>
+    <string name="emptyName">نام وارد نشده است</string>
+    <string name="emptyUserName">نام کاربری وارد نشده است</string>
+    <string name="emptyPhone">شماره تلفن وارد نشده است</string>
+    <string name="emptyMail">ایمیل وارد نشده است</string>
+    <string name="emptyPassword">رمز وارد نشده است</string>
 </resources>

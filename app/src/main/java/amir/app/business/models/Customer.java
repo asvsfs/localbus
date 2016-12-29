@@ -44,6 +44,7 @@ public class Customer extends User {
     private String realm;
     private String username;
     private String telegramNumber;
+    private String password;
     private String email;
     private Boolean emailVerified;
     private String id;
@@ -72,6 +73,16 @@ public class Customer extends User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {

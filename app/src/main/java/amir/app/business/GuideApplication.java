@@ -2,6 +2,7 @@ package amir.app.business;
 
 import android.content.Context;
 
+import com.activeandroid.util.Log;
 import com.strongloop.android.loopback.RestAdapter;
 
 import amir.app.business.models.Token;

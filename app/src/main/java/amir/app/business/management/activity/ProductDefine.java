@@ -13,21 +13,28 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.common.collect.ImmutableMap;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.kbeanie.imagechooser.api.ChooserType;
 import com.kbeanie.imagechooser.api.ChosenImage;
 import com.kbeanie.imagechooser.api.ImageChooserListener;
 import com.kbeanie.imagechooser.api.ImageChooserManager;
 import com.kbeanie.imagechooser.exceptions.ChooserException;
+import com.strongloop.android.loopback.Container;
+import com.strongloop.android.loopback.ContainerRepository;
 import com.strongloop.android.loopback.callbacks.ListCallback;
+import com.strongloop.android.loopback.callbacks.ObjectCallback;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
 import amir.app.business.adapter.GalleryListAdapter;
+import amir.app.business.config;
 import amir.app.business.models.Category;
 import amir.app.business.models.Product;
 import amir.app.business.util;
@@ -43,6 +50,11 @@ import eu.inmite.android.lib.validations.form.annotations.NotEmpty;
  */
 
 public class ProductDefine extends AppCompatActivity {
+    private class image {
+        public String filename;
+        public String path;
+    }
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -72,7 +84,8 @@ public class ProductDefine extends AppCompatActivity {
     ImageChooserManager imageChooserManager;
     List<String> category = new ArrayList<>();
     List<Category> categories = new ArrayList<>();
-    List<String> images = new ArrayList<>();
+    List<image> images = new ArrayList<>();
+    MaterialDialog dlg;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -137,18 +150,61 @@ public class ProductDefine extends AppCompatActivity {
         });
     }
 
+    @OnClick(R.id.btnSave)
     public void save() {
         if (!util.isValid(this))
             return;
 
-        save_product();
+        upload_images_and_save_product();
+    }
+
+    private void upload_images_and_save_product() {
+        dlg = util.progressDialog(this, "ذخیره محصول", "در حال آپلود تصویر ");
+
+        ContainerRepository container = GuideApplication.getLoopBackAdapter().createRepository(ContainerRepository.class);
+        container.setAdapter(GuideApplication.getLoopBackAdapter());
+
+        container.get("common", new ObjectCallback<Container>() {
+            @Override
+            public void onSuccess(Container container) {
+                if (images.size() > 0)
+                    upload_product_images(container, 0);
+                else
+                    save_product();
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                util.alertDialog(ProductDefine.this, "بستن", "خطا در ارتباط با شبکه", "خطا", null, SweetAlertDialog.ERROR_TYPE);
+            }
+        });
+
     }
 
     private void save_product() {
-        Product product = new Product();
+        dlg.setContent("در حال ذخیره محصول");
+
+        Product.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Product.Repository.class);
+        Product product = repository.createObject(ImmutableMap.of("name", ""));
+
+//        product.setId("");
+        product.setCategory(categories.get(categorySpinner.getSelectedIndex()).getId());
+        product.setName(editName.getText().toString());
+        product.setDescription(editDesc.getText().toString());
+        product.setOwner(config.customer.getId());
+        product.setPrice(Integer.parseInt(editPrice.getText().toString()));
+        product.setQrcode(qrcode);
+
+        List<String> _images = new ArrayList<>();
+        for (image img : images) {
+            _images.add(img.filename);
+        }
+        product.setImages(_images);
+
         product.save(new VoidCallback() {
             @Override
             public void onSuccess() {
+                dlg.dismiss();
                 util.alertDialog(ProductDefine.this, "بستن", "محصول با موفقیت ثبت شد.", "نتیجه", new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
@@ -159,12 +215,42 @@ public class ProductDefine extends AppCompatActivity {
 
             @Override
             public void onError(Throwable t) {
+                dlg.dismiss();
                 util.alertDialog(ProductDefine.this, "بستن", "خطا در ثبت محصول", "خطا", new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                     }
                 }, SweetAlertDialog.ERROR_TYPE);
 
+            }
+        });
+    }
+
+    private void upload_product_images(final Container container, final int indexOfFile) {
+        dlg.setContent("در حال آپلود تصویر " + (indexOfFile + 1) + " از " + images.size());
+
+//        if (!images.get(indexOfFile).equals("")) {
+//            if (indexOfFile < images.size())
+//                upload_product_images(container, indexOfFile);
+//            else
+//                save_product();
+//            return;
+//        }
+
+        container.upload(new File(images.get(indexOfFile).path), new ObjectCallback<com.strongloop.android.loopback.File>() {
+            @Override
+            public void onSuccess(com.strongloop.android.loopback.File object) {
+                images.get(indexOfFile).filename = object.getName();
+                if (indexOfFile + 1 < images.size())
+                    upload_product_images(container, indexOfFile + 1);
+                else
+                    save_product();
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                dlg.dismiss();
+                util.alertDialog(ProductDefine.this, "error in upload", SweetAlertDialog.SUCCESS_TYPE);
             }
         });
     }
@@ -179,7 +265,12 @@ public class ProductDefine extends AppCompatActivity {
     }
 
     private void load_product_images() {
-        imagePager.setAdapter(new GalleryListAdapter(this, images, ""));
+        List<String> gallery = new ArrayList<>();
+        for (image img : images) {
+            gallery.add(img.path);
+        }
+
+        imagePager.setAdapter(new GalleryListAdapter(this, gallery, ""));
         indicator.setViewPager(imagePager);
 
         Display display = getWindowManager().getDefaultDisplay();
@@ -203,7 +294,9 @@ public class ProductDefine extends AppCompatActivity {
                     @Override
                     public void run() {
                         String selectedfile = image.getFilePathOriginal();
-                        images.add("file://" + selectedfile);
+                        image img = new image();
+                        img.path = selectedfile;
+                        images.add(img);
 
                         load_product_images();
                     }

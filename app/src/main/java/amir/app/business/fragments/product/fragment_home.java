@@ -108,16 +108,16 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
             public void onSuccess(List<Product> items) {
                 products = items;
 
-                //fake product
-                for (int i = 0; i < 10; i++) {
-                    Product b = new Product();
-                    b.setId("121221");
-                    b.setName("product " + i);
-                    b.setDescription("description " + i);
-
-                    products.add(b);
-                }
-                //fake product
+//                //fake product
+//                for (int i = 0; i < 10; i++) {
+//                    Product b = new Product();
+//                    b.setId("121221");
+//                    b.setName("product " + i);
+//                    b.setDescription("description " + i);
+//
+//                    products.add(b);
+//                }
+//                //fake product
 
                 setup_adapter_and_views();
 

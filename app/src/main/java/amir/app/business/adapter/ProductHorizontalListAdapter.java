@@ -81,16 +81,16 @@ public class ProductHorizontalListAdapter extends RecyclerView.Adapter<ProductHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Product b = items.get(position);
+        final Product product = items.get(position);
 
-        holder.txtname.setText(b.getName());
-        holder.txtdesc.setText(b.getDescription());
+        holder.txtname.setText(product.getName());
+        holder.txtdesc.setText(product.getDescription());
 
-//        List<String> images = b.getImages();
-//        if (images != null && images.size() > 0)
-//            Glide.with(context.getApplicationContext())
-//                    .load(context.getString(R.string.server) + images.get(0))
-//                    .into(holder.imgProduct);
+        List<String> images = product.getImages();
+        if (images != null && images.size() > 0)
+            Glide.with(context.getApplicationContext())
+                    .load(context.getString(R.string.server) +"/images/"+ images.get(0))
+                    .into(holder.imgProduct);
     }
 
     @Override

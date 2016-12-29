@@ -42,7 +42,6 @@ import amir.app.business.adapter.GalleryListAdapter;
 import amir.app.business.adapter.ProductHorizontalListAdapter;
 import amir.app.business.config;
 import amir.app.business.fragments.baseFragment;
-import amir.app.business.fragments.fragment_comment;
 import amir.app.business.models.Comment;
 import amir.app.business.models.Product;
 import amir.app.business.models.db.Basket;
@@ -148,8 +147,7 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
     }
 
     private void load_product_images() {
-//        List<String> images = product.getImages();
-        List<String> images = new ArrayList<>();
+        List<String> images = product.getImages();
 
         //template
         if (images == null || images.size() == 0) {
@@ -201,7 +199,7 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
     //load comments and select last comment to show on UI
     private void load_latest_comments_list() {
         Comment.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Comment.Repository.class);
-        repository.getByProductId(product.getId(), new ListCallback<Comment>() {
+        repository.getByProductId(product.getId().toString(), new ListCallback<Comment>() {
             @Override
             public void onSuccess(List<Comment> comments) {
                 commentProgress.setVisibility(View.GONE);
@@ -249,7 +247,7 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
 
     @OnClick(R.id.btncomments)
     public void btnComment() {
-        switchFragment(new fragment_comment(), true);
+        switchFragment(new fragment_comment().newInstance(product), true);
     }
 
     @OnClick(R.id.btnSendComment)
@@ -371,7 +369,7 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
 
                 Basket basket = new Basket();
                 basket.name = product.getName();
-                basket.productid = product.getId();
+                basket.productid = product.getId().toString();
                 basket.count = Integer.parseInt(editText.getText().toString());
                 basket.comment = "";
                 basket.price = product.getPrice();

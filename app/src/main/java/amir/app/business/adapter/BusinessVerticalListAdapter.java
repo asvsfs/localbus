@@ -99,7 +99,7 @@ public class BusinessVerticalListAdapter extends RecyclerView.Adapter<BusinessVe
         List<String> images = b.getImages();
         if (images != null && images.size() > 0)
             Glide.with(context.getApplicationContext())
-                    .load(context.getString(R.string.server) + images.get(0))
+                    .load(context.getString(R.string.server) +"/images/"+ images.get(0))
                     .into(holder.imgbusiness);
 
     }
