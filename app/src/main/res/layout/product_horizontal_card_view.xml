@@ -9,8 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        app:cardBackgroundColor="#fff"
-        android:foreground="@drawable/card_color_selector">
+        android:foreground="@drawable/card_color_selector"
+        app:cardBackgroundColor="#fff">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -31,10 +31,10 @@
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center_horizontal"
                     android:scaleType="centerInside"
-                    android:src="@drawable/product_logo" />
+                    android:src="@drawable/product_logo"
+                    android:transitionName="@string/fragment_image_trans" />
 
                 <view
-                    app:FarsiTypeface="IRANSansMedium"
                     android:id="@+id/txtname"
                     class="amir.app.business.widget.FarsiTextView"
                     android:layout_width="match_parent"
@@ -45,10 +45,10 @@
                     android:singleLine="true"
                     android:text="name"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="#6d6d6d" />
+                    android:textColor="#6d6d6d"
+                    app:FarsiTypeface="IRANSansMedium" />
 
                 <view
-                    app:FarsiTypeface="IRANSans"
                     android:id="@+id/txtdesc"
                     class="amir.app.business.widget.FarsiTextView"
                     android:layout_width="match_parent"
@@ -59,7 +59,8 @@
                     android:singleLine="true"
                     android:text="desciption"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="#6d6d6d" />
+                    android:textColor="#6d6d6d"
+                    app:FarsiTypeface="IRANSans" />
 
             </LinearLayout>
         </RelativeLayout>

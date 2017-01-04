@@ -197,6 +197,31 @@ public class MainActivity extends AppCompatActivity {
         currentfragment = fragment;
     }
 
+    public void switchFragmentWitTransaction(View element, baseFragment fragment, boolean addtostack) {
+        String tag = fragment.getClass().toString();
+
+        if (Navigator.with(this).utils().canGoBackToSpecificPoint(tag, R.id.container, getSupportFragmentManager()))
+            Navigator.with(this).utils().goBackToSpecificPoint(tag);
+        else {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .addToBackStack(tag)
+                    .addSharedElement(element, getString(R.string.fragment_image_trans))
+                    .commit();
+
+//            Navigator.with(this)
+//                    .build() //Enter in navigation mode
+//                    .goTo(fragment, R.id.container)
+//                    .tag(tag)
+////                    .animation(R.anim.fadein, R.anim.fadeout, R.anim.fadein, R.anim.fadeout)
+//                    .addToBackStack() //add backstack
+//                    .replace() //CommitType
+//                    .commit(); //commit operation
+        }
+        currentfragment = fragment;
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         currentfragment.onActivityResult(requestCode, resultCode, data);

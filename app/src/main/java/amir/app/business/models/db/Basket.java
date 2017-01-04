@@ -16,6 +16,8 @@ public class Basket extends Model implements Serializable {
     public String productid;
     @Column(name = "name")
     public String name;
+    @Column(name = "image")
+    public String image;
     @Column(name = "date", index = true)
     public long date;
     @Column(name = "count")

@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import java.util.List;
@@ -107,6 +109,13 @@ public class BasketListAdapter extends RecyclerView.Adapter<BasketListAdapter.Vi
 
         holder.txtname.setText(basket.name);
         holder.txtcount.setText(String.format(Locale.ENGLISH, "%d عدد", basket.count));
+
+        if (basket.image!="")
+            Glide.with(context.getApplicationContext())
+                    .load(context.getString(R.string.server)+"/images/" + basket.image)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(holder.imgproduct);
+
     }
 
     @Override

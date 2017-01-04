@@ -1,8 +1,11 @@
-package amir.app.business.fragments.product;
+package amir.app.business.management.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,6 +38,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.Inflater;
 
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
@@ -42,6 +46,7 @@ import amir.app.business.adapter.GalleryListAdapter;
 import amir.app.business.adapter.ProductHorizontalListAdapter;
 import amir.app.business.config;
 import amir.app.business.fragments.baseFragment;
+import amir.app.business.fragments.product.fragment_comment;
 import amir.app.business.models.Comment;
 import amir.app.business.models.Product;
 import amir.app.business.models.db.Basket;
@@ -58,7 +63,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  * Created by amin on 08/09/2016.
  */
 
-public class fragment_product extends baseFragment implements OnMapReadyCallback {
+public class ProductActivity extends AppCompatActivity implements OnMapReadyCallback {
     @BindView(R.id.imagePager)
     ViewPager imagePager;
     @BindView(R.id.indicator)
@@ -99,34 +104,31 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
     CardView commentCard;
 
     Product product;
+    String productid;
     GoogleMap map;
 
-    public static fragment_product newInstance(Product product) {
-        fragment_product fragment = new fragment_product();
-        fragment.product = product;
-        return fragment;
-    }
-
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_product, null);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_product);
 
-        ButterKnife.bind(this, view);
+        ButterKnife.bind(this);
 
-        setHasOptionsMenu(true);
+        product = (Product) getIntent().getExtras().getSerializable("product");
+        productid =  getIntent().getExtras().getString("productid");
 
         //config toolbar
-        getactivity().setSupportActionBar(toolbar);
-        getactivity().getSupportActionBar().setTitle(product.getName());
-        getactivity().getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        getactivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(product.getName());
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //setup back button on toolbar
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getactivity().onBackPressed();
+
+                onBackPressed();
             }
         });
 
@@ -143,7 +145,6 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
 
         load_product_images();
 
-        return view;
     }
 
     private void load_product_images() {
@@ -159,10 +160,10 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
         }
         //template
 
-        imagePager.setAdapter(new GalleryListAdapter(getactivity(), images, null));
+        imagePager.setAdapter(new GalleryListAdapter(this, images, null));
         indicator.setViewPager(imagePager);
 
-        Display display = getactivity().getWindowManager().getDefaultDisplay();
+        Display display = getWindowManager().getDefaultDisplay();
         imagePager.getLayoutParams().height = display.getWidth();
     }
 
@@ -199,7 +200,7 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
     //load comments and select last comment to show on UI
     private void load_latest_comments_list() {
         Comment.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Comment.Repository.class);
-        repository.getByProductId(product.getId().toString(), new ListCallback<Comment>() {
+        repository.getByProductId(productid, new ListCallback<Comment>() {
             @Override
             public void onSuccess(List<Comment> comments) {
                 commentProgress.setVisibility(View.GONE);
@@ -219,7 +220,7 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
     }
 
     private void load_similar_product_list() {
-        similarRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        similarRecyclerview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         Product.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Product.Repository.class);
 
@@ -234,7 +235,7 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
                 }
 
                 //setup top product view
-                ProductHorizontalListAdapter topadapter = new ProductHorizontalListAdapter(getActivity(), items);
+                ProductHorizontalListAdapter topadapter = new ProductHorizontalListAdapter(ProductActivity.this, items);
                 similarRecyclerview.setAdapter(topadapter);
                 similarRecyclerview.setNestedScrollingEnabled(false);
             }
@@ -247,21 +248,21 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
 
     @OnClick(R.id.btncomments)
     public void btnComment() {
-        switchFragment(new fragment_comment().newInstance(product), true);
+//        switchFragment(new fragment_comment().newInstance(product), true);
     }
 
     @OnClick(R.id.btnSendComment)
     public void btnSendComment() {
         if (config.customer == null) {
-            util.alertDialog(getActivity(), "بستن", "", "برای ثبت نظر باید وارد شوید", null, SweetAlertDialog.WARNING_TYPE);
+            util.alertDialog(this, "بستن", "", "برای ثبت نظر باید وارد شوید", null, SweetAlertDialog.WARNING_TYPE);
             return;
         }
 
-        View content = LayoutInflater.from(getActivity()).inflate(R.layout.view_product_question, null);
+        View content = LayoutInflater.from(this).inflate(R.layout.view_product_question, null);
         final EditText editText = (EditText) content.findViewById(R.id.editText);
         editText.setHint("نظر خود را بنویسید");
 
-        util.contentDialog(getActivity(), content, "نظر شما درباره محصول", "ثبت نظر", new View.OnClickListener() {
+        util.contentDialog(this, content, "نظر شما درباره محصول", "ثبت نظر", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Comment.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Comment.Repository.class);
@@ -269,21 +270,21 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
                 Map<String, Object> param = new HashMap<String, Object>();
                 param.put("customerId", config.customer.getId());
                 param.put("text", editText.getText().toString());
-                param.put("productId", product.getId());
+                param.put("productId", productid);
 
                 Comment comment = repository.createObject(param);
                 comment.save(new VoidCallback() {
                     @Override
                     public void onSuccess() {
-                        util.alertDialog(getActivity(), "بستن", "", "ارسال شد", null, SweetAlertDialog.SUCCESS_TYPE);
+                        util.alertDialog(ProductActivity.this, "بستن", "", "ارسال شد", null, SweetAlertDialog.SUCCESS_TYPE);
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        util.alertDialog(getActivity(), "بستن", "خطا در ارسال نظر", "خطا", new SweetAlertDialog.OnSweetClickListener() {
+                        util.alertDialog(ProductActivity.this, "بستن", "خطا در ارسال نظر", "خطا", new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                getactivity().onBackPressed();
+                                onBackPressed();
                             }
                         }, SweetAlertDialog.ERROR_TYPE);
                     }
@@ -292,92 +293,85 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
         });
     }
 
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_product, menu);
-
-        MenuItem quetion = menu.findItem(R.id.action_question);
-        quetion.getActionView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                View content = LayoutInflater.from(getActivity()).inflate(R.layout.view_product_question, null);
-                EditText editText = (EditText) content.findViewById(R.id.editText);
-                editText.setHint("پرسش خود را بنویسید");
-
-                util.contentDialog(getActivity(), content, "پرسش از محصول", "ارسال", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                });
-            }
-        });
-
-        boolean tooltipshown = config.getValueAsBool(getActivity(), "productQuestionShowCase");
-        if (!tooltipshown) {
-            config.setValue(getActivity(), "productQuestionShowCase", true);
-
-            TapTargetView.showFor(getactivity(),
-                    TapTarget.forView(quetion.getActionView(), "پرسش از محصول", "برای طرح پرسش از اینجا اقدام کنید")
-                            // All options below are optional
-                            .textTypeface(widgettools.typeface(getActivity(), 4))
-                            .outerCircleColor(R.color.white_gray_color)
-                            .targetCircleColor(R.color.colorAccent)
-                            .textColor(android.R.color.black)
-                            .drawShadow(true)
-                            .cancelable(true)
-                            .tintTarget(true),
-                    new TapTargetView.Listener() {
-                        @Override
-                        public void onTargetClick(TapTargetView view) {
-                            super.onTargetClick(view);      // This call is optional
-                        }
-                    });
-
-//            util.showTooltip(getactivity(), (ViewGroup) getView(), quetion.getActionView(), "برای طرح پرسش از اینجا اقدام کنید");
-        }
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_basket:
-                add_to_basket();
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_product, menu);
+//        MenuItem quetion = menu.findItem(R.id.action_question);
+//        quetion.getActionView().setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                View content = LayoutInflater.from(ProductActivity.this).inflate(R.layout.view_product_question, null);
+//                EditText editText = (EditText) content.findViewById(R.id.editText);
+//                editText.setHint("پرسش خود را بنویسید");
+//
+//                util.contentDialog(ProductActivity.this, content, "پرسش از محصول", "ارسال", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//
+//                    }
+//                });
+//            }
+//        });
+//
+//        boolean tooltipshown = config.getValueAsBool(this, "productQuestionShowCase");
+//        if (!tooltipshown) {
+//            config.setValue(this, "productQuestionShowCase", true);
+//
+//            TapTargetView.showFor(this,
+//                    TapTarget.forView(quetion.getActionView(), "پرسش از محصول", "برای طرح پرسش از اینجا اقدام کنید")
+//                            // All options below are optional
+//                            .textTypeface(widgettools.typeface(this, 4))
+//                            .outerCircleColor(R.color.white_gray_color)
+//                            .targetCircleColor(R.color.colorAccent)
+//                            .textColor(android.R.color.black)
+//                            .drawShadow(true)
+//                            .cancelable(true)
+//                            .tintTarget(true),
+//                    new TapTargetView.Listener() {
+//                        @Override
+//                        public void onTargetClick(TapTargetView view) {
+//                            super.onTargetClick(view);      // This call is optional
+//                        }
+//                    });
+//
+////            util.showTooltip(getactivity(), (ViewGroup) getView(), quetion.getActionView(), "برای طرح پرسش از اینجا اقدام کنید");
+//        }
+//        return super.onCreateOptionsMenu(menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.action_basket:
+//                add_to_basket();
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     private void add_to_basket() {
-        View content = LayoutInflater.from(getActivity()).inflate(R.layout.view_product_count, null);
+        View content = LayoutInflater.from(this).inflate(R.layout.view_product_count, null);
         final EditText editText = (EditText) content.findViewById(R.id.editText);
         editText.setText("1");
         editText.setHint("تعداد خرید از محصول");
 
-        util.contentDialog(getActivity(), content, "تعداد خرید از محصول", "تایید", new View.OnClickListener() {
+        util.contentDialog(this, content, "تعداد خرید از محصول", "تایید", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (editText.getText().toString().isEmpty()) {
-                    util.alertDialog(getactivity(), "تعداد خرید محصول مشخص نشد.", SweetAlertDialog.WARNING_TYPE);
+                    util.alertDialog(ProductActivity.this, "تعداد خرید محصول مشخص نشد.", SweetAlertDialog.WARNING_TYPE);
                     return;
                 }
 
                 Basket basket = new Basket();
                 basket.name = product.getName();
-                basket.image = product.getImages().size() > 0 ? product.getImages().get(0) : "";
-                basket.productid = product.getId().toString();
+                basket.productid = productid;
                 basket.count = Integer.parseInt(editText.getText().toString());
                 basket.comment = "";
                 basket.price = product.getPrice();
                 basket.date = Calendar.getInstance().getTimeInMillis();
                 basket.save();
 
-                util.alertDialog(getactivity(), "بستن", "محصول به سبد خرید اضافه گردید", SweetAlertDialog.SUCCESS_TYPE);
+                util.alertDialog(ProductActivity.this, "بستن", "محصول به سبد خرید اضافه گردید", SweetAlertDialog.SUCCESS_TYPE);
             }
         });
     }
@@ -414,7 +408,7 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
         map.getUiSettings().setZoomControlsEnabled(true);
 
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
-        MapsInitializer.initialize(this.getActivity());
+        MapsInitializer.initialize(this);
 
         //Check if business location is available
 //        if (product.getLocation() != null) {
@@ -463,4 +457,13 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
 //            }
 //        }
 //    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            finishAfterTransition();
+        }
+    }
 }

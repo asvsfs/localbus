@@ -8,5 +8,6 @@
         <item name="colorAccent">@color/colorPrimaryDark</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:navigationBarColor">@android:color/primary_text_dark</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
 </resources>
