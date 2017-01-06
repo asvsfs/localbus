@@ -49,6 +49,7 @@ dependencies {
     compile 'com.fenchtose:tooltip:0.1.5'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'me.dm7.barcodescanner:zbar:1.9'
+    compile 'org.greenrobot:eventbus:3.0.0'
     compile project(':Spinner_library')
     compile project(':image-chooser-library')
 }

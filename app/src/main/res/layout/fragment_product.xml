@@ -13,6 +13,7 @@
         app:theme="@style/AppTheme" />
 
     <android.support.v4.widget.NestedScrollView
+        android:transitionName="@string/fragment_image_trans"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
@@ -36,7 +37,7 @@
                 <RelativeLayout
                     android:id="@+id/header"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp">
+                    android:layout_height="wrap_content">
 
                     <android.support.v4.view.ViewPager
                         android:id="@+id/imagePager"
@@ -45,19 +46,19 @@
                         android:background="@color/white_gray_color"
                         android:scaleType="centerCrop"
                         android:src="@drawable/adver"
-                        app:layout_collapseMode="parallax"
-                        >
+
+                        app:layout_collapseMode="parallax">
 
                     </android.support.v4.view.ViewPager>
 
                     <view
-                        class="amir.app.business.widget.CircleIndicator"
                         android:id="@+id/indicator"
+                        class="amir.app.business.widget.CircleIndicator"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
+                        android:layout_alignBottom="@+id/imagePager"
                         android:layout_alignParentBottom="false"
-                        android:layout_marginBottom="10dp"
-                        android:layout_alignBottom="@+id/imagePager" />
+                        android:layout_marginBottom="10dp" />
 
                     <RatingBar
                         android:id="@+id/ratingbar"
@@ -98,39 +99,39 @@
 
                     <Button
                         android:id="@+id/btnlike"
+                        android:layout_width="60dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
                         android:layout_margin="10dp"
-                        android:padding="10dp"
-                        android:drawableLeft="@drawable/ic_favorite_red_a700_18dp"
-                        android:textColor="#000"
                         android:background="@null"
-                        android:layout_width="60dp"
-                        android:text="99" />
+                        android:drawableLeft="@drawable/ic_favorite_red_a700_18dp"
+                        android:padding="10dp"
+                        android:text="99"
+                        android:textColor="#000" />
 
                     <ImageView
                         android:id="@+id/btnSendComment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_insert_comment_grey_500_24dp"
+                        android:layout_alignBottom="@+id/btnshare"
                         android:layout_alignTop="@+id/btnshare"
                         android:layout_toLeftOf="@+id/btnshare"
                         android:layout_toStartOf="@+id/btnshare"
-                        android:layout_alignBottom="@+id/btnshare" />
+                        android:padding="10dp"
+                        android:src="@drawable/ic_insert_comment_grey_500_24dp" />
 
                     <ImageView
                         android:id="@+id/btnshare"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_share_grey_500_24dp"
+                        android:layout_alignBottom="@+id/btnlike"
                         android:layout_alignTop="@+id/btnlike"
                         android:layout_toLeftOf="@+id/btnlike"
                         android:layout_toStartOf="@+id/btnlike"
-                        android:layout_alignBottom="@+id/btnlike" />
+                        android:padding="10dp"
+                        android:src="@drawable/ic_share_grey_500_24dp" />
 
                 </RelativeLayout>
 

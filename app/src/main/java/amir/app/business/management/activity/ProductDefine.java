@@ -27,6 +27,8 @@ import com.strongloop.android.loopback.callbacks.ListCallback;
 import com.strongloop.android.loopback.callbacks.ObjectCallback;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,7 @@ import amir.app.business.GuideApplication;
 import amir.app.business.R;
 import amir.app.business.adapter.GalleryListAdapter;
 import amir.app.business.config;
+import amir.app.business.event.ProductListRefreshEvent;
 import amir.app.business.models.Category;
 import amir.app.business.models.Product;
 import amir.app.business.util;
@@ -185,7 +188,7 @@ public class ProductDefine extends AppCompatActivity {
         dlg.setContent("در حال ذخیره محصول");
 
         Product.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Product.Repository.class);
-        Product product = repository.createObject(ImmutableMap.of("name", ""));
+        final Product product = repository.createObject(ImmutableMap.of("name", ""));
 
 //        product.setId("");
         product.setCategory(categories.get(categorySpinner.getSelectedIndex()).getId());
@@ -204,6 +207,8 @@ public class ProductDefine extends AppCompatActivity {
         product.save(new VoidCallback() {
             @Override
             public void onSuccess() {
+                EventBus.getDefault().post(new ProductListRefreshEvent(product.getName()+" به لیست محصولات اضافه شد."));
+
                 dlg.dismiss();
                 util.alertDialog(ProductDefine.this, "بستن", "محصول با موفقیت ثبت شد.", "نتیجه", new SweetAlertDialog.OnSweetClickListener() {
                     @Override

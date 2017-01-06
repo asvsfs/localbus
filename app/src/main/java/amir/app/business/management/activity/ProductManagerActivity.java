@@ -3,6 +3,10 @@ package amir.app.business.management.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,21 +15,27 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.strongloop.android.loopback.callbacks.ListCallback;
 import com.strongloop.android.loopback.callbacks.ObjectCallback;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.List;
 
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
+import amir.app.business.event.ProductListRefreshEvent;
 import amir.app.business.management.adapter.ProductGridListAdapter;
 import amir.app.business.models.Product;
 import amir.app.business.util;
 import amir.app.business.widget.FarsiEditText;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
@@ -46,6 +56,22 @@ public class ProductManagerActivity extends AppCompatActivity {
     List<Product> products;
 
     Product.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Product.Repository.class);
+    @BindView(R.id.floatAdd)
+    FloatingActionButton floatAdd;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void RefreshProductList(ProductListRefreshEvent event) {
+        products = null;
+        load_product_list();
+
+        Toast.makeText(this, event.getMessage(), Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,6 +96,8 @@ public class ProductManagerActivity extends AppCompatActivity {
 
         //load product list via api
         load_product_list();
+
+        EventBus.getDefault().register(this);
     }
 
     //read all product and fill list
@@ -101,7 +129,19 @@ public class ProductManagerActivity extends AppCompatActivity {
         adapter = new ProductGridListAdapter(this, products);
         adapter.setOnItemClickListener(new ProductGridListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Product product) {
+            public void onItemClick(Product product, View view) {
+                Intent intent = new Intent(ProductManagerActivity.this, ProductActivity.class);
+                intent.putExtra("productid", product.getId().toString());
+                intent.putExtra("product", product);
+//                startActivity(intent);
+
+                Pair<View, String> pair1 = Pair.create(view.findViewById(R.id.imgproduct), getString(R.string.fragment_image_trans));
+//                Pair<View, String> pair2 = Pair.create(view.findViewById(R.id.txtname), getString(R.string.fragment_name_trans));
+
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(ProductManagerActivity.this, pair1);
+                //Start the Intent
+                ActivityCompat.startActivity(ProductManagerActivity.this, intent, options.toBundle());
+
             }
         });
 
@@ -110,22 +150,27 @@ public class ProductManagerActivity extends AppCompatActivity {
         progress.setVisibility(View.GONE);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_product_manager, menu);
-        return super.onCreateOptionsMenu(menu);
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_product_manager, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.action_camera:
+//                startActivityForResult(new Intent(this, BarCodeScannerActivity.class), 1);
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
+
+
+    @OnClick(R.id.floatAdd)
+    public void floatAdd() {
+        startActivityForResult(new Intent(this, BarCodeScannerActivity.class), 1);
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_camera:
-                startActivityForResult(new Intent(this, BarCodeScannerActivity.class), 1);
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {

@@ -31,7 +31,6 @@ public class Product extends Model implements Serializable {
     private String qrcode;
     private List<String> images;
 
-
     public String getName() {
         return name;
     }
@@ -75,7 +74,7 @@ public class Product extends Model implements Serializable {
 //    public String getId() {
 //        return id;
 //    }
-
+//
 //    public void setId(String id) {
 //        this.id = id;
 //    }

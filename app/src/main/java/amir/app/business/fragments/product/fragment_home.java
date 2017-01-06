@@ -3,21 +3,27 @@ package amir.app.business.fragments.product;
 import android.content.Context;
 import android.location.Criteria;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.strongloop.android.loopback.callbacks.ListCallback;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +32,7 @@ import amir.app.business.GuideApplication;
 import amir.app.business.R;
 import amir.app.business.adapter.AdverListAdapter;
 import amir.app.business.adapter.ProductHorizontalListAdapter;
+import amir.app.business.event.ProductListRefreshEvent;
 import amir.app.business.fragments.baseFragment;
 import amir.app.business.models.Product;
 import amir.app.business.widget.CircleIndicator;
@@ -55,6 +62,26 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
     GoogleMap map;
     ProductHorizontalListAdapter topadapter;
     ProductHorizontalListAdapter mainadapter;
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void RefreshProductList(ProductListRefreshEvent event) {
+        products = null;
+        load_product_list();
+
+        Toast.makeText(getactivity(), "رفرش لیست محصولات", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
 
     @Nullable
     @Override
@@ -160,7 +187,22 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
     }
 
     public void switch_to_product_page(Product product) {
-        switchFragment(new fragment_product().newInstance(product), true);
+        baseFragment endFragment = new fragment_product().newInstance(product);
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            setSharedElementReturnTransition(TransitionInflater.from(
+//                    getActivity()).inflateTransition(R.transition.change_image_trans));
+//            setExitTransition(TransitionInflater.from(
+//                    getActivity()).inflateTransition(android.R.transition.fade));
+//
+//            endFragment.setSharedElementEnterTransition(TransitionInflater.from(
+//                    getActivity()).inflateTransition(R.transition.change_image_trans));
+//            endFragment.setEnterTransition(TransitionInflater.from(
+//                    getActivity()).inflateTransition(android.R.transition.fade));
+//        }
+//
+//        View element = getView().findViewById(R.id.imgproduct);
+        switchFragment(endFragment, true);
     }
 
     @Override
@@ -179,7 +221,7 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
 
-        map.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude) , 10) );
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 10));
 
 
     }

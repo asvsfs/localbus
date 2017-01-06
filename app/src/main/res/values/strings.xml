@@ -22,4 +22,7 @@
     <string name="emptyPhone">شماره تلفن وارد نشده است</string>
     <string name="emptyMail">ایمیل وارد نشده است</string>
     <string name="emptyPassword">رمز وارد نشده است</string>
+
+    <string name="fragment_image_trans">fragment_image_transition</string>
+    <string name="fragment_name_trans">fragment_name_transition</string>
 </resources>

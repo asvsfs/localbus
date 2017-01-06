@@ -57,7 +57,6 @@
                     android:inputType="textPersonName"
                     android:padding="8dp"
                     android:singleLine="true"
-                    android:text="امین"
                     android:textColor="#000"
                     android:textColorHint="#888" />
 
@@ -96,7 +95,6 @@
                     android:inputType="textPersonName"
                     android:padding="8dp"
                     android:singleLine="true"
-                    android:text="palize"
                     android:textColor="#000"
                     android:textColorHint="#888" />
 
@@ -134,7 +132,6 @@
                     android:inputType="textPersonName"
                     android:padding="8dp"
                     android:singleLine="true"
-                    android:text="dc17klm2"
                     android:textColor="#000"
                     android:textColorHint="#888" />
 
@@ -171,7 +168,6 @@
                     android:inputType="textPersonName|number"
                     android:padding="8dp"
                     android:singleLine="true"
-                    android:text="09133052171"
                     android:textColor="#000"
                     android:textColorHint="#888" />
 
@@ -208,7 +204,6 @@
                     android:inputType="textEmailAddress"
                     android:padding="8dp"
                     android:singleLine="true"
-                    android:text="palizesoftware@gmail.com"
                     android:textColor="#000"
                     android:textColorHint="#888" />
 

@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import amir.app.business.R;
@@ -23,7 +25,7 @@ import butterknife.ButterKnife;
 
 public class ProductGridListAdapter extends RecyclerView.Adapter<ProductGridListAdapter.ViewHolder> {
     public interface OnItemClickListener {
-        void onItemClick(Product Producte);
+        void onItemClick(Product Producte, View view);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -45,7 +47,7 @@ public class ProductGridListAdapter extends RecyclerView.Adapter<ProductGridList
         @Override
         public void onClick(View v) {
             if (mItemClickListener != null) {
-                mItemClickListener.onItemClick(items.get(getPosition()));
+                mItemClickListener.onItemClick(items.get(getPosition()), v);
             }
         }
     }
@@ -79,16 +81,16 @@ public class ProductGridListAdapter extends RecyclerView.Adapter<ProductGridList
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Product b = items.get(position);
+        final Product product = items.get(position);
 
-        holder.txtname.setText(b.getName());
-        holder.txtdesc.setText(b.getDescription());
+        holder.txtname.setText(product.getName());
+        holder.txtdesc.setText(product.getDescription());
 
-//        List<String> images = b.getImages();
-//        if (images != null && images.size() > 0)
-//            Glide.with(context.getApplicationContext())
-//                    .load(context.getString(R.string.server) + images.get(0))
-//                    .into(holder.imgProduct);
+        List<String> images = product.getImages();
+        if (images != null && images.size() > 0)
+            Glide.with(context.getApplicationContext())
+                    .load(context.getString(R.string.server) +"/images/"+ images.get(0))
+                    .into(holder.imgProduct);
     }
 
     @Override

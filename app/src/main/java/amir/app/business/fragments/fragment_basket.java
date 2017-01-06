@@ -14,11 +14,17 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.strongloop.android.loopback.callbacks.ObjectCallback;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import amir.app.business.GuideApplication;
 import amir.app.business.R;
 import amir.app.business.adapter.BasketListAdapter;
+import amir.app.business.fragments.product.fragment_product;
+import amir.app.business.models.Product;
 import amir.app.business.models.db.Basket;
 import amir.app.business.util;
 import butterknife.BindView;
@@ -125,7 +131,7 @@ public class fragment_basket extends baseFragment {
         adapter.setOnItemListener(new BasketListAdapter.OnItemListener() {
             @Override
             public void onItemClick(Basket basket) {
-
+                load_product(basket.productid);
             }
 
             @Override
@@ -147,5 +153,24 @@ public class fragment_basket extends baseFragment {
         progress.setVisibility(View.GONE);
         txtempty.setVisibility(basket.size() == 0 ? View.VISIBLE : View.GONE);
 
+    }
+
+    private void load_product(final String productid) {
+        final MaterialDialog dlg = util.progressDialog(getactivity(), "", "در حال دریافت مشخصات محسول");
+
+        Product.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Product.Repository.class);
+        repository.getById(productid, new ObjectCallback<Product>() {
+            @Override
+            public void onSuccess(Product product) {
+                dlg.dismiss();
+                switchFragment(new fragment_product().newInstance(product), true);
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                dlg.dismiss();
+                util.alertDialog(getactivity(), "بستن", "خطا در دریافت مشخصات محصول", SweetAlertDialog.ERROR_TYPE);
+            }
+        });
     }
 }

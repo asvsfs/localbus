@@ -24,8 +24,8 @@ import butterknife.ButterKnife;
 
 public class GalleryListAdapter extends PagerAdapter {
     class ViewHolder {
-        @BindView(R.id.imgadver)
-        ImageView imgadver;
+        @BindView(R.id.imgproduct)
+        ImageView imgproduct;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
@@ -47,14 +47,14 @@ public class GalleryListAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        View view = LayoutInflater.from(context).inflate(R.layout.view_adver_page, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.view_product_gallery_page, null);
 
         ViewHolder holder = new ViewHolder(view);
         if (!items.get(position).equals(""))
             Glide.with(context.getApplicationContext())
                     .load(server + items.get(position))
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(holder.imgadver);
+                    .into(holder.imgproduct);
 
         container.addView(view);
         return view;
