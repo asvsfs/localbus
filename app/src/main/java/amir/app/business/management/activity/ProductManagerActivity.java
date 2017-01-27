@@ -28,6 +28,7 @@ import java.util.List;
 
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
+import amir.app.business.config;
 import amir.app.business.event.ProductListRefreshEvent;
 import amir.app.business.management.adapter.ProductGridListAdapter;
 import amir.app.business.models.Product;
@@ -140,7 +141,7 @@ public class ProductManagerActivity extends AppCompatActivity {
 
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(ProductManagerActivity.this, pair1);
                 //Start the Intent
-                ActivityCompat.startActivity(ProductManagerActivity.this, intent, options.toBundle());
+                ActivityCompat.startActivityForResult(ProductManagerActivity.this, intent, 2, options.toBundle());
 
             }
         });
@@ -204,6 +205,9 @@ public class ProductManagerActivity extends AppCompatActivity {
                     }, SweetAlertDialog.WARNING_TYPE);
                 }
             });
+        } else if (resultCode == RESULT_OK && requestCode == 2) {
+            products = null;
+            load_product_list();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

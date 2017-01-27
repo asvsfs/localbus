@@ -71,19 +71,19 @@
                                 android:textColor="#333" />
 
                             <view
-                                android:id="@+id/view2"
+                                android:id="@+id/txtcount"
                                 class="amir.app.business.widget.FarsiTextView"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentLeft="true"
                                 android:layout_alignParentStart="true"
                                 android:layout_weight="1"
-                                android:singleLine="true"
-                                android:text="1,234"
-                                android:textAppearance="@android:style/TextAppearance.Material.Small"
-                                app:FarsiTypeface="IRANSansBold"
                                 android:gravity="center"
-                                android:textColor="#000" />
+                                android:singleLine="true"
+                                android:textAppearance="@android:style/TextAppearance.Material.Small"
+                                android:textColor="#000"
+                                app:FarsiTypeface="IRANSansBold"
+                                tools:text="1,234" />
                         </LinearLayout>
                     </LinearLayout>
 

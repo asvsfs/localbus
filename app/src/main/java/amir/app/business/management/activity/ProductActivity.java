@@ -1,5 +1,6 @@
 package amir.app.business.management.activity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -31,6 +32,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.strongloop.android.loopback.callbacks.ListCallback;
+import com.strongloop.android.loopback.callbacks.ObjectCallback;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
 
 import java.util.ArrayList;
@@ -78,12 +80,12 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
     Toolbar toolbar;
     @BindView(R.id.txtverification)
     FarsiTextView txtverification;
-    @BindView(R.id.btncomments)
-    Button btncomments;
+    @BindView(R.id.txtmorecomments)
+    View txtmorecomments;
     @BindView(R.id.commentProgress)
     ProgressBar commentProgress;
-    @BindView(R.id.commentInnerLayout)
-    View commentInnerLayout;
+    //    @BindView(R.id.commentInnerLayout)
+//    View commentInnerLayout;
     @BindView(R.id.btnSendComment)
     ImageView btnSendComment;
     @BindView(R.id.txtlastcomment)
@@ -100,8 +102,8 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
     MapView mapview;
     @BindView(R.id.btnroute)
     Button btnroute;
-    @BindView(R.id.commentCard)
-    CardView commentCard;
+//    @BindView(R.id.commentCard)
+//    CardView commentCard;
 
     Product product;
     String productid;
@@ -115,7 +117,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         ButterKnife.bind(this);
 
         product = (Product) getIntent().getExtras().getSerializable("product");
-        productid =  getIntent().getExtras().getString("productid");
+        productid = getIntent().getExtras().getString("productid");
 
         //config toolbar
         setSupportActionBar(toolbar);
@@ -127,7 +129,6 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 onBackPressed();
             }
         });
@@ -204,7 +205,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
             @Override
             public void onSuccess(List<Comment> comments) {
                 commentProgress.setVisibility(View.GONE);
-                commentInnerLayout.setVisibility(View.VISIBLE);
+//                commentInnerLayout.setVisibility(View.VISIBLE);
 
                 if (comments.size() > 0)
                     txtlastcomment.setText(comments.get(0).getText());
@@ -213,7 +214,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
             @Override
             public void onError(Throwable t) {
                 commentProgress.setVisibility(View.GONE);
-                commentCard.setVisibility(View.GONE);
+//                commentCard.setVisibility(View.GONE);
             }
         });
 
@@ -246,10 +247,10 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         });
     }
 
-    @OnClick(R.id.btncomments)
-    public void btnComment() {
+//    @OnClick(R.id.txtmorecomments)
+//    public void morecomments() {
 //        switchFragment(new fragment_comment().newInstance(product), true);
-    }
+//    }
 
     @OnClick(R.id.btnSendComment)
     public void btnSendComment() {
@@ -293,60 +294,72 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         });
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_product, menu);
-//        MenuItem quetion = menu.findItem(R.id.action_question);
-//        quetion.getActionView().setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                View content = LayoutInflater.from(ProductActivity.this).inflate(R.layout.view_product_question, null);
-//                EditText editText = (EditText) content.findViewById(R.id.editText);
-//                editText.setHint("پرسش خود را بنویسید");
-//
-//                util.contentDialog(ProductActivity.this, content, "پرسش از محصول", "ارسال", new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//
-//                    }
-//                });
-//            }
-//        });
-//
-//        boolean tooltipshown = config.getValueAsBool(this, "productQuestionShowCase");
-//        if (!tooltipshown) {
-//            config.setValue(this, "productQuestionShowCase", true);
-//
-//            TapTargetView.showFor(this,
-//                    TapTarget.forView(quetion.getActionView(), "پرسش از محصول", "برای طرح پرسش از اینجا اقدام کنید")
-//                            // All options below are optional
-//                            .textTypeface(widgettools.typeface(this, 4))
-//                            .outerCircleColor(R.color.white_gray_color)
-//                            .targetCircleColor(R.color.colorAccent)
-//                            .textColor(android.R.color.black)
-//                            .drawShadow(true)
-//                            .cancelable(true)
-//                            .tintTarget(true),
-//                    new TapTargetView.Listener() {
-//                        @Override
-//                        public void onTargetClick(TapTargetView view) {
-//                            super.onTargetClick(view);      // This call is optional
-//                        }
-//                    });
-//
-////            util.showTooltip(getactivity(), (ViewGroup) getView(), quetion.getActionView(), "برای طرح پرسش از اینجا اقدام کنید");
-//        }
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.action_basket:
-//                add_to_basket();
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_product_edit, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_edit:
+                edit_product();
+                break;
+
+            case R.id.action_delete:
+                delete_product();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void delete_product() {
+        util.confirmDialog(this, "تایید", "انصراف", "حذف محصول", "از حذف محصول مطمئن هستید؟", new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                Product.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Product.Repository.class);
+                product.setRepository(repository);
+
+                repository.getById(productid, new ObjectCallback<Product>() {
+                    @Override
+                    public void onSuccess(Product object) {
+                        object.destroy(new VoidCallback() {
+                            @Override
+                            public void onSuccess() {
+                                util.alertDialog(ProductActivity.this, "بستن", "محصول با موفقیت حذف شد.", "نتیجه", new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        onBackPressed();
+                                    }
+                                }, SweetAlertDialog.SUCCESS_TYPE);
+
+                                setResult(RESULT_OK);
+                                finish();
+                            }
+
+                            @Override
+                            public void onError(Throwable t) {
+                                util.alertDialog(ProductActivity.this, "پاسخی از سرور دریافت نشد.", SweetAlertDialog.ERROR_TYPE);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        util.alertDialog(ProductActivity.this, "پاسخی از سرور دریافت نشد.", SweetAlertDialog.ERROR_TYPE);
+                    }
+                });
+            }
+        }, SweetAlertDialog.WARNING_TYPE);
+    }
+
+    private void edit_product() {
+        Intent intent = new Intent(this, ProductEdit.class);
+        intent.putExtra("product", product);
+        intent.putExtra("productid", productid);
+
+        startActivity(intent);
+    }
 
     private void add_to_basket() {
         View content = LayoutInflater.from(this).inflate(R.layout.view_product_count, null);

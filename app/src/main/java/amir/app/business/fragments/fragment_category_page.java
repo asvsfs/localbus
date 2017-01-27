@@ -15,14 +15,16 @@ import com.google.android.gms.maps.GoogleMap;
 import com.strongloop.android.loopback.callbacks.ListCallback;
 
 import java.util.List;
+import java.util.Locale;
 
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
-import amir.app.business.adapter.BusinessHorizontalListAdapter;
-import amir.app.business.fragments.business.fragment_business;
-import amir.app.business.models.Businesse;
+import amir.app.business.adapter.ProductHorizontalListAdapter;
+import amir.app.business.fragments.product.fragment_product;
 import amir.app.business.models.Category;
+import amir.app.business.models.Product;
 import amir.app.business.util;
+import amir.app.business.widget.FarsiTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -40,8 +42,10 @@ public class fragment_category_page extends baseFragment {
     Toolbar toolbar;
     @BindView(R.id.progress)
     ProgressBar progress;
+    @BindView(R.id.txtcount)
+    FarsiTextView txtcount;
 
-    List<Businesse> businesse;
+    List<Product> products;
     GoogleMap map;
     Category category;
 
@@ -81,19 +85,20 @@ public class fragment_category_page extends baseFragment {
     private void load_business_list() {
         businessRecyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 3, LinearLayoutManager.VERTICAL, false));
 
-        Businesse.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Businesse.Repository.class);
+        Product.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Product.Repository.class);
 
-        repository.findAll(new ListCallback<Businesse>() {
+        repository.productByCategory(0, category.getId(), new ListCallback<Product>() {
             @Override
-            public void onSuccess(List<Businesse> items) {
-                businesse = items;
+            public void onSuccess(List<Product> items) {
+                txtcount.setText(String.format(Locale.ENGLISH, "%d", items.size()));
+                products = items;
 
-                for (int i = 0; i < 10; i++) {
-                    Businesse b = new Businesse();
-                    b.setName("business " + i);
-                    b.setDescription("description " + i);
-                    businesse.add(b);
-                }
+//                for (int i = 0; i < 10; i++) {
+//                    Product product = new Product();
+//                    product.setName("product " + i);
+//                    product.setDescription("product " + i);
+//                    products.add(product);
+//                }
 
                 progress.setVisibility(View.GONE);
                 setup_adapter_and_views();
@@ -123,29 +128,29 @@ public class fragment_category_page extends baseFragment {
         init_layout();
 
         //setup top businesses view
-        BusinessHorizontalListAdapter topadapter = new BusinessHorizontalListAdapter(getActivity(), businesse);
-        topadapter.setOnItemClickListener(new BusinessHorizontalListAdapter.OnItemClickListener() {
+        ProductHorizontalListAdapter topadapter = new ProductHorizontalListAdapter(getActivity(), products);
+        topadapter.setOnItemClickListener(new ProductHorizontalListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Businesse businesse) {
-                switch_to_business_page(businesse);
+            public void onItemClick(Product product) {
+                switch_to_product_page(product);
             }
         });
         topRecyclerview.setAdapter(topadapter);
         topRecyclerview.setNestedScrollingEnabled(false);
 
         //setup main businesses view
-        BusinessHorizontalListAdapter adapter = new BusinessHorizontalListAdapter(getActivity(), businesse);
-        adapter.setOnItemClickListener(new BusinessHorizontalListAdapter.OnItemClickListener() {
+        ProductHorizontalListAdapter adapter = new ProductHorizontalListAdapter(getActivity(), products);
+        adapter.setOnItemClickListener(new ProductHorizontalListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Businesse businesse) {
-                switch_to_business_page(businesse);
+            public void onItemClick(Product product) {
+                switch_to_product_page(product);
             }
         });
         businessRecyclerview.setAdapter(adapter);
         businessRecyclerview.setNestedScrollingEnabled(false);
     }
 
-    public void switch_to_business_page(Businesse businesse) {
-        switchFragment(new fragment_business().newInstance(businesse), true);
+    public void switch_to_product_page(Product product) {
+        switchFragment(new fragment_product().newInstance(product), true);
     }
 }

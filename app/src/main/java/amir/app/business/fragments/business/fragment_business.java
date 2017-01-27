@@ -180,11 +180,11 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
 
         if (businesse.getLocation() != null) {
             Marker marker = map.addMarker(new MarkerOptions()
-                    .position(new LatLng(businesse.getLocation().lat, businesse.getLocation().lng))
+                    .position(new LatLng(businesse.getLocation().getLat(), businesse.getLocation().getLng()))
                     .title(businesse.getName())
                     .snippet(businesse.getDescription()));
 
-            CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(new LatLng(businesse.getLocation().lat, businesse.getLocation().lng), 10);
+            CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(new LatLng(businesse.getLocation().getLat(), businesse.getLocation().getLng()), 10);
             try {
                 map.moveCamera(cu);
 
@@ -388,7 +388,7 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
         //Check if business location is available
         if (businesse.getLocation() != null) {
             // Updates the location and zoom of the MapView
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(businesse.getLocation().lat, businesse.getLocation().lng), 10);
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(businesse.getLocation().getLat(), businesse.getLocation().getLng()), 10);
             map.animateCamera(cameraUpdate);
 
             setup_marker_list();
@@ -405,8 +405,8 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
         //Temporary for show correct location and route feature
         //======================================================
         Location location = new Location();
-        location.lat = 32.6440555f;
-        location.lng = 51.6249668f;
+        location.setLat(32.6440555f);
+        location.setLng(51.6249668f);
 
         businesse.setLocation(location);
         //======================================================
@@ -414,8 +414,8 @@ public class fragment_business extends baseFragment implements OnMapReadyCallbac
 
         String uri = String.format(Locale.ENGLISH,
                 "http://maps.google.com/maps?daddr=%f,%f",
-                businesse.getLocation().lat,
-                businesse.getLocation().lng,
+                businesse.getLocation().getLat(),
+                businesse.getLocation().getLng(),
                 businesse.getName());
 
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));

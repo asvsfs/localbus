@@ -113,6 +113,11 @@ public class Product extends Model implements Serializable {
             contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/qrexists", "GET"),
                     getClassName() + ".getByQRCode");
 
+            contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/productByCategory", "GET"),
+                    getClassName() + ".productByCategory");
+
+            contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/geteByOwner", "GET"),
+                    getClassName() + ".geteByOwner");
             return contract;
         }
 
@@ -130,6 +135,24 @@ public class Product extends Model implements Serializable {
         public void getByQRCode(String id, ObjectCallback<Product> callback) {
             invokeStaticMethod("qrexists", ImmutableMap.of("code", id),
                     new JsonObjectParser<Product>(this, callback));
+        }
+
+        public void productByCategory(int page, String category, ListCallback<Product> callback) {
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("page", page);
+            params.put("category", category);
+
+            invokeStaticMethod("productByCategory", params,
+                    new JsonArrayParser<Product>(this, callback));
+        }
+
+        public void geteByOwner(int page, String ownerId, ListCallback<Product> callback) {
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("page", page);
+            params.put("ownerId", ownerId);
+
+            invokeStaticMethod("geteByOwner", params,
+                    new JsonArrayParser<Product>(this, callback));
         }
     }
 

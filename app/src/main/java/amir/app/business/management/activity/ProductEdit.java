@@ -33,6 +33,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
@@ -53,10 +54,11 @@ import eu.inmite.android.lib.validations.form.annotations.NotEmpty;
  * Created by amin on 12/06/2016.
  */
 
-public class ProductDefine extends AppCompatActivity {
+public class ProductEdit extends AppCompatActivity {
     private class image {
         public String filename;
         public String path;
+        public boolean added;
     }
 
     @BindView(R.id.toolbar)
@@ -83,7 +85,8 @@ public class ProductDefine extends AppCompatActivity {
     @BindView(R.id.indicator)
     CircleIndicator indicator;
 
-    String qrcode;
+    Product product;
+    String productid;
 
     ImageChooserManager imageChooserManager;
     ImageChooserManager imageTakerManager;
@@ -94,6 +97,8 @@ public class ProductDefine extends AppCompatActivity {
     MaterialDialog dlg;
     BottomSheetDialog bottomsheet;
 
+    Product.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Product.Repository.class);
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,7 +107,7 @@ public class ProductDefine extends AppCompatActivity {
 
         //config toolbar
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("ثبت محصول جدید");
+        getSupportActionBar().setTitle("ویرایش محصول");
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -114,13 +119,46 @@ public class ProductDefine extends AppCompatActivity {
             }
         });
 
-        qrcode = getIntent().getExtras().getString("qrcode");
-        editCode.setText(qrcode);
+//        product = (Product) getIntent().getExtras().getSerializable("product");
+        productid = getIntent().getExtras().getString("productid");
+
+        load_product();
 
         initialize_ImageChooser();
         initialize_ImageTaker();
+    }
 
-        load_category_list();
+    private void setup_product_info() {
+        editName.setText(product.getName());
+        editDesc.setText(product.getDescription());
+        editCode.setText(product.getQrcode());
+        editPrice.setText(String.format(Locale.ENGLISH, "%d", product.getPrice()));
+
+        for (String filename : product.getImages()) {
+            image img = new image();
+            img.path = filename;
+
+            images.add(img);
+
+        }
+    }
+
+    private void load_product() {
+        repository.getById(productid, new ObjectCallback<Product>() {
+            @Override
+            public void onSuccess(Product object) {
+                product = object;
+
+                setup_product_info();
+                load_product_images();
+                load_category_list();
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
     }
 
     private void setup_category_spinner() {
@@ -135,20 +173,26 @@ public class ProductDefine extends AppCompatActivity {
         repository.findAll(new ListCallback<Category>() {
             @Override
             public void onSuccess(List<Category> items) {
+                int category_index = 0;
                 categories = items;
-                for (Category item : items) {
-                    category.add(item.getName());
+                for (int i = 0; i < items.size(); i++) {
+                    category.add(items.get(i).getName());
+                    if (items.get(i).getId().equals(product.getCategory()))
+                        category_index = i;
                 }
 
                 setup_category_spinner();
                 progress.setVisibility(View.GONE);
+
+
+                categorySpinner.setSelectedIndex(category_index);
             }
 
             @Override
             public void onError(Throwable t) {
                 progress.setVisibility(View.GONE);
 
-                util.alertDialog(ProductDefine.this, "بستن", "خطا در ارتباط با شبکه", "خطا", new SweetAlertDialog.OnSweetClickListener() {
+                util.alertDialog(ProductEdit.this, "بستن", "خطا در ارتباط با شبکه", "خطا", new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                         onBackPressed();
@@ -167,6 +211,18 @@ public class ProductDefine extends AppCompatActivity {
     }
 
     private void upload_images_and_save_product() {
+        boolean newexist = false;
+        for (image image : images) {
+            if (image.added)
+                newexist = true;
+        }
+
+        if (!newexist) {
+            save_product();
+            return;
+        }
+
+
         dlg = util.progressDialog(this, "ذخیره محصول", "در حال آپلود تصویر ");
 
         ContainerRepository container = GuideApplication.getLoopBackAdapter().createRepository(ContainerRepository.class);
@@ -183,25 +239,24 @@ public class ProductDefine extends AppCompatActivity {
 
             @Override
             public void onError(Throwable t) {
-                util.alertDialog(ProductDefine.this, "بستن", "خطا در ارتباط با شبکه", "خطا", null, SweetAlertDialog.ERROR_TYPE);
+                util.alertDialog(ProductEdit.this, "بستن", "خطا در ارتباط با شبکه", "خطا", null, SweetAlertDialog.ERROR_TYPE);
             }
         });
 
     }
 
     private void save_product() {
+        if (dlg == null)
+            dlg = util.progressDialog(this, "ذخیره محصول", "");
+
         dlg.setContent("در حال ذخیره محصول");
 
-        Product.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Product.Repository.class);
-        final Product product = repository.createObject(ImmutableMap.of("name", ""));
-
-//        product.setId("");
         product.setCategory(categories.get(categorySpinner.getSelectedIndex()).getId());
         product.setName(editName.getText().toString());
         product.setDescription(editDesc.getText().toString());
         product.setOwner(config.customer.getId());
         product.setPrice(Integer.parseInt(editPrice.getText().toString()));
-        product.setQrcode(qrcode);
+        product.setQrcode(product.getQrcode());
 
         List<String> _images = new ArrayList<>();
         for (image img : images) {
@@ -215,7 +270,7 @@ public class ProductDefine extends AppCompatActivity {
                 EventBus.getDefault().post(new ProductListRefreshEvent(product.getName() + " به لیست محصولات اضافه شد."));
 
                 dlg.dismiss();
-                util.alertDialog(ProductDefine.this, "بستن", "محصول با موفقیت ثبت شد.", "نتیجه", new SweetAlertDialog.OnSweetClickListener() {
+                util.alertDialog(ProductEdit.this, "بستن", "محصول با موفقیت ثبت شد.", "نتیجه", new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                         onBackPressed();
@@ -226,7 +281,7 @@ public class ProductDefine extends AppCompatActivity {
             @Override
             public void onError(Throwable t) {
                 dlg.dismiss();
-                util.alertDialog(ProductDefine.this, "بستن", "خطا در ثبت محصول", "خطا", new SweetAlertDialog.OnSweetClickListener() {
+                util.alertDialog(ProductEdit.this, "بستن", "خطا در ثبت محصول", "خطا", new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                     }
@@ -247,22 +302,30 @@ public class ProductDefine extends AppCompatActivity {
 //            return;
 //        }
 
-        container.upload(new File(images.get(indexOfFile).path), new ObjectCallback<com.strongloop.android.loopback.File>() {
-            @Override
-            public void onSuccess(com.strongloop.android.loopback.File object) {
-                images.get(indexOfFile).filename = object.getName();
-                if (indexOfFile + 1 < images.size())
-                    upload_product_images(container, indexOfFile + 1);
-                else
-                    save_product();
-            }
+        //new image added, upload new images only
+        if (images.get(indexOfFile).added)
+            container.upload(new File(images.get(indexOfFile).path), new ObjectCallback<com.strongloop.android.loopback.File>() {
+                @Override
+                public void onSuccess(com.strongloop.android.loopback.File object) {
+                    images.get(indexOfFile).filename = object.getName();
+                    if (indexOfFile + 1 < images.size())
+                        upload_product_images(container, indexOfFile + 1);
+                    else
+                        save_product();
+                }
 
-            @Override
-            public void onError(Throwable t) {
-                dlg.dismiss();
-                util.alertDialog(ProductDefine.this, "error in upload", SweetAlertDialog.SUCCESS_TYPE);
-            }
-        });
+                @Override
+                public void onError(Throwable t) {
+                    dlg.dismiss();
+                    util.alertDialog(ProductEdit.this, "error in upload", SweetAlertDialog.SUCCESS_TYPE);
+                }
+            });
+
+        else if (indexOfFile + 1 < images.size())
+            upload_product_images(container, indexOfFile + 1);
+        else
+            save_product();
+
     }
 
     @OnClick(R.id.btnAddImage)
@@ -305,7 +368,7 @@ public class ProductDefine extends AppCompatActivity {
             gallery.add(img.path);
         }
 
-        imagePager.setAdapter(new GalleryListAdapter(this, gallery, ""));
+        imagePager.setAdapter(new GalleryListAdapter(this, gallery, null));
         indicator.setViewPager(imagePager);
 
         Display display = getWindowManager().getDefaultDisplay();
@@ -333,6 +396,8 @@ public class ProductDefine extends AppCompatActivity {
                         String selectedfile = image.getFilePathOriginal();
                         image img = new image();
                         img.path = selectedfile;
+                        img.added = true;
+
                         images.add(img);
 
                         load_product_images();
@@ -359,6 +424,8 @@ public class ProductDefine extends AppCompatActivity {
                         String selectedfile = image.getFilePathOriginal();
                         image img = new image();
                         img.path = selectedfile;
+                        img.added = true;
+
                         images.add(img);
 
                         load_product_images();

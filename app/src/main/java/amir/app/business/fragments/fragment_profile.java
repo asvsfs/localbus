@@ -6,11 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +18,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.strongloop.android.loopback.callbacks.ListCallback;
 import com.strongloop.android.loopback.callbacks.ObjectCallback;
+
+import java.util.List;
 
 import amir.app.business.GuideApplication;
 import amir.app.business.LoginActivity;
@@ -27,8 +29,13 @@ import amir.app.business.R;
 import amir.app.business.RegisterActivity;
 import amir.app.business.callbacks.SimpleCallback;
 import amir.app.business.config;
+import amir.app.business.management.activity.EventDefine;
 import amir.app.business.management.activity.ProductManagerActivity;
+import amir.app.business.management.adapter.EventListAdapter;
+import amir.app.business.management.adapter.FollowingListAdapter;
 import amir.app.business.models.Customer;
+import amir.app.business.models.Event;
+import amir.app.business.models.Following;
 import amir.app.business.widget.CircleImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -123,6 +130,8 @@ public class fragment_profile extends baseFragment {
 
         viewpager.setVisibility(View.VISIBLE);
         tablayout.setVisibility(View.VISIBLE);
+
+        viewpager.setCurrentItem(1);
     }
 
     @Override
@@ -188,8 +197,9 @@ public class fragment_profile extends baseFragment {
 
     private class pagerAdapter extends PagerAdapter {
         private Context context;
-        int[] layouts = new int[]{R.layout.fragment_profile_follwing};
-        String[] titles = new String[]{"دنبال شده‌ها"};
+
+        int[] layouts = new int[]{R.layout.fragment_profile_following, R.layout.fragment_profile_events};
+        String[] titles = new String[]{"دنبال شده‌ها", "رویدادها"};
 
         public pagerAdapter(Context context) {
             this.context = context;
@@ -204,6 +214,23 @@ public class fragment_profile extends baseFragment {
         public Object instantiateItem(ViewGroup collection, int position) {
             LayoutInflater inflater = LayoutInflater.from(this.context);
             ViewGroup layout = (ViewGroup) inflater.inflate(layouts[position], collection, false);
+
+            switch (position) {
+                case 0: //following
+                    load_following((RecyclerView) layout.findViewById(R.id.recyclerview));
+                    break;
+
+                case 1: //events
+                    load_events((RecyclerView) layout.findViewById(R.id.recyclerview));
+                    layout.findViewById(R.id.floatAdd).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startActivity(new Intent(getactivity(), EventDefine.class));
+                        }
+                    });
+                    break;
+            }
+
             collection.addView(layout);
             return layout;
         }
@@ -222,6 +249,41 @@ public class fragment_profile extends baseFragment {
         public boolean isViewFromObject(View view, Object object) {
             return view == object;
         }
+    }
+
+    private void load_following(final RecyclerView recyclerview) {
+        recyclerview.setLayoutManager(new LinearLayoutManager(getactivity(), LinearLayoutManager.VERTICAL, false));
+
+        Following.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Following.Repository.class);
+        repository.findAll(new ListCallback<Following>() {
+            @Override
+            public void onSuccess(List<Following> following) {
+                recyclerview.setAdapter(new FollowingListAdapter(getactivity(), following));
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
+    }
+
+    private void load_events(final RecyclerView recyclerview) {
+        recyclerview.setLayoutManager(new LinearLayoutManager(getactivity(), LinearLayoutManager.VERTICAL, false));
+
+        Event.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Event.Repository.class);
+        repository.findAll(new ListCallback<Event>() {
+            @Override
+            public void onSuccess(List<Event> events) {
+                recyclerview.setAdapter(new EventListAdapter(getactivity(), events));
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
+
     }
 
 }

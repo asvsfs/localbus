@@ -3,7 +3,6 @@ package amir.app.business.fragments.product;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -73,12 +72,10 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
     Toolbar toolbar;
     @BindView(R.id.txtverification)
     FarsiTextView txtverification;
-    @BindView(R.id.btncomments)
-    Button btncomments;
+    @BindView(R.id.txtmorecomments)
+    TextView txtmorecomments;
     @BindView(R.id.commentProgress)
     ProgressBar commentProgress;
-    @BindView(R.id.commentInnerLayout)
-    View commentInnerLayout;
     @BindView(R.id.btnSendComment)
     ImageView btnSendComment;
     @BindView(R.id.txtlastcomment)
@@ -95,8 +92,8 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
     MapView mapview;
     @BindView(R.id.btnroute)
     Button btnroute;
-    @BindView(R.id.commentCard)
-    CardView commentCard;
+    @BindView(R.id.commentLayout)
+    View commentLayout;
 
     Product product;
     GoogleMap map;
@@ -203,7 +200,7 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
             @Override
             public void onSuccess(List<Comment> comments) {
                 commentProgress.setVisibility(View.GONE);
-                commentInnerLayout.setVisibility(View.VISIBLE);
+//                commentInnerLayout.setVisibility(View.VISIBLE);
 
                 if (comments.size() > 0)
                     txtlastcomment.setText(comments.get(0).getText());
@@ -212,7 +209,7 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
             @Override
             public void onError(Throwable t) {
                 commentProgress.setVisibility(View.GONE);
-                commentCard.setVisibility(View.GONE);
+                commentLayout.setVisibility(View.GONE);
             }
         });
 
@@ -245,8 +242,8 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
         });
     }
 
-    @OnClick(R.id.btncomments)
-    public void btnComment() {
+    @OnClick(R.id.txtmorecomments)
+    public void moreComment() {
         switchFragment(new fragment_comment().newInstance(product), true);
     }
 
