@@ -17,10 +17,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.strongloop.android.loopback.callbacks.ListCallback;
 import com.strongloop.android.loopback.callbacks.ObjectCallback;
 
+import java.util.HashMap;
 import java.util.List;
 
 import amir.app.business.GuideApplication;
@@ -36,6 +38,7 @@ import amir.app.business.management.adapter.FollowingListAdapter;
 import amir.app.business.models.Customer;
 import amir.app.business.models.Event;
 import amir.app.business.models.Following;
+import amir.app.business.models.Verification;
 import amir.app.business.widget.CircleImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,6 +64,8 @@ public class fragment_profile extends baseFragment {
     Button btnlogin;
     @BindView(R.id.btnRegister)
     Button btnRegister;
+    @BindView(R.id.txtName)
+    TextView txtName;
     @BindView(R.id.editName)
     EditText editName;
     @BindView(R.id.editPhone)
@@ -103,6 +108,7 @@ public class fragment_profile extends baseFragment {
         btnlogin.setVisibility(View.GONE);
         viewpager.setVisibility(View.GONE);
         tablayout.setVisibility(View.GONE);
+        btnProductManage.setVisibility(View.GONE);
 
         repository = GuideApplication.getLoopBackAdapter().createRepository(Customer.Repository.class);
 
@@ -152,6 +158,8 @@ public class fragment_profile extends baseFragment {
             public void onSuccess(Customer customer) {
                 config.customer = customer;
 
+                checkVerificationId(customer.getVerificationId());
+
                 loginProgress.setVisibility(View.GONE);
 
                 btnlogin.setVisibility(config.token == null ? View.VISIBLE : View.GONE);
@@ -160,6 +168,7 @@ public class fragment_profile extends baseFragment {
 //                tablayout.setVisibility(config.token == null ? View.GONE : View.VISIBLE);
 
                 if (config.customer != null) {
+                    txtName.setText(customer.getRealm());
                     editMail.setText(config.customer.getEmail());
                     editName.setText(config.customer.getUsername());
                     editPhone.setText(config.customer.getTelegramNumber());
@@ -167,7 +176,7 @@ public class fragment_profile extends baseFragment {
 
                 mainContent.setVisibility(View.VISIBLE);
 
-                load_tabs_fragments_list();
+
             }
 
             @Override
@@ -178,6 +187,25 @@ public class fragment_profile extends baseFragment {
             }
         });
 
+    }
+
+    private void checkVerificationId(String verification) {
+        Verification.Repository verif_repo = GuideApplication.getLoopBackAdapter().createRepository(Verification.Repository.class);
+
+//        HashMap<String, String> param=new HashMap<>();
+//        param.put("customerId", verification)
+        verif_repo.findById(verification, new ObjectCallback<Verification>() {
+            @Override
+            public void onSuccess(Verification object) {
+                btnProductManage.setVisibility(View.VISIBLE);
+                load_tabs_fragments_list();
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
     }
 
     @OnClick(R.id.btnlogin)

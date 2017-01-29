@@ -110,7 +110,7 @@ public class ProductManagerActivity extends AppCompatActivity {
             return;
         }
 
-        repository.findAll(new ListCallback<Product>() {
+        repository.geteByOwner(0, config.customer.getId(), new ListCallback<Product>() {
             @Override
             public void onSuccess(List<Product> items) {
                 products = items;

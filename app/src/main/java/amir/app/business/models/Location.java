@@ -1,8 +1,6 @@
 package amir.app.business.models;
 
-import com.strongloop.android.loopback.Model;
-
-public class Location extends Model {
+public class Location  {
     private float lat;
     private float lng;
 

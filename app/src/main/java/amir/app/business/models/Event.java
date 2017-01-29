@@ -1,7 +1,10 @@
 package amir.app.business.models;
 
+import com.google.gson.Gson;
 import com.strongloop.android.loopback.Model;
 import com.strongloop.android.loopback.ModelRepository;
+
+import java.util.HashMap;
 
 /**
  * Created by amin on 08/05/2016.
@@ -32,8 +35,13 @@ public class Event extends Model {
         this.description = description;
     }
 
-    public Location getLocation() {
-        return location;
+    public HashMap<String, Float> getLocation() {
+        HashMap<String, Float> param = new HashMap<>();
+
+        param.put("lat", location.getLat());
+        param.put("lng", location.getLng());
+
+        return param;
     }
 
     public void setLocation(Location location) {

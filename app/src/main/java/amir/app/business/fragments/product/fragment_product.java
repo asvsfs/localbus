@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import amir.app.business.GuideApplication;
@@ -200,10 +201,15 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
             @Override
             public void onSuccess(List<Comment> comments) {
                 commentProgress.setVisibility(View.GONE);
-//                commentInnerLayout.setVisibility(View.VISIBLE);
+                if (comments.size() > 1)
+                    txtmorecomments.setText(String.format(Locale.ENGLISH, "همه %d نظر را ببینید", comments.size()));
+                else
+                    txtmorecomments.setVisibility(View.GONE);
 
                 if (comments.size() > 0)
                     txtlastcomment.setText(comments.get(0).getText());
+                else
+                    commentLayout.setVisibility(View.GONE);
             }
 
             @Override
@@ -223,16 +229,22 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
         repository.findAll(new ListCallback<Product>() {
             @Override
             public void onSuccess(List<Product> items) {
-                for (int i = 0; i < 10; i++) {
-                    Product b = new Product();
-                    b.setName("product " + i);
-                    b.setDescription("description " + i);
-                    items.add(b);
-                }
+//                for (int i = 0; i < 10; i++) {
+//                    Product b = new Product();
+//                    b.setName("product " + i);
+//                    b.setDescription("description " + i);
+//                    items.add(b);
+//                }
 
                 //setup top product view
-                ProductHorizontalListAdapter topadapter = new ProductHorizontalListAdapter(getActivity(), items);
-                similarRecyclerview.setAdapter(topadapter);
+                ProductHorizontalListAdapter adapter = new ProductHorizontalListAdapter(getActivity(), items);
+                adapter .setOnItemClickListener(new ProductHorizontalListAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(Product product) {
+                        switchFragment(new fragment_product().newInstance(product), true);
+                    }
+                });
+                similarRecyclerview.setAdapter(adapter );
                 similarRecyclerview.setNestedScrollingEnabled(false);
             }
 
