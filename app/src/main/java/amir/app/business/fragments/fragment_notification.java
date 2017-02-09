@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -28,6 +29,8 @@ public class fragment_notification extends baseFragment {
     Toolbar toolbar;
     @BindView(R.id.progress)
     ProgressBar progress;
+    @BindView(R.id.txtempty)
+    TextView txtempty;
 
     @Nullable
     @Override
@@ -63,5 +66,6 @@ public class fragment_notification extends baseFragment {
         recyclerview.setNestedScrollingEnabled(false);
 
         progress.setVisibility(View.GONE);
+        txtempty.setVisibility(items.size() > 0 ? View.GONE : View.VISIBLE);
     }
 }

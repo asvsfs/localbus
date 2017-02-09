@@ -43,25 +43,30 @@
                 android:layout_marginTop="8dp"
                 android:text="وارد شوید" />
 
-            <Button
+            <amir.app.business.widget.FarsiButton
                 android:id="@+id/btnRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/btnlogin"
                 android:layout_centerHorizontal="true"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp"
                 android:background="@null"
                 android:text="نام کاربری خود را بسازید"
-                android:textColor="#333" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="#000"
+                app:FarsiTypeface="IRANSansLight" />
 
-            <TextView
+            <amir.app.business.widget.FarsiTextView
                 android:id="@+id/txtName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/imgavatar"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="8dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="#000"
+                app:FarsiTypeface="IRANSans"
                 tools:text="نام کاربری" />
         </RelativeLayout>
 
@@ -86,7 +91,8 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <EditText
+                    <amir.app.business.widget.FarsiEditText
+                        app:FarsiTypeface="IRANSans"
                         android:id="@+id/editName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -123,7 +129,8 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <EditText
+                    <amir.app.business.widget.FarsiEditText
+                        app:FarsiTypeface="IRANSans"
                         android:id="@+id/editPhone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -159,7 +166,8 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <EditText
+                    <amir.app.business.widget.FarsiEditText
+                        app:FarsiTypeface="IRANSans"
                         android:id="@+id/editMail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

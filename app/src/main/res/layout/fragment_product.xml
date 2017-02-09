@@ -38,7 +38,8 @@
                 <RelativeLayout
                     android:id="@+id/header"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    tools:layout_height="200dp">
 
                     <android.support.v4.view.ViewPager
                         android:id="@+id/imagePager"
@@ -111,7 +112,7 @@
                         android:layout_toLeftOf="@+id/btnshare"
                         android:layout_toStartOf="@+id/btnshare"
                         android:padding="10dp"
-                        android:src="@drawable/ic_insert_comment_grey_500_24dp" />
+                        android:src="@drawable/ic_insert_comment_black_24dp" />
 
                     <ImageView
                         android:id="@+id/btnshare"
@@ -122,7 +123,7 @@
                         android:layout_toLeftOf="@+id/btnlike"
                         android:layout_toStartOf="@+id/btnlike"
                         android:padding="10dp"
-                        android:src="@drawable/ic_share_grey_500_24dp" />
+                        android:src="@drawable/ic_share_black_24dp" />
 
                 </RelativeLayout>
 
@@ -141,7 +142,7 @@
                     android:orientation="vertical">
 
                     <view
-                        android:id="@+id/txtname"
+                        android:id="@+id/txtbusiness"
                         class="amir.app.business.widget.FarsiTextView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -152,10 +153,39 @@
                         android:gravity="right|center_vertical"
                         android:padding="10dp"
                         android:singleLine="true"
-                        android:text="نام محصول"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/colorPrimaryDark"
+                        app:FarsiTypeface="IRANSansBold"
+                        tools:text="نام کسب و کار" />
+
+                    <Button
+                        android:id="@+id/btnfollow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_margin="5dp"
+                        android:padding="0dp"
+                        android:text="دنبال کنید" />
+
+                    <view
+                        android:id="@+id/txtname"
+                        class="amir.app.business.widget.FarsiTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/txtbusiness"
+                        android:layout_weight="1"
+                        android:background="#fff"
+                        android:gravity="right|center_vertical"
+                        android:padding="10dp"
+                        android:singleLine="true"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="#000"
-                        app:FarsiTypeface="IRANSansBold" />
+                        app:FarsiTypeface="IRANSansBold"
+                        tools:text="نام محصول" />
 
                     <RatingBar
                         android:id="@+id/ratingbar"
@@ -191,7 +221,7 @@
                         android:text="توضیحات"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="#000"
-                        app:FarsiTypeface="IRANSansBold" />
+                        app:FarsiTypeface="IRANSans" />
                 </RelativeLayout>
 
                 <LinearLayout

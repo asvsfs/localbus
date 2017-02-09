@@ -116,8 +116,8 @@ public class Product extends Model implements Serializable {
             contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/productByCategory", "GET"),
                     getClassName() + ".productByCategory");
 
-            contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/geteByOwner", "GET"),
-                    getClassName() + ".geteByOwner");
+            contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/getByOwner", "GET"),
+                    getClassName() + ".getByOwner");
             return contract;
         }
 
@@ -146,12 +146,12 @@ public class Product extends Model implements Serializable {
                     new JsonArrayParser<Product>(this, callback));
         }
 
-        public void geteByOwner(int page, String ownerId, ListCallback<Product> callback) {
+        public void getByOwner(int page, String ownerId, ListCallback<Product> callback) {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("page", page);
             params.put("ownerId", ownerId);
 
-            invokeStaticMethod("geteByOwner", params,
+            invokeStaticMethod("getByOwner", params,
                     new JsonArrayParser<Product>(this, callback));
         }
     }

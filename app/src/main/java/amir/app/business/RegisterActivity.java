@@ -6,13 +6,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.common.collect.ImmutableMap;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
 
 import amir.app.business.management.activity.ProductDefine;
+import amir.app.business.models.Businesse;
 import amir.app.business.models.Customer;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +45,10 @@ public class RegisterActivity extends AppCompatActivity {
     EditText editPassword;
     @BindView(R.id.btnRegister)
     Button btnRegister;
+    @BindView(R.id.chkBusiness)
+    CheckBox chkBusiness;
+    @BindView(R.id.txtBusiness)
+    TextView txtBusiness;
 
     MaterialDialog dlg;
 
@@ -85,8 +92,11 @@ public class RegisterActivity extends AppCompatActivity {
         customer.save(new VoidCallback() {
             @Override
             public void onSuccess() {
-                dlg.dismiss();
-                util.alertDialog(RegisterActivity.this, "بستن", "", "مشخصات عضویت شما ذخیره شد.\n لینک فعال سازی به ایمیل شما ارسال گردید\nبرای شروع ابتدا کاربری خود را فعال کنید.", new SweetAlertDialog.OnSweetClickListener() {
+                String text = "مشخصات عضویت شما ذخیره شد.\n لینک فعال سازی به ایمیل شما ارسال گردید\nبرای شروع ابتدا کاربری خود را فعال کنید.";
+                if (chkBusiness.isChecked())
+                    text += "\n\n" + "برای ثبت کسب و کار با ایمیل یا تلفن ما تماس بگیرید.";
+
+                util.alertDialog(RegisterActivity.this, "بستن", "", text, new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                         finish();
@@ -106,5 +116,9 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    @OnClick(R.id.txtBusiness)
+    public void txtBusiness(){
+        chkBusiness.performClick();
+    }
 }
 

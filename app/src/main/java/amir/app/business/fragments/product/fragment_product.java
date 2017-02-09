@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
@@ -26,7 +28,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.common.collect.ImmutableMap;
 import com.strongloop.android.loopback.callbacks.ListCallback;
+import com.strongloop.android.loopback.callbacks.ObjectCallback;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
 
 import java.util.ArrayList;
@@ -42,7 +46,10 @@ import amir.app.business.adapter.GalleryListAdapter;
 import amir.app.business.adapter.ProductHorizontalListAdapter;
 import amir.app.business.config;
 import amir.app.business.fragments.baseFragment;
+import amir.app.business.models.Businesse;
 import amir.app.business.models.Comment;
+import amir.app.business.models.Followed;
+import amir.app.business.models.Following;
 import amir.app.business.models.Product;
 import amir.app.business.models.db.Basket;
 import amir.app.business.util;
@@ -63,6 +70,8 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
     ViewPager imagePager;
     @BindView(R.id.indicator)
     CircleIndicator indicator;
+    @BindView(R.id.txtbusiness)
+    FarsiTextView txtbusiness;
     @BindView(R.id.txtname)
     FarsiTextView txtname;
     @BindView(R.id.txtdesc)
@@ -93,11 +102,15 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
     MapView mapview;
     @BindView(R.id.btnroute)
     Button btnroute;
+    @BindView(R.id.btnfollow)
+    Button btnfollow;
     @BindView(R.id.commentLayout)
     View commentLayout;
 
     Product product;
     GoogleMap map;
+
+    String followingId = "";
 
     public static fragment_product newInstance(Product product) {
         fragment_product fragment = new fragment_product();
@@ -130,11 +143,19 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
 
         txtname.setText(product.getName());
         txtdesc.setText(product.getDescription());
+        btnfollow.setVisibility(config.customer == null ? View.GONE : View.VISIBLE);
 
         setup_map_view(savedInstanceState);
 
+        load_business();
+
+        checkfollowState();
+
         //load product list via api
         load_similar_product_list();
+
+        //load likes count for this product
+        load_likes_count();
 
         //load three lastest comment about this product
         load_latest_comments_list();
@@ -142,6 +163,25 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
         load_product_images();
 
         return view;
+    }
+
+    private void load_business(){
+        Businesse.Repository repository= GuideApplication.getLoopBackAdapter().createRepository(Businesse.Repository.class);
+
+        HashMap<String, String> filter = new HashMap<>();
+        filter.put("userId", product.getOwner());
+
+        repository.findOne(filter, new ObjectCallback<Businesse>() {
+            @Override
+            public void onSuccess(Businesse businesse) {
+                txtbusiness.setText(businesse.getName());
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
     }
 
     private void load_product_images() {
@@ -221,30 +261,117 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
 
     }
 
+    private void load_likes_count() {
+        Followed.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Followed.Repository.class);
+        HashMap<String, String> filter = new HashMap<>();
+        filter.put("followedid", product.getId().toString());
+        repository.find(filter, new ListCallback<Followed>() {
+            @Override
+            public void onSuccess(List<Followed> likes) {
+                btnlike.setText(String.format(Locale.ENGLISH, "%d", likes.size()));
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
+    }
+
+    private void checkfollowState() {
+        Following.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Following.Repository.class);
+
+        HashMap<String, String> filter = new HashMap<>();
+        filter.put("followingid", product.getOwner());
+
+        repository.findOne(filter, new ObjectCallback<Following>() {
+            @Override
+            public void onSuccess(Following object) {
+                followingId = object.getId();
+                btnfollow.setText("دنبال میکنم");
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                followingId = "";
+                btnfollow.setText("دنبال کنید");
+            }
+        });
+
+
+    }
+
+    @OnClick(R.id.btnfollow)
+    public void follow() {
+        Following.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Following.Repository.class);
+
+        //add new follow
+        if (followingId.equals("")) {
+            Following newfollow = repository.createObject(ImmutableMap.of("userid", config.customer.getId()));
+
+            List<String> ids = new ArrayList<>();
+            ids.add(product.getOwner());
+            newfollow.setFollowedid(ids);
+
+            newfollow.save(new VoidCallback() {
+                @Override
+                public void onSuccess() {
+                    checkfollowState();
+                }
+
+                @Override
+                public void onError(Throwable t) {
+
+                }
+            });
+        } else {
+            repository.findById(followingId, new ObjectCallback<Following>() {
+                @Override
+                public void onSuccess(Following object) {
+                    object.destroy(new VoidCallback() {
+                        @Override
+                        public void onSuccess() {
+                            followingId = "";
+                            checkfollowState();
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onError(Throwable t) {
+
+                }
+            });
+        }
+    }
+
+
+    //load similar products with product category
     private void load_similar_product_list() {
         similarRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         Product.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Product.Repository.class);
 
-        repository.findAll(new ListCallback<Product>() {
+        HashMap<String, String> filter = new HashMap<>();
+        filter.put("category", product.getCategory());
+
+        repository.find(filter, new ListCallback<Product>() {
             @Override
             public void onSuccess(List<Product> items) {
-//                for (int i = 0; i < 10; i++) {
-//                    Product b = new Product();
-//                    b.setName("product " + i);
-//                    b.setDescription("description " + i);
-//                    items.add(b);
-//                }
-
                 //setup top product view
                 ProductHorizontalListAdapter adapter = new ProductHorizontalListAdapter(getActivity(), items);
-                adapter .setOnItemClickListener(new ProductHorizontalListAdapter.OnItemClickListener() {
+                adapter.setOnItemClickListener(new ProductHorizontalListAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(Product product) {
                         switchFragment(new fragment_product().newInstance(product), true);
                     }
                 });
-                similarRecyclerview.setAdapter(adapter );
+                similarRecyclerview.setAdapter(adapter);
                 similarRecyclerview.setNestedScrollingEnabled(false);
             }
 

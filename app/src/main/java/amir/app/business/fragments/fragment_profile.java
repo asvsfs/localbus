@@ -40,6 +40,7 @@ import amir.app.business.models.Event;
 import amir.app.business.models.Following;
 import amir.app.business.models.Verification;
 import amir.app.business.widget.CircleImageView;
+import amir.app.business.widget.FarsiButton;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -63,7 +64,7 @@ public class fragment_profile extends baseFragment {
     @BindView(R.id.btnlogin)
     Button btnlogin;
     @BindView(R.id.btnRegister)
-    Button btnRegister;
+    FarsiButton btnRegister;
     @BindView(R.id.txtName)
     TextView txtName;
     @BindView(R.id.editName)
