@@ -14,9 +14,11 @@ import android.widget.ProgressBar;
 import com.google.android.gms.maps.GoogleMap;
 import com.strongloop.android.loopback.callbacks.ListCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import amir.app.business.EndlessRecyclerOnScrollListener;
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
 import amir.app.business.adapter.ProductHorizontalListAdapter;
@@ -76,31 +78,27 @@ public class fragment_category_page extends baseFragment {
             }
         });
 
+        products = new ArrayList<>();
+
+        init_layout();
+
         //load category business list via api
-        load_business_list();
+        load_business_list(0);
 
         return view;
     }
 
-    private void load_business_list() {
-        businessRecyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 3, LinearLayoutManager.VERTICAL, false));
-
+    private void load_business_list(int page) {
         Product.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Product.Repository.class);
 
-        repository.productByCategory(0, category.getId(), new ListCallback<Product>() {
+        repository.productByCategory(page, category.getId(), new ListCallback<Product>() {
             @Override
             public void onSuccess(List<Product> items) {
-                txtcount.setText(String.format(Locale.ENGLISH, "%d", items.size()));
-                products = items;
+                products.addAll(items);
 
-//                for (int i = 0; i < 10; i++) {
-//                    Product product = new Product();
-//                    product.setName("product " + i);
-//                    product.setDescription("product " + i);
-//                    products.add(product);
-//                }
-
+                txtcount.setText(String.format(Locale.ENGLISH, "%d", products.size()));
                 progress.setVisibility(View.GONE);
+
                 setup_adapter_and_views();
             }
 
@@ -122,10 +120,17 @@ public class fragment_category_page extends baseFragment {
     private void init_layout() {
         topRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         businessRecyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 3, LinearLayoutManager.VERTICAL, false));
+
+        businessRecyclerview.setOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager) businessRecyclerview.getLayoutManager()) {
+            @Override
+            public void onLoadMore(int current_page) {
+                load_business_list(current_page - 1);
+            }
+        });
     }
 
     private void setup_adapter_and_views() {
-        init_layout();
+
 
         //setup top businesses view
         ProductHorizontalListAdapter topadapter = new ProductHorizontalListAdapter(getActivity(), products);
@@ -137,6 +142,7 @@ public class fragment_category_page extends baseFragment {
         });
         topRecyclerview.setAdapter(topadapter);
         topRecyclerview.setNestedScrollingEnabled(false);
+
 
         //setup main businesses view
         ProductHorizontalListAdapter adapter = new ProductHorizontalListAdapter(getActivity(), products);
