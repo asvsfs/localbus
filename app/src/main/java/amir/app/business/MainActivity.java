@@ -21,6 +21,7 @@ import org.fingerlinks.mobile.android.navigator.Navigator;
 import amir.app.business.fragments.baseFragment;
 import amir.app.business.fragments.fragment_basket;
 import amir.app.business.fragments.fragment_category;
+import amir.app.business.fragments.fragment_event;
 import amir.app.business.fragments.fragment_notification;
 import amir.app.business.fragments.fragment_profile;
 import amir.app.business.fragments.fragment_search;
@@ -165,8 +166,8 @@ public class MainActivity extends AppCompatActivity {
                 switchFragment(new fragment_search(), true);
                 break;
 
-            case 3: //notification
-                switchFragment(new fragment_notification(), true);
+            case 3: //event
+                switchFragment(new fragment_event(), true);
                 break;
 
             case 4: //profile

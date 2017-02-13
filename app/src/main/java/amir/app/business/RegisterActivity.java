@@ -60,6 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         //config toolbar
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("عضویت");
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

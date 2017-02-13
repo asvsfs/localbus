@@ -1,10 +1,18 @@
 package amir.app.business.models;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.strongloop.android.loopback.Model;
 import com.strongloop.android.loopback.ModelRepository;
+import com.strongloop.android.loopback.callbacks.JsonArrayParser;
+import com.strongloop.android.loopback.callbacks.JsonObjectParser;
+import com.strongloop.android.loopback.callbacks.ListCallback;
+import com.strongloop.android.loopback.callbacks.ObjectCallback;
+import com.strongloop.android.remoting.adapters.RestContract;
+import com.strongloop.android.remoting.adapters.RestContractItem;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by amin on 08/05/2016.
@@ -68,6 +76,21 @@ public class Event extends Model {
         public Repository() {
             super("event", "events", Event.class);
         }
+
+        @Override
+        public RestContract createContract() {
+            RestContract contract = super.createContract();
+            contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:id", "GET"),
+                    getClassName() + ".getForCustomer");
+
+            return contract;
+        }
+
+        public void getForCustomer(String id, ListCallback<Event> callback) {
+            invokeStaticMethod("getForCustomer", ImmutableMap.of("id", id),
+                    new JsonArrayParser<Event>(this, callback));
+        }
+
     }
 
 }
