@@ -35,8 +35,8 @@ public class Following extends Model  {
         return followingid;
     }
 
-    public void setFollowedid(List<String> followedid) {
-        this.followingid = followedid;
+    public void setFollowingid(List<String> followingid) {
+        this.followingid = followingid;
     }
 
     @Override

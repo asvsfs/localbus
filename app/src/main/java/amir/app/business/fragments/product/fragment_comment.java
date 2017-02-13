@@ -15,10 +15,12 @@ import android.widget.TextView;
 import com.strongloop.android.loopback.callbacks.ListCallback;
 
 import java.util.List;
+import java.util.Locale;
 
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
 import amir.app.business.adapter.CommentListAdapter;
+import amir.app.business.config;
 import amir.app.business.fragments.baseFragment;
 import amir.app.business.models.Comment;
 import amir.app.business.models.Product;
@@ -38,8 +40,8 @@ public class fragment_comment extends baseFragment {
     RatingBar ratingBar;
     @BindView(R.id.txtrate)
     TextView txtrate;
-    @BindView(R.id.txtname)
-    FarsiTextView txtname;
+    @BindView(R.id.txttitle)
+    FarsiTextView txttitle;
     @BindView(R.id.commentresyclerview)
     RecyclerView commentresyclerview;
     @BindView(R.id.progress)
@@ -84,16 +86,20 @@ public class fragment_comment extends baseFragment {
 
         repository.getByProductId(product.getId().toString(), new ListCallback<Comment>() {
             @Override
-            public void onSuccess(List<Comment> items) {
-//                for (int i = 0; i < 10; i++) {
-//                    Comment comment = new Comment();
-//
-//                    comment.setText("خیلی خوب");
-//                    items.add(comment);
-//                }
+            public void onSuccess(List<Comment> comments) {
+                txttitle.setText(String.format(Locale.ENGLISH, "امتیار از مجموعه %d نظر", comments.size()));
+
+                //calculate average rate of comments
+                int rate = 0;
+                for (Comment comment : comments) {
+                    rate += comment.getRate();
+                }
+                rate = rate / comments.size();
+                ratingBar.setRating(rate);
+                txtrate.setText(String.format(Locale.ENGLISH, "%d/5", rate));
 
                 //setup comment view
-                CommentListAdapter adapter = new CommentListAdapter(getActivity(), items);
+                CommentListAdapter adapter = new CommentListAdapter(getActivity(), comments);
                 commentresyclerview.setAdapter(adapter);
                 commentresyclerview.setNestedScrollingEnabled(false);
 

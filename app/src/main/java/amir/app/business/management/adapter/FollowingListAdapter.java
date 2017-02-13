@@ -7,15 +7,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.Button;
+import android.widget.Toast;
 
+import com.strongloop.android.loopback.callbacks.ObjectCallback;
+import com.strongloop.android.loopback.callbacks.VoidCallback;
+
+import java.util.HashMap;
 import java.util.List;
 
+import amir.app.business.GuideApplication;
 import amir.app.business.R;
+import amir.app.business.models.Businesse;
 import amir.app.business.models.Event;
 import amir.app.business.models.Following;
 import amir.app.business.widget.FarsiTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by amin on 08/08/2016.
@@ -29,8 +38,8 @@ public class FollowingListAdapter extends RecyclerView.Adapter<FollowingListAdap
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.txttitle)
         FarsiTextView txttitle;
-        @BindView(R.id.txtdesc)
-        FarsiTextView txtdesc;
+        @BindView(R.id.btnfollow)
+        Button btnfollow;
 
         ViewHolder(View view) {
             super(view);
@@ -43,12 +52,33 @@ public class FollowingListAdapter extends RecyclerView.Adapter<FollowingListAdap
         @Override
         public void onClick(View v) {
             if (mItemClickListener != null) {
-                mItemClickListener.onItemClick(items.get(getPosition()), v);
+                mItemClickListener.onItemClick(items.get(getLayoutPosition()), v);
             }
+        }
+
+        @OnClick(R.id.btnfollow)
+        public void btnfollow() {
+            Following following = items.get(getLayoutPosition());
+            following.destroy(new VoidCallback() {
+                @Override
+                public void onSuccess() {
+                    items.remove(getLayoutPosition());
+                    notifyItemRemoved(getLayoutPosition());
+                    Toast.makeText(context, "از فهرست دنبال شده‌ها حذف شد", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onError(Throwable t) {
+
+                }
+            });
         }
     }
 
-    static OnItemClickListener mItemClickListener;
+    Businesse.Repository businessRepo = GuideApplication.getLoopBackAdapter().createRepository(Businesse.Repository.class);
+    Following.Repository followingRepo = GuideApplication.getLoopBackAdapter().createRepository(Following.Repository.class);
+
+    OnItemClickListener mItemClickListener;
     Adapter adapter;
 
     Context context;
@@ -70,15 +100,30 @@ public class FollowingListAdapter extends RecyclerView.Adapter<FollowingListAdap
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
-                inflate(R.layout.fragment_profile_events_row, viewGroup, false);
+                inflate(R.layout.fragment_profile_following_row, viewGroup, false);
 
         return new ViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final Following following = items.get(position);
 
+
+        HashMap<String, String> param = new HashMap<>();
+        param.put("userid", following.getUserid());
+
+        businessRepo.findOne(param, new ObjectCallback<Businesse>() {
+            @Override
+            public void onSuccess(Businesse businesse) {
+                holder.txttitle.setText(businesse.getName());
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
 //        holder.txttitle.setText(following.getTitle());
 //        holder.txtdesc.setText(following.getDescription());
     }

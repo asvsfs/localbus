@@ -2,6 +2,7 @@ package amir.app.business.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,11 +22,13 @@ import java.util.Locale;
 import amir.app.business.EndlessRecyclerOnScrollListener;
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
+import amir.app.business.adapter.AdverListAdapter;
 import amir.app.business.adapter.ProductHorizontalListAdapter;
 import amir.app.business.fragments.product.fragment_product;
 import amir.app.business.models.Category;
 import amir.app.business.models.Product;
 import amir.app.business.util;
+import amir.app.business.widget.CircleIndicator;
 import amir.app.business.widget.FarsiTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,6 +49,10 @@ public class fragment_category_page extends baseFragment {
     ProgressBar progress;
     @BindView(R.id.txtcount)
     FarsiTextView txtcount;
+    @BindView(R.id.adverPager)
+    ViewPager adverPager;
+    @BindView(R.id.indicator)
+    CircleIndicator indicator;
 
     List<Product> products;
     GoogleMap map;
@@ -80,12 +87,27 @@ public class fragment_category_page extends baseFragment {
 
         products = new ArrayList<>();
 
+        load_advers();
+
         init_layout();
 
         //load category business list via api
         load_business_list(0);
 
         return view;
+    }
+
+    private void load_advers() {
+        List<String> adver = new ArrayList<>();
+
+        //template
+        adver.add("");
+        adver.add("");
+        adver.add("");
+        //template
+
+        adverPager.setAdapter(new AdverListAdapter(getactivity(), adver));
+        indicator.setViewPager(adverPager);
     }
 
     private void load_business_list(int page) {

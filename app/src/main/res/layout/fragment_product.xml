@@ -98,9 +98,9 @@
                         android:layout_alignParentTop="true"
                         android:layout_margin="10dp"
                         android:background="@null"
-                        android:drawableLeft="@drawable/ic_favorite_red_a700_18dp"
+                        android:drawableLeft="@drawable/ic_favorite_grey_500_18dp"
                         android:padding="10dp"
-                        android:text="99"
+                        android:text="0"
                         android:textColor="#000" />
 
                     <ImageView
@@ -158,8 +158,9 @@
                         app:FarsiTypeface="IRANSansBold"
                         tools:text="نام کسب و کار" />
 
-                    <Button
+                    <view
                         android:id="@+id/btnfollow"
+                        class="amir.app.business.widget.FarsiButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
@@ -167,7 +168,8 @@
                         android:layout_alignParentTop="true"
                         android:layout_margin="5dp"
                         android:padding="0dp"
-                        android:text="دنبال کنید" />
+                        android:text="دنبال کنید"
+                        app:FarsiTypeface="IRANSans" />
 
                     <view
                         android:id="@+id/txtname"
@@ -267,20 +269,6 @@
                             android:textColor="#000"
                             app:FarsiTypeface="IRANSansBold" />
 
-                        <view
-                            android:id="@+id/txtdate"
-                            class="amir.app.business.widget.FarsiTextView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/imgavatar"
-                            android:layout_toLeftOf="@+id/imgavatar"
-                            android:layout_toStartOf="@+id/imgavatar"
-                            android:gravity="right|center_vertical"
-                            android:singleLine="false"
-                            android:text="2 روز قبل"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="#555"
-                            app:FarsiTypeface="IRANSans" />
                     </LinearLayout>
 
                     <view
@@ -359,7 +347,18 @@
                     android:background="@android:color/white"
                     android:orientation="vertical">
 
-                    <Button
+                    <view
+                        android:id="@+id/mapview"
+                        class="amir.app.business.widget.CustomMapView"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_alignLeft="@+id/btnroute"
+                        android:layout_alignStart="@+id/btnroute"
+                        android:layout_alignTop="@+id/btnroute" />
+
+                    <view
+                        class="amir.app.business.widget.FarsiButton"
+                        app:FarsiTypeface="IRANSans"
                         android:id="@+id/btnroute"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -369,15 +368,6 @@
                         android:layout_margin="5dp"
                         android:padding="10dp"
                         android:text="مسیریابی" />
-
-                    <view
-                        android:id="@+id/mapview"
-                        class="amir.app.business.widget.CustomMapView"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:layout_alignLeft="@+id/btnroute"
-                        android:layout_alignStart="@+id/btnroute"
-                        android:layout_alignTop="@+id/btnroute" />
 
                 </RelativeLayout>
 

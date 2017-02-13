@@ -15,8 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridLayout;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
@@ -55,6 +53,7 @@ import amir.app.business.models.db.Basket;
 import amir.app.business.util;
 import amir.app.business.widget.CircleIndicator;
 import amir.app.business.widget.FarsiTextView;
+import amir.app.business.widget.RatingBarView;
 import amir.app.business.widget.widgettools;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -111,6 +110,8 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
     GoogleMap map;
 
     String followingId = "";
+    String likeId = "";
+    Comment customercomment;
 
     public static fragment_product newInstance(Product product) {
         fragment_product fragment = new fragment_product();
@@ -165,8 +166,8 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
         return view;
     }
 
-    private void load_business(){
-        Businesse.Repository repository= GuideApplication.getLoopBackAdapter().createRepository(Businesse.Repository.class);
+    private void load_business() {
+        Businesse.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Businesse.Repository.class);
 
         HashMap<String, String> filter = new HashMap<>();
         filter.put("userId", product.getOwner());
@@ -240,15 +241,26 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
         repository.getByProductId(product.getId().toString(), new ListCallback<Comment>() {
             @Override
             public void onSuccess(List<Comment> comments) {
+                //calculate average of comments rate
+                int rate = 0;
+                for (Comment comment : comments) {
+                    if (config.customer != null && comment.getCustomerId().equals(config.customer.getId()))
+                        customercomment = comment;
+
+                    rate += comment.getRate();
+                }
+                rate = rate / comments.size();
+                ratingbar.setRating(rate);
+
                 commentProgress.setVisibility(View.GONE);
                 if (comments.size() > 1)
                     txtmorecomments.setText(String.format(Locale.ENGLISH, "همه %d نظر را ببینید", comments.size()));
                 else
                     txtmorecomments.setVisibility(View.GONE);
 
-                if (comments.size() > 0)
-                    txtlastcomment.setText(comments.get(0).getText());
-                else
+                if (comments.size() > 0) {
+                    txtlastcomment.setText(comments.get(comments.size() - 1).getText());
+                } else
                     commentLayout.setVisibility(View.GONE);
             }
 
@@ -261,14 +273,95 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
 
     }
 
+    @OnClick(R.id.btnSendComment)
+    public void btnSendComment() {
+        if (config.customer == null) {
+            util.alertDialog(getActivity(), "بستن", "", "برای ثبت نظر باید وارد شوید", null, SweetAlertDialog.WARNING_TYPE);
+            return;
+        }
+
+        View content = LayoutInflater.from(getActivity()).inflate(R.layout.view_product_comment, null);
+        final EditText editText = (EditText) content.findViewById(R.id.editText);
+        final RatingBarView ratingview = (RatingBarView) content.findViewById(R.id.rate);
+        editText.setHint("نظر خود را بنویسید");
+
+        //نمایش کامنت کاربر که برای محصول وارد کرده است
+        if (customercomment != null) {
+            editText.setText(customercomment.getText());
+        }
+
+        util.contentDialog(getActivity(), content, "نظر شما درباره محصول", "ثبت نظر", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Comment.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Comment.Repository.class);
+
+                String text = editText.getText().toString();
+                if (text.equals(""))
+                    text = " ";
+
+                Comment comment = repository.createObject(ImmutableMap.of("customerId", config.customer.getId()));
+                comment.setText(text);
+                comment.setProductId(product.getId().toString());
+                comment.setBusinessId("0");
+                comment.setRate(ratingview.getRatevalue());
+
+                //در صورتی که یوزر قبلا کامنت درج کرده، ابتدا کامنت پاک شود
+                if (customercomment != null)
+                    customercomment.destroy(new VoidCallback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+
+                        }
+                    });
+
+                //ذخیره کامنت جدید کاربر
+                comment.save(new VoidCallback() {
+                    @Override
+                    public void onSuccess() {
+                        load_latest_comments_list();
+                        util.alertDialog(getActivity(), "بستن", "", "ارسال شد", null, SweetAlertDialog.SUCCESS_TYPE);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        util.alertDialog(getActivity(), "بستن", "خطا در ارسال نظر", "خطا", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                getactivity().onBackPressed();
+                            }
+                        }, SweetAlertDialog.ERROR_TYPE);
+                    }
+                });
+            }
+        });
+    }
+
     private void load_likes_count() {
         Followed.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Followed.Repository.class);
-        HashMap<String, String> filter = new HashMap<>();
-        filter.put("followedid", product.getId().toString());
-        repository.find(filter, new ListCallback<Followed>() {
+
+        repository.findAll(new ListCallback<Followed>() {
             @Override
             public void onSuccess(List<Followed> likes) {
-                btnlike.setText(String.format(Locale.ENGLISH, "%d", likes.size()));
+                int likeDrawableId = R.drawable.ic_favorite_grey_500_18dp;
+                int likecount = 0;
+                for (Followed like : likes) {
+                    if (like.getFollowedid().contains(product.getId().toString()))
+                        likecount++;
+
+                    if (config.customer != null && like.getUserid().equals(config.customer.getId()) && like.getFollowedid().contains(product.getId().toString())) {
+                        likeId = like.getId();
+                        likeDrawableId = R.drawable.ic_favorite_red_a700_18dp;
+                        break;
+                    }
+                }
+
+                btnlike.setCompoundDrawablesWithIntrinsicBounds(likeDrawableId, 0, 0, 0);
+                btnlike.setText(String.format(Locale.ENGLISH, "%d", likecount));
             }
 
             @Override
@@ -276,6 +369,61 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
 
             }
         });
+    }
+
+    @OnClick(R.id.btnlike)
+    public void Like() {
+        if (config.customer == null) {
+            util.alertDialog(getActivity(), "بستن", "", "برای لایک محصول، ابتدا باید وارد شوید", null, SweetAlertDialog.WARNING_TYPE);
+            return;
+        }
+
+        Followed.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Followed.Repository.class);
+
+        //add new follow
+        if (likeId.equals("")) {
+            Followed newfollowed = repository.createObject(ImmutableMap.of("userid", config.customer.getId()));
+
+            List<String> ids = new ArrayList<>();
+            ids.add(product.getId().toString());
+            newfollowed.setFollowedid(ids);
+
+            newfollowed.save(new VoidCallback() {
+                @Override
+                public void onSuccess() {
+                    likeId = "";
+                    load_likes_count();
+                }
+
+                @Override
+                public void onError(Throwable t) {
+
+                }
+            });
+        } else {
+            repository.findById(likeId, new ObjectCallback<Followed>() {
+                @Override
+                public void onSuccess(Followed object) {
+                    object.destroy(new VoidCallback() {
+                        @Override
+                        public void onSuccess() {
+                            likeId = "";
+                            load_likes_count();
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onError(Throwable t) {
+
+                }
+            });
+        }
     }
 
     private void checkfollowState() {
@@ -311,7 +459,7 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
 
             List<String> ids = new ArrayList<>();
             ids.add(product.getOwner());
-            newfollow.setFollowedid(ids);
+            newfollow.setFollowingid(ids);
 
             newfollow.save(new VoidCallback() {
                 @Override
@@ -386,47 +534,6 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
         switchFragment(new fragment_comment().newInstance(product), true);
     }
 
-    @OnClick(R.id.btnSendComment)
-    public void btnSendComment() {
-        if (config.customer == null) {
-            util.alertDialog(getActivity(), "بستن", "", "برای ثبت نظر باید وارد شوید", null, SweetAlertDialog.WARNING_TYPE);
-            return;
-        }
-
-        View content = LayoutInflater.from(getActivity()).inflate(R.layout.view_product_question, null);
-        final EditText editText = (EditText) content.findViewById(R.id.editText);
-        editText.setHint("نظر خود را بنویسید");
-
-        util.contentDialog(getActivity(), content, "نظر شما درباره محصول", "ثبت نظر", new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Comment.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Comment.Repository.class);
-
-                Map<String, Object> param = new HashMap<String, Object>();
-                param.put("customerId", config.customer.getId());
-                param.put("text", editText.getText().toString());
-                param.put("productId", product.getId());
-
-                Comment comment = repository.createObject(param);
-                comment.save(new VoidCallback() {
-                    @Override
-                    public void onSuccess() {
-                        util.alertDialog(getActivity(), "بستن", "", "ارسال شد", null, SweetAlertDialog.SUCCESS_TYPE);
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        util.alertDialog(getActivity(), "بستن", "خطا در ارسال نظر", "خطا", new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                getactivity().onBackPressed();
-                            }
-                        }, SweetAlertDialog.ERROR_TYPE);
-                    }
-                });
-            }
-        });
-    }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
