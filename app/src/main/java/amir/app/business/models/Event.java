@@ -24,8 +24,17 @@ public class Event extends Model {
     private String description;
     private Location location;
     private String publishDate;
+    private String ownerId;
     private int seen;
     private String id;
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
 
     public String getTitle() {
         return title;
@@ -80,7 +89,8 @@ public class Event extends Model {
         @Override
         public RestContract createContract() {
             RestContract contract = super.createContract();
-            contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:id", "GET"),
+
+            contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/getForCustomer", "GET"),
                     getClassName() + ".getForCustomer");
 
             return contract;

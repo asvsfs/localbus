@@ -61,12 +61,12 @@ public class fragment_event extends baseFragment {
             }
         });
 
-        load_notification();
+        load_events();
 
         return view;
     }
 
-    private void load_notification() {
+    private void load_events() {
         if (config.customer == null) {
             progress.setVisibility(View.GONE);
             txtempty.setVisibility(View.VISIBLE);

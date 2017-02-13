@@ -14,6 +14,7 @@ import com.strongloop.android.loopback.callbacks.VoidCallback;
 
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
+import amir.app.business.config;
 import amir.app.business.models.Event;
 import amir.app.business.models.Location;
 import amir.app.business.util;
@@ -78,6 +79,7 @@ public class EventDefine extends AppCompatActivity {
         Event.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Event.Repository.class);
         final Event event = repository.createObject(ImmutableMap.of("title", ""));
 
+        event.setOwnerId(config.customer.getId());
         event.setTitle(editTitle.getText().toString());
         event.setDescription(editDesc.getText().toString());
         event.setPublishDate("2017-01-27");
