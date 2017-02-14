@@ -96,9 +96,11 @@ public class Event extends Model {
             return contract;
         }
 
-        public void getForCustomer(String id, ListCallback<Event> callback) {
-            invokeStaticMethod("getForCustomer", ImmutableMap.of("id", id),
-                    new JsonArrayParser<Event>(this, callback));
+        public void getForCustomer(String id,  ListCallback<Event> callback) {
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("id", id);
+
+            invokeStaticMethod("getForCustomer", params, new JsonArrayParser<Event>(this, callback));
         }
 
     }

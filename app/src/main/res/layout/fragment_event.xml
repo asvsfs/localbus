@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/toolbar"
+        tools:listitem="@layout/fragment_event_row"
         android:background="@color/white_gray_color">
 
     </android.support.v7.widget.RecyclerView>

@@ -80,7 +80,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
-                inflate(R.layout.comments_row, viewGroup, false);
+                inflate(R.layout.fragment_event_row, viewGroup, false);
 
         return new ViewHolder(itemView);
     }

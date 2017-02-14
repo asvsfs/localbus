@@ -41,6 +41,8 @@ public class fragment_event extends baseFragment {
     @BindView(R.id.txtempty)
     TextView txtempty;
 
+    List<Event> events;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,13 +77,20 @@ public class fragment_event extends baseFragment {
 
         recyclerview.setLayoutManager(new LinearLayoutManager(getactivity(), LinearLayoutManager.VERTICAL, false));
 
+        if (events != null) {
+            progress.setVisibility(View.GONE);
+            txtempty.setVisibility(View.GONE);
+
+            setup_recyclerview();
+            return;
+        }
+
         Event.Repository eventRepo = GuideApplication.getLoopBackAdapter().createRepository(Event.Repository.class);
         eventRepo.getForCustomer(config.customer.getId(), new ListCallback<Event>() {
             @Override
             public void onSuccess(List<Event> events) {
-                EventListAdapter adapter = new EventListAdapter(getActivity(), events);
-                recyclerview.setAdapter(adapter);
-                recyclerview.setNestedScrollingEnabled(false);
+                fragment_event.this.events = events;
+                setup_recyclerview();
 
                 progress.setVisibility(View.GONE);
                 txtempty.setVisibility(events.size() > 0 ? View.GONE : View.VISIBLE);
@@ -89,8 +98,22 @@ public class fragment_event extends baseFragment {
 
             @Override
             public void onError(Throwable t) {
-
+                progress.setVisibility(View.GONE);
+                txtempty.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    private void setup_recyclerview() {
+        EventListAdapter adapter = new EventListAdapter(getActivity(), events);
+        adapter.setOnItemClickListener(new EventListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Event event) {
+                switchFragment(new fragment_event_page().newInstance(event), true);
+            }
+        });
+
+        recyclerview.setAdapter(adapter);
+        recyclerview.setNestedScrollingEnabled(false);
     }
 }
