@@ -19,7 +19,6 @@ import java.util.List;
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
 import amir.app.business.models.Businesse;
-import amir.app.business.models.Event;
 import amir.app.business.models.Following;
 import amir.app.business.widget.FarsiTextView;
 import butterknife.BindView;
@@ -100,7 +99,7 @@ public class FollowingListAdapter extends RecyclerView.Adapter<FollowingListAdap
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
-                inflate(R.layout.fragment_profile_following_row, viewGroup, false);
+                inflate(R.layout.fragment_profile_myfollowing_row, viewGroup, false);
 
         return new ViewHolder(itemView);
     }

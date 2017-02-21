@@ -72,6 +72,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     EditText editPassword;
     @BindView(R.id.login_form)
     ScrollView loginForm;
+    @BindView(R.id.loginlayout)
+    View loginlayout;
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -156,6 +158,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (!util.isValid(this))
             return;
 
+        util.hidekeyboard(this, editEmail);
+        util.hidekeyboard(this, editPassword);
+
         // Show a progress spinner, and kick off a background task to
         // perform the user login attempt.
         showProgress(true);
@@ -236,28 +241,31 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            loginForm.setVisibility(show ? View.GONE : View.VISIBLE);
-            loginForm.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    loginForm.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
+            loginlayout.setVisibility(show ? View.VISIBLE : View.GONE);
 
-            loginProgress.setVisibility(show ? View.VISIBLE : View.GONE);
-            loginProgress.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    loginProgress.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
+//            loginForm.animate().setDuration(shortAnimTime).alpha(
+//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    loginForm.setVisibility(show ? View.GONE : View.VISIBLE);
+//                }
+//            });
+//
+//            loginProgress.setVisibility(show ? View.VISIBLE : View.GONE);
+//            loginProgress.animate().setDuration(shortAnimTime).alpha(
+//                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    loginProgress.setVisibility(show ? View.VISIBLE : View.GONE);
+//                }
+//            });
         } else {
+            loginlayout.setVisibility(show ? View.VISIBLE : View.GONE);
+
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
-            loginProgress.setVisibility(show ? View.VISIBLE : View.GONE);
-            loginForm.setVisibility(show ? View.GONE : View.VISIBLE);
+//            loginProgress.setVisibility(show ? View.VISIBLE : View.GONE);
+//            loginForm.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 

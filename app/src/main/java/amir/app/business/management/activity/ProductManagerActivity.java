@@ -12,8 +12,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -74,13 +72,13 @@ public class ProductManagerActivity extends AppCompatActivity {
         products.clear();
         load_product_list(0);
 
-        Toast.makeText(this, event.getMessage(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, event.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.management_products);
+        setContentView(R.layout.fragment_profile_myproducts);
 
         ButterKnife.bind(this);
 
@@ -198,32 +196,32 @@ public class ProductManagerActivity extends AppCompatActivity {
             String qrcode = data.getExtras().getString("content");
             final MaterialDialog progress = util.progressDialog(this, "جستجوی محصول", "منتظر باشید...");
 
-            repository.getByQRCode(qrcode, new ObjectCallback<Product>() {
-                @Override
-                public void onSuccess(Product object) {
-                    progress.dismiss();
-
-                    util.confirmDialog(ProductManagerActivity.this, "تایید", "بستن", "اضافه کردن مدل", "محصولی با این کد موجود است. به این مدل اضافه میکنید؟", new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        }
-                    }, SweetAlertDialog.WARNING_TYPE);
-                }
-
-                @Override
-                public void onError(Throwable t) {
-                    progress.dismiss();
-
-                    util.confirmDialog(ProductManagerActivity.this, "تایید", "بستن", "ثبت محصول جدید", "محصولی با کد شناسایی موردنظر موجود نمیباشد.\nآیا میخواهید محصول جدید ثبت کنید؟", new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            Intent intent = new Intent(ProductManagerActivity.this, ProductDefine.class);
-                            intent.putExtra("qrcode", data.getExtras().getString("content"));
-                            startActivity(intent);
-                        }
-                    }, SweetAlertDialog.WARNING_TYPE);
-                }
-            });
+//            repository.qrexists(qrcode, new ObjectCallback<Product>() {
+//                @Override
+//                public void onSuccess(Product object) {
+//                    progress.dismiss();
+//
+//                    util.confirmDialog(ProductManagerActivity.this, "تایید", "بستن", "اضافه کردن مدل", "محصولی با این کد موجود است. به این مدل اضافه میکنید؟", new SweetAlertDialog.OnSweetClickListener() {
+//                        @Override
+//                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+//                        }
+//                    }, SweetAlertDialog.WARNING_TYPE);
+//                }
+//
+//                @Override
+//                public void onError(Throwable t) {
+//                    progress.dismiss();
+//
+//                    util.confirmDialog(ProductManagerActivity.this, "تایید", "بستن", "ثبت محصول جدید", "محصولی با کد شناسایی موردنظر موجود نمیباشد.\nآیا میخواهید محصول جدید ثبت کنید؟", new SweetAlertDialog.OnSweetClickListener() {
+//                        @Override
+//                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+//                            Intent intent = new Intent(ProductManagerActivity.this, ProductDefine.class);
+//                            intent.putExtra("qrcode", data.getExtras().getString("content"));
+//                            startActivity(intent);
+//                        }
+//                    }, SweetAlertDialog.WARNING_TYPE);
+//                }
+//            });
         } else if (resultCode == RESULT_OK && requestCode == 2) {
             products.clear();
             load_product_list(0);

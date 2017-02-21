@@ -8,15 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 
-import com.bumptech.glide.Glide;
-
 import java.util.List;
 
 import amir.app.business.R;
 import amir.app.business.models.Event;
-import amir.app.business.models.Product;
 import amir.app.business.widget.FarsiTextView;
-import amir.app.business.widget.SquareImageViewHeight_Based;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -73,7 +69,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
-                inflate(R.layout.fragment_profile_events_row, viewGroup, false);
+                inflate(R.layout.fragment_profile_myevents_row, viewGroup, false);
 
         return new ViewHolder(itemView);
     }

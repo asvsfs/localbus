@@ -74,7 +74,7 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
         products = null;
         load_product_list();
 
-        Toast.makeText(getactivity(), "رفرش لیست محصولات", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getactivity(), "رفرش لیست محصولات", Toast.LENGTH_SHORT).show();
     }
 
     @Override

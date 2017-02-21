@@ -1,5 +1,6 @@
 package amir.app.business.models;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.strongloop.android.loopback.Model;
 import com.strongloop.android.loopback.ModelRepository;
@@ -16,13 +17,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import amir.app.business.callbacks.EmptyCallback;
+
 /**
  * Created by amin on 08/05/2016.
  */
 
 public class Product extends Model implements Serializable {
 
-//    private String id;
+
+    //    private String id;
     private String name;
     private String description;
     private int price;
@@ -111,7 +115,7 @@ public class Product extends Model implements Serializable {
                     getClassName() + ".getByCustomerId");
 
             contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/qrexists", "GET"),
-                    getClassName() + ".getByQRCode");
+                    getClassName() + ".qrexists");
 
             contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/productByCategory", "GET"),
                     getClassName() + ".productByCategory");
@@ -132,9 +136,19 @@ public class Product extends Model implements Serializable {
                     new JsonArrayParser<Product>(this, callback));
         }
 
-        public void getByQRCode(String id, ObjectCallback<Product> callback) {
+        public void qrexists(String id, final StringCallback callback) {
             invokeStaticMethod("qrexists", ImmutableMap.of("code", id),
-                    new JsonObjectParser<Product>(this, callback));
+                    new Adapter.BinaryCallback() {
+                        @Override
+                        public void onSuccess(byte[] body, String contentType) {
+                            callback.onSuccess(new String(body));
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+                            callback.onError(t);
+                        }
+                    });
         }
 
         public void productByCategory(int page, String category, ListCallback<Product> callback) {

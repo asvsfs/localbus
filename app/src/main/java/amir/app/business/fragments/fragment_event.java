@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.strongloop.android.loopback.callbacks.ListCallback;
 import com.strongloop.android.loopback.callbacks.ObjectCallback;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import amir.app.business.GuideApplication;
@@ -64,6 +66,8 @@ public class fragment_event extends baseFragment {
         });
 
         load_events();
+
+//        EventBus.getDefault().register(this);
 
         return view;
     }
