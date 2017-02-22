@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import amir.app.business.R;
 
-public class FarsiTextView extends TextView {
+public class FarsiTextView extends android.support.v7.widget.AppCompatTextView {
     private Context _context;
     private int fontid;
 

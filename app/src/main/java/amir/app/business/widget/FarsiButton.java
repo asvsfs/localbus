@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import amir.app.business.R;
 
-public class FarsiButton extends TextView {
+public class FarsiButton extends android.support.v7.widget.AppCompatButton {
     private Context _context;
     private int fontid;
 

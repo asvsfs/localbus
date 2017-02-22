@@ -41,7 +41,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <EditText
+                <amir.app.business.widget.FarsiEditText
                     android:id="@+id/editName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -57,8 +57,9 @@
                     android:inputType="textPersonName"
                     android:padding="8dp"
                     android:singleLine="true"
-                    android:textColor="#000"
-                    android:textColorHint="#888" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColorHint="#888"
+                    app:FarsiTypeface="IRANSans" />
 
                 <ImageView
                     android:id="@+id/imageView3"
@@ -79,7 +80,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <EditText
+                <amir.app.business.widget.FarsiEditText
                     android:id="@+id/editusername"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -95,8 +96,9 @@
                     android:inputType="textPersonName"
                     android:padding="8dp"
                     android:singleLine="true"
-                    android:textColor="#000"
-                    android:textColorHint="#888" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColorHint="#888"
+                    app:FarsiTypeface="IRANSans" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -116,7 +118,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <EditText
+                <amir.app.business.widget.FarsiEditText
                     android:id="@+id/editPassword"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -132,8 +134,9 @@
                     android:inputType="textPersonName"
                     android:padding="8dp"
                     android:singleLine="true"
-                    android:textColor="#000"
-                    android:textColorHint="#888" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColorHint="#888"
+                    app:FarsiTypeface="IRANSans" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -152,7 +155,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <EditText
+                <amir.app.business.widget.FarsiEditText
                     android:id="@+id/editPhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -168,8 +171,9 @@
                     android:inputType="textPersonName|number"
                     android:padding="8dp"
                     android:singleLine="true"
-                    android:textColor="#000"
-                    android:textColorHint="#888" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColorHint="#888"
+                    app:FarsiTypeface="IRANSans" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -188,7 +192,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <EditText
+                <amir.app.business.widget.FarsiEditText
                     android:id="@+id/editMail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -204,8 +208,9 @@
                     android:inputType="textEmailAddress"
                     android:padding="8dp"
                     android:singleLine="true"
-                    android:textColor="#000"
-                    android:textColorHint="#888" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColorHint="#888"
+                    app:FarsiTypeface="IRANSans" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -214,6 +219,31 @@
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/button"
                     app:srcCompat="@drawable/ic_email_grey_500_24dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:gravity="top"
+                android:orientation="horizontal">
+
+                <amir.app.business.widget.FarsiTextView
+                    android:id="@+id/txtBusiness"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="درخواست عضویت به عنوان کسب و کار دارم"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#000"
+                    app:FarsiTypeface="IRANSans" />
+
+                <CheckBox
+                    android:id="@+id/chkBusiness"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
             </LinearLayout>
 
             <Button

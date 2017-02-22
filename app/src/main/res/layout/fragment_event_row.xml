@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/list_selector_background"
+        android:id="@+id/relativeLayout">
+
+        <view
+            android:id="@+id/txttitle"
+            class="amir.app.business.widget.FarsiTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:gravity="right|center_vertical"
+            android:padding="10dp"
+            android:text="متن متن متن متن"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#000"
+            app:FarsiTypeface="IRANSansBold" />
+
+        <view
+            android:id="@+id/txtdesc"
+            class="amir.app.business.widget.FarsiTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="false"
+            android:layout_below="@+id/txttitle"
+            android:layout_marginBottom="2dp"
+            android:ellipsize="end"
+            android:gravity="right|center_vertical"
+            android:maxLines="3"
+            android:padding="10dp"
+            android:text="متن متن متن متن"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#333"
+            app:FarsiTypeface="IRANSans" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/relativeLayout"
+        android:background="#ddd"
+        android:orientation="vertical"></LinearLayout>
+
+</RelativeLayout>

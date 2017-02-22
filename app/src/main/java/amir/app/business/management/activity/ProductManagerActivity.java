@@ -9,10 +9,9 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -24,10 +23,13 @@ import com.strongloop.android.loopback.callbacks.ObjectCallback;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import amir.app.business.EndlessRecyclerOnScrollListener;
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
+import amir.app.business.config;
 import amir.app.business.event.ProductListRefreshEvent;
 import amir.app.business.management.adapter.ProductGridListAdapter;
 import amir.app.business.models.Product;
@@ -67,16 +69,16 @@ public class ProductManagerActivity extends AppCompatActivity {
 
     @Subscribe
     public void RefreshProductList(ProductListRefreshEvent event) {
-        products = null;
-        load_product_list();
+        products.clear();
+        load_product_list(0);
 
-        Toast.makeText(this, event.getMessage(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, event.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.management_products);
+        setContentView(R.layout.fragment_profile_myproducts);
 
         ButterKnife.bind(this);
 
@@ -94,25 +96,41 @@ public class ProductManagerActivity extends AppCompatActivity {
             }
         });
 
+        //create empty list
+        products = new ArrayList<>();
+
         //load product list via api
-        load_product_list();
+        init_recycler_view();
+
+        load_product_list(0);
 
         EventBus.getDefault().register(this);
     }
 
-    //read all product and fill list
-    private void load_product_list() {
+    private void init_recycler_view() {
         recyclerview.setLayoutManager(new GridLayoutManager(this, 3));
+        recyclerview.setOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager) recyclerview.getLayoutManager()) {
+            @Override
+            public void onLoadMore(int current_page) {
+                load_product_list(current_page - 1);
+            }
+        });
 
-        if (products != null) {
-            setup_adapter_and_views();
-            return;
-        }
+//        if (products != null) {
+//            setup_adapter_and_views();
+//            return;
+//        }
 
-        repository.findAll(new ListCallback<Product>() {
+
+    }
+
+    //read all product and fill list
+    private void load_product_list(int page) {
+        repository.getByOwner(page, config.customer.getId(), new ListCallback<Product>() {
             @Override
             public void onSuccess(List<Product> items) {
-                products = items;
+                //add new product in page to products collection
+                products.addAll(items);
 
                 setup_adapter_and_views();
             }
@@ -140,7 +158,7 @@ public class ProductManagerActivity extends AppCompatActivity {
 
                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(ProductManagerActivity.this, pair1);
                 //Start the Intent
-                ActivityCompat.startActivity(ProductManagerActivity.this, intent, options.toBundle());
+                ActivityCompat.startActivityForResult(ProductManagerActivity.this, intent, 2, options.toBundle());
 
             }
         });
@@ -178,32 +196,35 @@ public class ProductManagerActivity extends AppCompatActivity {
             String qrcode = data.getExtras().getString("content");
             final MaterialDialog progress = util.progressDialog(this, "جستجوی محصول", "منتظر باشید...");
 
-            repository.getByQRCode(qrcode, new ObjectCallback<Product>() {
-                @Override
-                public void onSuccess(Product object) {
-                    progress.dismiss();
-
-                    util.confirmDialog(ProductManagerActivity.this, "تایید", "بستن", "اضافه کردن مدل", "محصولی با این کد موجود است. به این مدل اضافه میکنید؟", new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        }
-                    }, SweetAlertDialog.WARNING_TYPE);
-                }
-
-                @Override
-                public void onError(Throwable t) {
-                    progress.dismiss();
-
-                    util.confirmDialog(ProductManagerActivity.this, "تایید", "بستن", "ثبت محصول جدید", "محصولی با کد شناسایی موردنظر موجود نمیباشد.\nآیا میخواهید محصول جدید ثبت کنید؟", new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            Intent intent = new Intent(ProductManagerActivity.this, ProductDefine.class);
-                            intent.putExtra("qrcode", data.getExtras().getString("content"));
-                            startActivity(intent);
-                        }
-                    }, SweetAlertDialog.WARNING_TYPE);
-                }
-            });
+//            repository.qrexists(qrcode, new ObjectCallback<Product>() {
+//                @Override
+//                public void onSuccess(Product object) {
+//                    progress.dismiss();
+//
+//                    util.confirmDialog(ProductManagerActivity.this, "تایید", "بستن", "اضافه کردن مدل", "محصولی با این کد موجود است. به این مدل اضافه میکنید؟", new SweetAlertDialog.OnSweetClickListener() {
+//                        @Override
+//                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+//                        }
+//                    }, SweetAlertDialog.WARNING_TYPE);
+//                }
+//
+//                @Override
+//                public void onError(Throwable t) {
+//                    progress.dismiss();
+//
+//                    util.confirmDialog(ProductManagerActivity.this, "تایید", "بستن", "ثبت محصول جدید", "محصولی با کد شناسایی موردنظر موجود نمیباشد.\nآیا میخواهید محصول جدید ثبت کنید؟", new SweetAlertDialog.OnSweetClickListener() {
+//                        @Override
+//                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+//                            Intent intent = new Intent(ProductManagerActivity.this, ProductDefine.class);
+//                            intent.putExtra("qrcode", data.getExtras().getString("content"));
+//                            startActivity(intent);
+//                        }
+//                    }, SweetAlertDialog.WARNING_TYPE);
+//                }
+//            });
+        } else if (resultCode == RESULT_OK && requestCode == 2) {
+            products.clear();
+            load_product_list(0);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

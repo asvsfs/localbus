@@ -2,6 +2,7 @@ package amir.app.business.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,15 +15,21 @@ import android.widget.ProgressBar;
 import com.google.android.gms.maps.GoogleMap;
 import com.strongloop.android.loopback.callbacks.ListCallback;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import amir.app.business.EndlessRecyclerOnScrollListener;
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
-import amir.app.business.adapter.BusinessHorizontalListAdapter;
-import amir.app.business.fragments.business.fragment_business;
-import amir.app.business.models.Businesse;
+import amir.app.business.adapter.AdverListAdapter;
+import amir.app.business.adapter.ProductHorizontalListAdapter;
+import amir.app.business.fragments.product.fragment_product;
 import amir.app.business.models.Category;
+import amir.app.business.models.Product;
 import amir.app.business.util;
+import amir.app.business.widget.CircleIndicator;
+import amir.app.business.widget.FarsiTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -40,8 +47,14 @@ public class fragment_category_page extends baseFragment {
     Toolbar toolbar;
     @BindView(R.id.progress)
     ProgressBar progress;
+    @BindView(R.id.txtcount)
+    FarsiTextView txtcount;
+    @BindView(R.id.adverPager)
+    ViewPager adverPager;
+    @BindView(R.id.indicator)
+    CircleIndicator indicator;
 
-    List<Businesse> businesse;
+    List<Product> products;
     GoogleMap map;
     Category category;
 
@@ -72,30 +85,42 @@ public class fragment_category_page extends baseFragment {
             }
         });
 
+        products = new ArrayList<>();
+
+        load_advers();
+
+        init_layout();
+
         //load category business list via api
-        load_business_list();
+        load_business_list(0);
 
         return view;
     }
 
-    private void load_business_list() {
-        businessRecyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 3, LinearLayoutManager.VERTICAL, false));
+    private void load_advers() {
+        List<String> adver = new ArrayList<>();
 
-        Businesse.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Businesse.Repository.class);
+        //template
+        adver.add("");
+        adver.add("");
+        adver.add("");
+        //template
 
-        repository.findAll(new ListCallback<Businesse>() {
+        adverPager.setAdapter(new AdverListAdapter(getactivity(), adver));
+        indicator.setViewPager(adverPager);
+    }
+
+    private void load_business_list(int page) {
+        Product.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Product.Repository.class);
+
+        repository.productByCategory(page, category.getId(), new ListCallback<Product>() {
             @Override
-            public void onSuccess(List<Businesse> items) {
-                businesse = items;
+            public void onSuccess(List<Product> items) {
+                products.addAll(items);
 
-                for (int i = 0; i < 10; i++) {
-                    Businesse b = new Businesse();
-                    b.setName("business " + i);
-                    b.setDescription("description " + i);
-                    businesse.add(b);
-                }
-
+                txtcount.setText(String.format(Locale.ENGLISH, "%d", products.size()));
                 progress.setVisibility(View.GONE);
+
                 setup_adapter_and_views();
             }
 
@@ -117,35 +142,43 @@ public class fragment_category_page extends baseFragment {
     private void init_layout() {
         topRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         businessRecyclerview.setLayoutManager(new GridLayoutManager(getActivity(), 3, LinearLayoutManager.VERTICAL, false));
+
+        businessRecyclerview.setOnScrollListener(new EndlessRecyclerOnScrollListener((LinearLayoutManager) businessRecyclerview.getLayoutManager()) {
+            @Override
+            public void onLoadMore(int current_page) {
+                load_business_list(current_page - 1);
+            }
+        });
     }
 
     private void setup_adapter_and_views() {
-        init_layout();
+
 
         //setup top businesses view
-        BusinessHorizontalListAdapter topadapter = new BusinessHorizontalListAdapter(getActivity(), businesse);
-        topadapter.setOnItemClickListener(new BusinessHorizontalListAdapter.OnItemClickListener() {
+        ProductHorizontalListAdapter topadapter = new ProductHorizontalListAdapter(getActivity(), products);
+        topadapter.setOnItemClickListener(new ProductHorizontalListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Businesse businesse) {
-                switch_to_business_page(businesse);
+            public void onItemClick(Product product) {
+                switch_to_product_page(product);
             }
         });
         topRecyclerview.setAdapter(topadapter);
         topRecyclerview.setNestedScrollingEnabled(false);
 
+
         //setup main businesses view
-        BusinessHorizontalListAdapter adapter = new BusinessHorizontalListAdapter(getActivity(), businesse);
-        adapter.setOnItemClickListener(new BusinessHorizontalListAdapter.OnItemClickListener() {
+        ProductHorizontalListAdapter adapter = new ProductHorizontalListAdapter(getActivity(), products);
+        adapter.setOnItemClickListener(new ProductHorizontalListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Businesse businesse) {
-                switch_to_business_page(businesse);
+            public void onItemClick(Product product) {
+                switch_to_product_page(product);
             }
         });
         businessRecyclerview.setAdapter(adapter);
         businessRecyclerview.setNestedScrollingEnabled(false);
     }
 
-    public void switch_to_business_page(Businesse businesse) {
-        switchFragment(new fragment_business().newInstance(businesse), true);
+    public void switch_to_product_page(Product product) {
+        switchFragment(new fragment_product().newInstance(product), true);
     }
 }

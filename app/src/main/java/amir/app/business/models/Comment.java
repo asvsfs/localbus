@@ -11,6 +11,7 @@ import com.strongloop.android.remoting.adapters.RestContract;
 import com.strongloop.android.remoting.adapters.RestContractItem;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,6 +22,51 @@ public class Comment extends Model {
 
     private String customerId;
     private String text;
+    private String businessId;
+    private String productId;
+    private int rate;
+    private List<String> like;
+    private List<String> dislike;
+
+    public String getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessId(String businessId) {
+        this.businessId = businessId;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public int getRate() {
+        return rate;
+    }
+
+    public void setRate(int rate) {
+        this.rate = rate;
+    }
+
+    public List<String> getLike() {
+        return like;
+    }
+
+    public void setLike(List<String> like) {
+        this.like = like;
+    }
+
+    public List<String> getDislike() {
+        return dislike;
+    }
+
+    public void setDislike(List<String> dislike) {
+        this.dislike = dislike;
+    }
 
     public String getText() {
         return text;
@@ -50,7 +96,7 @@ public class Comment extends Model {
             contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/:id", "GET"),
                     getClassName() + ".getByBusinessId");
 
-            contract.addItem(new RestContractItem("/" + getNameForRestUrl()+"/getByProductId", "GET"),
+            contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/getByProductId", "GET"),
                     getClassName() + ".getByProductId");
 
             return contract;

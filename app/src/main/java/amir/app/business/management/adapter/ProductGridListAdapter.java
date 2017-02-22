@@ -67,7 +67,6 @@ public class ProductGridListAdapter extends RecyclerView.Adapter<ProductGridList
         this.context = context;
         this.items = items;
         inflater = ((Activity) context).getLayoutInflater();
-
     }
 
     @Override

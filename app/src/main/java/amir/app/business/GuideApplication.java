@@ -30,6 +30,7 @@ public class GuideApplication extends com.activeandroid.app.Application {
             config.token.userId = config.getValue(context, "userid");
             adapter.setAccessToken(config.token.id);
         }
+
         return adapter;
     }
 }

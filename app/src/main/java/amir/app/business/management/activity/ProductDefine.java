@@ -3,6 +3,7 @@ package amir.app.business.management.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -85,10 +86,13 @@ public class ProductDefine extends AppCompatActivity {
     String qrcode;
 
     ImageChooserManager imageChooserManager;
+    ImageChooserManager imageTakerManager;
+
     List<String> category = new ArrayList<>();
     List<Category> categories = new ArrayList<>();
     List<image> images = new ArrayList<>();
     MaterialDialog dlg;
+    BottomSheetDialog bottomsheet;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -114,6 +118,7 @@ public class ProductDefine extends AppCompatActivity {
         editCode.setText(qrcode);
 
         initialize_ImageChooser();
+        initialize_ImageTaker();
 
         load_category_list();
     }
@@ -207,7 +212,7 @@ public class ProductDefine extends AppCompatActivity {
         product.save(new VoidCallback() {
             @Override
             public void onSuccess() {
-                EventBus.getDefault().post(new ProductListRefreshEvent(product.getName()+" به لیست محصولات اضافه شد."));
+                EventBus.getDefault().post(new ProductListRefreshEvent(product.getName() + " به لیست محصولات اضافه شد."));
 
                 dlg.dismiss();
                 util.alertDialog(ProductDefine.this, "بستن", "محصول با موفقیت ثبت شد.", "نتیجه", new SweetAlertDialog.OnSweetClickListener() {
@@ -262,11 +267,36 @@ public class ProductDefine extends AppCompatActivity {
 
     @OnClick(R.id.btnAddImage)
     public void btnAddImage() {
-        try {
-            imageChooserManager.choose();
-        } catch (ChooserException e) {
-            e.printStackTrace();
-        }
+        View view = getLayoutInflater().inflate(R.layout.management_product_define_imagechoose, null);
+        view.findViewById(R.id.txtgallery).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    bottomsheet.dismiss();
+                    imageChooserManager.choose();
+                } catch (ChooserException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        view.findViewById(R.id.txtcamera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    bottomsheet.dismiss();
+                    imageTakerManager.choose();
+                } catch (ChooserException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+        bottomsheet = new BottomSheetDialog(this);
+        bottomsheet.setContentView(view);
+        bottomsheet.show();
+
     }
 
     private void load_product_images() {
@@ -287,8 +317,10 @@ public class ProductDefine extends AppCompatActivity {
         if (resultCode == RESULT_OK)
             if (requestCode == ChooserType.REQUEST_PICK_PICTURE)
                 imageChooserManager.submit(requestCode, data);
-    }
+            else if (requestCode == ChooserType.REQUEST_CAPTURE_PICTURE)
+                imageTakerManager.submit(requestCode, data);
 
+    }
 
     private void initialize_ImageChooser() {
         imageChooserManager = new ImageChooserManager(this, ChooserType.REQUEST_PICK_PICTURE, "business", true);
@@ -314,5 +346,32 @@ public class ProductDefine extends AppCompatActivity {
         });
 
         imageChooserManager.reinitialize("");
+    }
+
+    private void initialize_ImageTaker() {
+        imageTakerManager = new ImageChooserManager(this, ChooserType.REQUEST_CAPTURE_PICTURE, "business", true);
+        imageTakerManager.setImageChooserListener(new ImageChooserListener() {
+            @Override
+            public void onImageChosen(final ChosenImage image) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String selectedfile = image.getFilePathOriginal();
+                        image img = new image();
+                        img.path = selectedfile;
+                        images.add(img);
+
+                        load_product_images();
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String reason) {
+
+            }
+        });
+
+        imageTakerManager.reinitialize("");
     }
 }

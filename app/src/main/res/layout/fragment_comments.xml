@@ -5,92 +5,98 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="fill_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?colorPrimary"
-        app:theme="@style/AppTheme"
-        app:title="عنوان کسب و کار"
-        app:titleTextColor="#fff" />
-
-    <LinearLayout
-        android:id="@+id/ratelayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/toolbar"
-        android:background="#eee"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#eee"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
-
-            <RatingBar
-                android:id="@+id/ratingBar"
-                style="@android:style/Widget.Holo.Light.RatingBar.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:numStars="5" />
-
-            <TextView
-                android:id="@+id/txtrate"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/txtname"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_weight="1"
-                android:text="4/5"
-                android:textColor="#000" />
-        </LinearLayout>
-
-        <view
-            android:id="@+id/txtname"
-            class="amir.app.business.widget.FarsiTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/imggallery"
-            android:layout_weight="1"
-            android:background="#eee"
-            android:gravity="right|center_vertical"
-            android:padding="10dp"
-            android:singleLine="true"
-            android:text="امتیار از مجموعه 10 نظر"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#000"
-            app:FarsiTypeface="IRANSansBold" />
-    </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/commentresyclerview"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/ratelayout"
-        android:layout_marginTop="1dp"
-        android:visibility="gone"
-        tools:listitem="@layout/comments_row" />
+        android:background="#eee">
 
-    <ProgressBar
-        android:id="@+id/progress"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:visibility="visible" />
+        <LinearLayout
+            android:id="@+id/ratelayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/toolbar"
+            android:background="#eee"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#eee"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
+
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    style="@android:style/Widget.Holo.Light.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:numStars="5" />
+
+                <TextView
+                    android:id="@+id/txtrate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/txtname"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_weight="1"
+                    android:text="4/5"
+                    android:textColor="#000" />
+            </LinearLayout>
+
+            <view
+                android:id="@+id/txttitle"
+                class="amir.app.business.widget.FarsiTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/imggallery"
+                android:layout_weight="1"
+                android:background="#eee"
+                android:gravity="right|center_vertical"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:text="امتیار از مجموعه 0 نظر"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#000"
+                app:FarsiTypeface="IRANSansBold" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/commentresyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/ratelayout"
+            android:layout_marginTop="1dp"
+            tools:listitem="@layout/comments_row" />
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="fill_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?colorPrimary"
+            app:theme="@style/AppTheme"
+            app:title="عنوان کسب و کار"
+            app:titleTextColor="#fff" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="visible" />
+    </RelativeLayout>
+
 </RelativeLayout>

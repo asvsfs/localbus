@@ -6,14 +6,6 @@
     android:layout_height="match_parent"
     android:background="#777">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="fill_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?colorPrimary"
-        app:theme="@style/AppTheme"
-        app:titleTextColor="#fff" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
@@ -74,4 +66,15 @@
             android:textColorHint="#888" />
 
     </android.support.v7.widget.CardView>
+
+    <view
+        android:id="@+id/txtempty"
+        class="amir.app.business.widget.FarsiTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="هیچ محصولی موجود نیست"
+        android:textColor="#aaa"
+        app:FarsiTypeface="IRANSans" />
 </RelativeLayout>

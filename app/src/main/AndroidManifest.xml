@@ -62,8 +62,10 @@
         <activity android:name=".management.activity.ProductManagerActivity" />
         <activity android:name=".management.activity.BarCodeScannerActivity" />
         <activity android:name=".management.activity.ProductDefine" />
+        <activity android:name=".management.activity.ProductEdit" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".management.activity.ProductActivity" />
+        <activity android:name=".management.activity.EventDefine" />
 
         <!-- [START firebase_service] -->
         <service android:name=".MyFirebaseMessagingService">

@@ -122,7 +122,7 @@ public class fragment_map extends baseFragment implements OnMapReadyCallback {
         for (Businesse business : businesses) {
             if (business.getLocation() != null) {
                 Marker marker = map.addMarker(new MarkerOptions()
-                        .position(new LatLng(business.getLocation().lat, business.getLocation().lng))
+                        .position(new LatLng(business.getLocation().getLat(), business.getLocation().getLng()))
                         .title(business.getName())
                         .snippet(business.getDescription()));
 
@@ -141,7 +141,7 @@ public class fragment_map extends baseFragment implements OnMapReadyCallback {
             @Override
             public void onInfoWindowClick(Marker marker) {
                 for (Businesse business : businesses) {
-                    if (business.getLocation() != null && business.getLocation().lat == marker.getPosition().latitude && business.getLocation().lng == marker.getPosition().longitude) {
+                    if (business.getLocation() != null && business.getLocation().getLat()== marker.getPosition().latitude && business.getLocation().getLng()== marker.getPosition().longitude) {
                         switchFragment(new fragment_business().newInstance(business), true);
                         break;
                     }

@@ -21,6 +21,7 @@ import org.fingerlinks.mobile.android.navigator.Navigator;
 import amir.app.business.fragments.baseFragment;
 import amir.app.business.fragments.fragment_basket;
 import amir.app.business.fragments.fragment_category;
+import amir.app.business.fragments.fragment_event;
 import amir.app.business.fragments.fragment_notification;
 import amir.app.business.fragments.fragment_profile;
 import amir.app.business.fragments.fragment_search;
@@ -151,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private void chooseTab(int position){
+    private void chooseTab(int position) {
         switch (position) {
             case 0: //home
                 switchFragment(new fragment_home(), true);
@@ -165,8 +166,8 @@ public class MainActivity extends AppCompatActivity {
                 switchFragment(new fragment_search(), true);
                 break;
 
-            case 3: //notification
-                switchFragment(new fragment_notification(), true);
+            case 3: //event
+                switchFragment(new fragment_event(), true);
                 break;
 
             case 4: //profile
@@ -180,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void switchFragment(baseFragment fragment, boolean addtostack) {
+
         String tag = fragment.getClass().toString();
 
         if (Navigator.with(this).utils().canGoBackToSpecificPoint(tag, R.id.container, getSupportFragmentManager()))
@@ -189,7 +191,6 @@ public class MainActivity extends AppCompatActivity {
                     .build() //Enter in navigation mode
                     .goTo(fragment, R.id.container)
                     .tag(tag)
-//                    .animation(R.anim.fadein, R.anim.fadeout, R.anim.fadein, R.anim.fadeout)
                     .addToBackStack() //add backstack
                     .replace() //CommitType
                     .commit(); //commit operation
@@ -222,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
         }
         currentfragment = fragment;
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         currentfragment.onActivityResult(requestCode, resultCode, data);
@@ -229,26 +231,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
         FragmentManager fm = getSupportFragmentManager();
         int count = fm.getBackStackEntryCount();
 
         if (count == 0) {
-            if (doubleBackToExitPressedOnce) {
-                finish();
-                super.onBackPressed();
-                return;
-            }
+            Navigator.with(MainActivity.this)
+                    .utils()
+                    .confirmExitWithMessage("برای خروج، دوباره کلید برگشت را بزنید");
 
-            this.doubleBackToExitPressedOnce = true;
-            Toast.makeText(this, "برای خروج دوباره کلید back را بزنید", Toast.LENGTH_SHORT).show();
-
-            new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    doubleBackToExitPressedOnce = false;
-                }
-            }, 2000);
         } else {
             if (Navigator.with(this).utils().canGoBack(getSupportFragmentManager())) {
                 Navigator.with(this)
@@ -266,19 +257,9 @@ public class MainActivity extends AppCompatActivity {
                     bottombar.setScrollPosition(2, 0, true);
 
             } else {
-                if (doubleBackToExitPressedOnce)
-                    Navigator.with(this).utils().finishWithAnimation();
-
-                this.doubleBackToExitPressedOnce = true;
-                Toast.makeText(this, "برای خروج دوباره کلید back را بزنید", Toast.LENGTH_SHORT).show();
-
-                new Handler().postDelayed(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        doubleBackToExitPressedOnce = false;
-                    }
-                }, 2000);
+                Navigator.with(MainActivity.this)
+                        .utils()
+                        .confirmExitWithMessage("برای خروج، دوباره کلید برگشت را بزنید");
 
             }
         }

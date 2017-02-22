@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:background="@color/white_gray_color">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/loginContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true">
+
+                <view
+                    android:id="@+id/imgavatar"
+                    class="amir.app.business.widget.CircleImageView"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="40dp"
+                    android:src="@drawable/ic_person_black_24dp"
+                    app:border_color="#ccc"
+                    app:border_width="2dp" />
+
+                <view
+                    android:id="@+id/btnlogin"
+                    class="amir.app.business.widget.FarsiButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtName"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="وارد شوید"
+                    app:FarsiTypeface="IRANSans" />
+
+                <amir.app.business.widget.FarsiButton
+                    android:id="@+id/btnRegister"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/btnlogin"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@null"
+                    android:text="نام کاربری خود را بسازید"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@color/colorPrimaryDark"
+                    app:FarsiTypeface="IRANSansMedium" />
+
+                <amir.app.business.widget.FarsiTextView
+                    android:id="@+id/txtName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgavatar"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="8dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#000"
+                    app:FarsiTypeface="IRANSans"
+                    tools:text="نام کاربری" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/mainContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/loginContent">
+
+                <LinearLayout
+                    android:id="@+id/profileInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="vertical"
+                    android:padding="32dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <amir.app.business.widget.FarsiEditText
+                            android:id="@+id/editName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginRight="5dp"
+                            android:layout_toLeftOf="@+id/imageView3"
+                            android:layout_toStartOf="@+id/imageView3"
+                            android:layout_weight="1"
+                            android:background="#ddd"
+                            android:editable="false"
+                            android:ems="10"
+                            android:hint="نام شما"
+                            android:inputType="textPersonName"
+                            android:padding="8dp"
+                            android:singleLine="true"
+                            android:textColor="#000"
+                            app:FarsiTypeface="IRANSans"
+                            tools:text="امین تقدسی" />
+
+                        <ImageView
+                            android:id="@+id/imageView3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@+id/button"
+                            app:srcCompat="@drawable/ic_person_grey_500_24dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <amir.app.business.widget.FarsiEditText
+                            android:id="@+id/editPhone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginRight="5dp"
+                            android:layout_toLeftOf="@+id/imageView3"
+                            android:layout_toStartOf="@+id/imageView3"
+                            android:layout_weight="1"
+                            android:background="#ddd"
+                            android:editable="false"
+                            android:ems="10"
+                            android:hint="شماره موبایل"
+                            android:inputType="textPersonName"
+                            android:padding="8dp"
+                            android:singleLine="true"
+                            android:textColor="#000"
+                            app:FarsiTypeface="IRANSans"
+                            tools:text="شماره موبایل" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@+id/button"
+                            app:srcCompat="@drawable/ic_phone_android_grey_500_24dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <amir.app.business.widget.FarsiEditText
+                            android:id="@+id/editMail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginRight="5dp"
+                            android:layout_toLeftOf="@+id/imageView3"
+                            android:layout_toStartOf="@+id/imageView3"
+                            android:layout_weight="1"
+                            android:background="#ddd"
+                            android:editable="false"
+                            android:ems="10"
+                            android:hint="ایمیل"
+                            android:inputType="textPersonName"
+                            android:padding="8dp"
+                            android:singleLine="true"
+                            android:textColor="#000"
+                            app:FarsiTypeface="IRANSans"
+                            tools:text="ایمیل" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@+id/button"
+                            app:srcCompat="@drawable/ic_email_grey_500_24dp" />
+                    </LinearLayout>
+
+                    <view
+                        android:id="@+id/btnReset"
+                        class="amir.app.business.widget.FarsiButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/imageView2"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:text="تغییر رمز ورود"
+                        app:FarsiTypeface="IRANSans" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/loginProgress"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
+
+</RelativeLayout>
+

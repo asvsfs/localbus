@@ -50,6 +50,7 @@ public class Customer extends User {
     private String id;
     private AccountManager mAccountManager;
     private String token;
+    private String verificationId;
 
     public String getTelegramNumber() {
         return telegramNumber;
@@ -97,6 +98,14 @@ public class Customer extends User {
         return emailVerified;
     }
 
+    public void setVerificationId(String verificationId) {
+        this.verificationId = verificationId;
+    }
+
+    public String getVerificationId() {
+        return verificationId;
+    }
+
     public void setEmailVerified(Boolean emailVerified) {
         this.emailVerified = emailVerified;
     }
@@ -109,7 +118,6 @@ public class Customer extends User {
     public void setId(String id) {
         this.id = id;
     }
-
 
     public static class Repository extends UserRepository<Customer> {
 

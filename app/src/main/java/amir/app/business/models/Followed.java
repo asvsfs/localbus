@@ -48,9 +48,9 @@ public class Followed extends Model  {
         this.id = id;
     }
 
-    public static class Repository extends ModelRepository<Businesse> {
+    public static class Repository extends ModelRepository<Followed> {
         public Repository() {
-            super("followed", "followeds", Businesse.class);
+            super("followed", "followeds", Followed.class);
         }
 
         @Override
@@ -63,9 +63,9 @@ public class Followed extends Model  {
             return contract;
         }
 
-        public void getById(String id, ObjectCallback<Businesse> callback) {
+        public void getById(String id, ObjectCallback<Followed> callback) {
             invokeStaticMethod("getById", ImmutableMap.of("id", id),
-                    new JsonObjectParser<Businesse>(this, callback));
+                    new JsonObjectParser<Followed>(this, callback));
         }
 
     }

@@ -1,5 +1,6 @@
 package amir.app.business.fragments;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -14,6 +15,9 @@ public class baseFragment extends Fragment {
 
     public AppCompatActivity getactivity(){
         return ((MainActivity) getActivity());
+    }
+
+    public void refresh(Context context) {
     }
 
     public void switchFragment(baseFragment fragment, boolean addtostack) {
