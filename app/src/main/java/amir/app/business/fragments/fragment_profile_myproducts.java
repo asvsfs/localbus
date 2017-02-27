@@ -36,6 +36,7 @@ import amir.app.business.GuideApplication;
 import amir.app.business.R;
 import amir.app.business.config;
 import amir.app.business.event.ProfileRefreshEvent;
+import amir.app.business.management.activity.BarCodeScannerActivity;
 import amir.app.business.management.activity.ProductActivity;
 import amir.app.business.management.activity.ProductDefine;
 import amir.app.business.management.adapter.ProductGridListAdapter;
@@ -178,9 +179,7 @@ public class fragment_profile_myproducts extends baseFragment {
 
     @OnClick(R.id.floatAdd)
     public void floatAdd() {
-
-
-//        getactivity().startActivityForResult(new Intent(getActivity(), BarCodeScannerActivity.class), 1);
+        getactivity().startActivityForResult(new Intent(getActivity(), BarCodeScannerActivity.class), 1);
     }
 
     private void add_to_product(final String productid) {
