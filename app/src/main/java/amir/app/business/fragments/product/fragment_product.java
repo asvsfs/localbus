@@ -49,6 +49,7 @@ import amir.app.business.models.Comment;
 import amir.app.business.models.Followed;
 import amir.app.business.models.Following;
 import amir.app.business.models.Product;
+import amir.app.business.models.StringCallback;
 import amir.app.business.models.db.Basket;
 import amir.app.business.util;
 import amir.app.business.widget.CircleIndicator;
@@ -81,6 +82,8 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
     Toolbar toolbar;
     @BindView(R.id.txtverification)
     FarsiTextView txtverification;
+    @BindView(R.id.txtAmount)
+    TextView txtAmount;
     @BindView(R.id.txtmorecomments)
     TextView txtmorecomments;
     @BindView(R.id.commentProgress)
@@ -114,6 +117,8 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
     String followingId = "";
     String likeId = "";
     Comment customercomment;
+
+    Product.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Product.Repository.class);
 
     public static fragment_product newInstance(Product product) {
         fragment_product fragment = new fragment_product();
@@ -164,6 +169,8 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
         load_latest_comments_list();
 
         load_product_images();
+
+        load_remained();
 
         return view;
     }
@@ -517,8 +524,6 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
     private void load_similar_product_list() {
         similarRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
-        Product.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Product.Repository.class);
-
         HashMap<String, String> filter = new HashMap<>();
         filter.put("category", product.getCategory());
 
@@ -539,6 +544,22 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
 
             @Override
             public void onError(Throwable t) {
+            }
+        });
+    }
+
+    //load remained of products
+    private void load_remained() {
+
+        repository.getRemained(product.getId().toString(), new StringCallback() {
+            @Override
+            public void onSuccess(String amount) {
+                txtAmount.setText(String.format(Locale.ENGLISH, "موجودی: %s عدد", amount));
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
             }
         });
     }

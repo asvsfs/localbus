@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import java.util.List;
@@ -31,6 +33,8 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.txtname)
         FarsiTextView txtname;
+        @BindView(R.id.imageView)
+        ImageView imageView;
 
         ViewHolder(View view) {
             super(view);
@@ -88,6 +92,10 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         final Category b = items.get(i);
 
         holder.txtname.setText(b.getName());
+
+        Glide.with(context.getApplicationContext())
+                .load(b.getIcon())
+                .into(holder.imageView);
     }
 
     @Override

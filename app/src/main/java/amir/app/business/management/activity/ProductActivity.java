@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.zip.Inflater;
 
@@ -53,6 +54,7 @@ import amir.app.business.fragments.product.fragment_comment;
 import amir.app.business.models.Comment;
 import amir.app.business.models.Inventory;
 import amir.app.business.models.Product;
+import amir.app.business.models.StringCallback;
 import amir.app.business.models.db.Basket;
 import amir.app.business.util;
 import amir.app.business.widget.CircleIndicator;
@@ -82,6 +84,8 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
     Toolbar toolbar;
     @BindView(R.id.txtverification)
     FarsiTextView txtverification;
+    @BindView(R.id.txtAmount)
+    TextView txtAmount;
     @BindView(R.id.txtmorecomments)
     View txtmorecomments;
     @BindView(R.id.commentProgress)
@@ -110,6 +114,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
     Product product;
     String productid;
     GoogleMap map;
+    Product.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Product.Repository.class);
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -148,6 +153,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 
         load_product_images();
 
+        load_remained();
     }
 
     private void load_product_images() {
@@ -225,8 +231,6 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
     private void load_similar_product_list() {
         similarRecyclerview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
-        Product.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Product.Repository.class);
-
         repository.findAll(new ListCallback<Product>() {
             @Override
             public void onSuccess(List<Product> items) {
@@ -245,6 +249,22 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 
             @Override
             public void onError(Throwable t) {
+            }
+        });
+    }
+
+    //load remained of products
+    private void load_remained() {
+
+        repository.getRemained(productid, new StringCallback() {
+            @Override
+            public void onSuccess(String amount) {
+                txtAmount.setText(String.format(Locale.ENGLISH, "موجودی: %s عدد", amount));
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
             }
         });
     }
@@ -346,6 +366,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
                 inventory.save(new VoidCallback() {
                     @Override
                     public void onSuccess() {
+                        load_remained();
                         util.alertDialog(ProductActivity.this, "بستن", "تعداد محصول اعمال شد.", SweetAlertDialog.SUCCESS_TYPE);
                     }
 

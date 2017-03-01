@@ -146,8 +146,6 @@
                         class="amir.app.business.widget.FarsiTextView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
                         android:layout_weight="1"
                         android:background="#fff"
                         android:gravity="right|center_vertical"
@@ -156,7 +154,10 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@color/colorPrimaryDark"
                         app:FarsiTypeface="IRANSansBold"
-                        tools:text="نام کسب و کار" />
+                        tools:text="نام کسب و کار"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/followProgress"
+                        android:layout_toEndOf="@+id/followProgress" />
 
                     <view
                         android:id="@+id/btnfollow"
@@ -176,9 +177,6 @@
                         class="amir.app.business.widget.FarsiTextView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@+id/txtbusiness"
                         android:layout_weight="1"
                         android:background="#fff"
                         android:gravity="right|center_vertical"
@@ -187,7 +185,30 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="#000"
                         app:FarsiTypeface="IRANSansBold"
-                        tools:text="نام محصول" />
+                        tools:text="نام محصول"
+                        android:layout_below="@+id/txtbusiness"
+                        android:layout_toRightOf="@+id/txtAmount"
+                        android:layout_toEndOf="@+id/txtAmount" />
+
+                    <view
+                        android:id="@+id/txtAmount"
+                        class="amir.app.business.widget.FarsiTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignBottom="@+id/txtname"
+                        android:layout_below="@+id/txtbusiness"
+                        android:layout_toEndOf="@+id/followProgress"
+                        android:layout_toLeftOf="@+id/ratingbar"
+                        android:layout_toRightOf="@+id/followProgress"
+                        android:layout_weight="1"
+                        android:background="#fff"
+                        android:gravity="right|center_vertical"
+                        android:padding="10dp"
+                        android:singleLine="true"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#000"
+                        app:FarsiTypeface="IRANSansBold"
+                        tools:text="موجودی: " />
 
                     <ProgressBar
                         android:id="@+id/followProgress"
@@ -209,7 +230,6 @@
                         style="@android:style/Widget.Holo.Light.RatingBar.Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_below="@+id/txtname"
@@ -230,7 +250,6 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
                         android:background="#fff"
                         android:gravity="top|right"
                         android:padding="10dp"
@@ -238,7 +257,8 @@
                         android:text="توضیحات"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="#000"
-                        app:FarsiTypeface="IRANSans" />
+                        app:FarsiTypeface="IRANSans"
+                        android:layout_alignParentTop="true" />
                 </RelativeLayout>
 
                 <LinearLayout

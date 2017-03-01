@@ -11,6 +11,7 @@ public class Category extends Model {
 
     private String name;
     private String id;
+    private String icon;
 
     public String getName() {
         return name;
@@ -27,6 +28,14 @@ public class Category extends Model {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public static class Repository extends ModelRepository<Category> {

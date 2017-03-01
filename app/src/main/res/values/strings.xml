@@ -27,4 +27,6 @@
     <string name="fragment_name_trans">fragment_name_transition</string>
     <string name="emptyEventName">نام رویداد وارد نشده است</string>
     <string name="emptyEventDesc">شرح رویداد وارد نشده است</string>
+    <string name="emptyPrice">قیمت محصول مشخص نشده است</string>
+    <string name="emptyCount">موجودی اولیه مشخص نشده است</string>
 </resources>

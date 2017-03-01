@@ -139,6 +139,10 @@ public class Product extends Model implements Serializable {
 
             contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/getByOwner", "GET"),
                     getClassName() + ".getByOwner");
+
+            contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/getRemained", "GET"),
+                    getClassName() + ".getRemained");
+
             return contract;
         }
 
@@ -184,6 +188,21 @@ public class Product extends Model implements Serializable {
 
             invokeStaticMethod("getByOwner", params,
                     new JsonArrayParser<Product>(this, callback));
+        }
+
+        public void getRemained(String id, final StringCallback callback) {
+            invokeStaticMethod("getRemained", ImmutableMap.of("id", id),
+                    new Adapter.BinaryCallback() {
+                        @Override
+                        public void onSuccess(byte[] body, String contentType) {
+                            callback.onSuccess(new String(body));
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+                            callback.onError(t);
+                        }
+                    });
         }
     }
 

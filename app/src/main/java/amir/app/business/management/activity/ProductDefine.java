@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,6 +44,7 @@ import amir.app.business.config;
 import amir.app.business.event.ProductListRefreshEvent;
 import amir.app.business.models.Businesse;
 import amir.app.business.models.Category;
+import amir.app.business.models.Inventory;
 import amir.app.business.models.Location;
 import amir.app.business.models.Product;
 import amir.app.business.util;
@@ -58,6 +60,12 @@ import eu.inmite.android.lib.validations.form.annotations.NotEmpty;
  */
 
 public class ProductDefine extends AppCompatActivity {
+    public interface completeInterface {
+        void onComplete();
+
+        void onFail();
+    }
+
     private class image {
         public String filename;
         public String path;
@@ -77,7 +85,11 @@ public class ProductDefine extends AppCompatActivity {
     @BindView(R.id.categorySpinner)
     MaterialSpinner categorySpinner;
     @BindView(R.id.editPrice)
+    @NotEmpty(order = 1, messageId = R.string.emptyPrice)
     EditText editPrice;
+    @NotEmpty(order = 1, messageId = R.string.emptyCount)
+    @BindView(R.id.editCount)
+    EditText editCount;
     @BindView(R.id.btnSave)
     Button btnSave;
     @BindView(R.id.progress)
@@ -127,7 +139,6 @@ public class ProductDefine extends AppCompatActivity {
         load_category_list();
 
     }
-
 
 
     private void setup_category_spinner() {
@@ -235,13 +246,26 @@ public class ProductDefine extends AppCompatActivity {
             public void onSuccess() {
                 EventBus.getDefault().post(new ProductListRefreshEvent(product.getName() + " به لیست محصولات اضافه شد."));
 
-                dlg.dismiss();
-                util.alertDialog(ProductDefine.this, "بستن", "محصول با موفقیت ثبت شد.", "نتیجه", new SweetAlertDialog.OnSweetClickListener() {
+                dlg.setContent("در حال تعیین موجودی اولیه...");
+                int count = Integer.parseInt(editCount.getText().toString());
+                add_to_product(product.getId().toString(), count, new completeInterface() {
                     @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        onBackPressed();
+                    public void onComplete() {
+                        dlg.dismiss();
+
+                        util.alertDialog(ProductDefine.this, "بستن", "محصول با موفقیت ثبت شد.", "نتیجه", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                onBackPressed();
+                            }
+                        }, SweetAlertDialog.SUCCESS_TYPE);
                     }
-                }, SweetAlertDialog.SUCCESS_TYPE);
+
+                    @Override
+                    public void onFail() {
+                        util.alertDialog(ProductDefine.this, "بستن", "خطا در تعیین مقدار محصول", SweetAlertDialog.ERROR_TYPE);
+                    }
+                });
             }
 
             @Override
@@ -394,5 +418,26 @@ public class ProductDefine extends AppCompatActivity {
         });
 
         imageTakerManager.reinitialize("");
+    }
+
+    private void add_to_product(final String productid, int amount, final completeInterface event) {
+        Inventory.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Inventory.Repository.class);
+        final Inventory inventory = repository.createObject(ImmutableMap.of("productId", productid));
+        inventory.setAmount(amount);
+        inventory.setDate("2017-02-21");
+        inventory.setUserId(config.customer.getId());
+        inventory.save(new VoidCallback() {
+            @Override
+            public void onSuccess() {
+                event.onComplete();
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                event.onFail();
+
+            }
+        });
+
     }
 }
