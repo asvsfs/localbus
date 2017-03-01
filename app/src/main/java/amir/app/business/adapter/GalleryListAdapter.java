@@ -39,7 +39,7 @@ public class GalleryListAdapter extends PagerAdapter {
     public GalleryListAdapter(Context context, List<String> items, String server) {
         this.context = context;
         this.items = items;
-        this.server = context.getString(R.string.server)+"/images/";
+        this.server = context.getString(R.string.server) + "/images/";
 
         if (server != null)
             this.server = server;
@@ -49,10 +49,11 @@ public class GalleryListAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         View view = LayoutInflater.from(context).inflate(R.layout.view_product_gallery_page, null);
 
+        String item = items.get(position);
         ViewHolder holder = new ViewHolder(view);
-        if (!items.get(position).equals(""))
+        if (!item.equals(""))
             Glide.with(context.getApplicationContext())
-                    .load(server + items.get(position))
+                    .load(item.startsWith("/storage") ? item : server + item)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.imgproduct);
 

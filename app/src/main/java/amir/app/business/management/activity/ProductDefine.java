@@ -32,14 +32,18 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
+import amir.app.business.SingleShotLocationProvider;
 import amir.app.business.adapter.GalleryListAdapter;
 import amir.app.business.config;
 import amir.app.business.event.ProductListRefreshEvent;
+import amir.app.business.models.Businesse;
 import amir.app.business.models.Category;
+import amir.app.business.models.Location;
 import amir.app.business.models.Product;
 import amir.app.business.util;
 import amir.app.business.widget.CircleIndicator;
@@ -121,7 +125,10 @@ public class ProductDefine extends AppCompatActivity {
         initialize_ImageTaker();
 
         load_category_list();
+
     }
+
+
 
     private void setup_category_spinner() {
         categorySpinner.setItems(category);
@@ -199,9 +206,23 @@ public class ProductDefine extends AppCompatActivity {
         product.setCategory(categories.get(categorySpinner.getSelectedIndex()).getId());
         product.setName(editName.getText().toString());
         product.setDescription(editDesc.getText().toString());
-        product.setOwner(config.customer.getId());
+        product.setOwner(config.Businesse.getId());
         product.setPrice(Integer.parseInt(editPrice.getText().toString()));
         product.setQrcode(qrcode);
+
+        SingleShotLocationProvider.GPSCoordinates gpslocation = config.lastlocation;
+        if (gpslocation == null)
+            gpslocation = new SingleShotLocationProvider.GPSCoordinates(0, 0);
+
+        Location location = new Location();
+        location.setLat(gpslocation.latitude);
+        location.setLng(gpslocation.longitude);
+        product.setLocation(location);
+
+        Location userlocation = new Location();
+        userlocation.setLat(gpslocation.latitude);
+        userlocation.setLng(gpslocation.longitude);
+        product.setUserlocation(userlocation);
 
         List<String> _images = new ArrayList<>();
         for (image img : images) {

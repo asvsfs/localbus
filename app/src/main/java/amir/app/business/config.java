@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import amir.app.business.models.Businesse;
 import amir.app.business.models.Customer;
 import amir.app.business.models.Token;
 
@@ -14,6 +15,9 @@ import amir.app.business.models.Token;
 public class config {
     public static Token token;
     public static Customer customer;
+    public static Businesse Businesse;
+
+    public static SingleShotLocationProvider.GPSCoordinates lastlocation;
 
     public static void setValue(Context context, String key, String value){
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);

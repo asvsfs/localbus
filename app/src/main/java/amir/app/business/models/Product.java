@@ -25,7 +25,6 @@ import amir.app.business.callbacks.EmptyCallback;
 
 public class Product extends Model implements Serializable {
 
-
     //    private String id;
     private String name;
     private String description;
@@ -34,6 +33,16 @@ public class Product extends Model implements Serializable {
     private String category;
     private String qrcode;
     private List<String> images;
+    private Location location;
+    private Location userlocation;
+
+    public float[] getLocation() {
+        return new float[]{location.getLat(), location.getLng()};
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 
     public String getName() {
         return name;
@@ -97,6 +106,14 @@ public class Product extends Model implements Serializable {
 
     public void setImages(List<String> images) {
         this.images = images;
+    }
+
+    public float[] getuserLocation() {
+        return new float[]{userlocation.getLat(), userlocation.getLng()};
+    }
+
+    public void setUserlocation(Location userlocation) {
+        this.userlocation = userlocation;
     }
 
     public static class Repository extends ModelRepository<Product> {

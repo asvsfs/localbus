@@ -158,7 +158,7 @@ public class fragment_profile_myproducts extends baseFragment {
             products = new ArrayList<>();
         }
 
-        repository.getByOwner(page, config.customer.getId(), new ListCallback<Product>() {
+        repository.getByOwner(page, config.Businesse.getId(), new ListCallback<Product>() {
             @Override
             public void onSuccess(List<Product> items) {
                 //add new product in page to products collection

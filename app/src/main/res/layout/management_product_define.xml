@@ -70,6 +70,16 @@
                     android:layout_alignParentRight="true"
                     android:text="+" />
 
+                <Button
+                    android:id="@+id/btnDelImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:backgroundTint="#a00"
+                    android:text="-" />
+
             </RelativeLayout>
 
             <TextView

@@ -103,6 +103,8 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
     Button btnroute;
     @BindView(R.id.btnfollow)
     Button btnfollow;
+    @BindView(R.id.followProgress)
+    View followProgress;
     @BindView(R.id.commentLayout)
     View commentLayout;
 
@@ -432,17 +434,26 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
         HashMap<String, String> filter = new HashMap<>();
         filter.put("followingid", product.getOwner());
 
+        followProgress.setVisibility(View.VISIBLE);
+        btnfollow.setVisibility(View.INVISIBLE);
+
         repository.findOne(filter, new ObjectCallback<Following>() {
             @Override
             public void onSuccess(Following object) {
                 followingId = object.getId();
                 btnfollow.setText("دنبال میکنم");
+
+                followProgress.setVisibility(View.GONE);
+                btnfollow.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onError(Throwable t) {
                 followingId = "";
                 btnfollow.setText("دنبال کنید");
+
+                followProgress.setVisibility(View.GONE);
+                btnfollow.setVisibility(View.VISIBLE);
             }
         });
 
@@ -452,6 +463,9 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
     @OnClick(R.id.btnfollow)
     public void follow() {
         Following.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Following.Repository.class);
+
+        followProgress.setVisibility(View.VISIBLE);
+        btnfollow.setVisibility(View.INVISIBLE);
 
         //add new follow
         if (followingId.equals("")) {

@@ -189,6 +189,21 @@
                         app:FarsiTypeface="IRANSansBold"
                         tools:text="نام محصول" />
 
+                    <ProgressBar
+                        android:id="@+id/followProgress"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/btnfollow"
+                        android:layout_alignEnd="@+id/btnfollow"
+                        android:layout_alignLeft="@+id/btnfollow"
+                        android:layout_alignRight="@+id/btnfollow"
+                        android:layout_alignStart="@+id/btnfollow"
+                        android:layout_alignTop="@+id/btnfollow"
+                        android:layout_centerInParent="false"
+                        android:padding="8dp"
+                        android:visibility="gone" />
+
                     <RatingBar
                         android:id="@+id/ratingbar"
                         style="@android:style/Widget.Holo.Light.RatingBar.Small"
