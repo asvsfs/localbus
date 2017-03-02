@@ -11,6 +11,7 @@ import com.strongloop.android.loopback.callbacks.ObjectCallback;
 import com.strongloop.android.remoting.adapters.RestContract;
 import com.strongloop.android.remoting.adapters.RestContractItem;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +19,7 @@ import java.util.Map;
  * Created by amin on 08/05/2016.
  */
 
-public class Event extends Model {
+public class Event extends Model implements Serializable {
 
     private String title;
     private String description;
@@ -96,7 +97,7 @@ public class Event extends Model {
             return contract;
         }
 
-        public void getForCustomer(String id,  ListCallback<Event> callback) {
+        public void getForCustomer(String id, ListCallback<Event> callback) {
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("id", id);
 

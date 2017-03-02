@@ -16,6 +16,8 @@ import com.strongloop.android.loopback.callbacks.ObjectCallback;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.HashMap;
+
 import amir.app.business.GuideApplication;
 import amir.app.business.LoginActivity;
 import amir.app.business.R;
@@ -23,6 +25,7 @@ import amir.app.business.RegisterActivity;
 import amir.app.business.callbacks.SimpleCallback;
 import amir.app.business.config;
 import amir.app.business.event.ProfileRefreshEvent;
+import amir.app.business.models.Businesse;
 import amir.app.business.models.Customer;
 import amir.app.business.models.Verification;
 import amir.app.business.widget.CircleImageView;
@@ -104,6 +107,7 @@ public class fragment_profile_myinfo extends baseFragment {
     private void load_user_info() {
         if (config.customer != null) {
             setup_info_view(config.customer);
+            load_Business();
         }
 
         repository.findById(config.token.userId, new ObjectCallback<Customer>() {
@@ -111,8 +115,7 @@ public class fragment_profile_myinfo extends baseFragment {
             public void onSuccess(Customer customer) {
                 config.customer = customer;
 
-                //send refresh to profile page to activel all business tabs
-                EventBus.getDefault().post(new ProfileRefreshEvent(null));
+                load_Business();
 
                 checkVerificationId(customer.getVerificationId());
 
@@ -127,6 +130,27 @@ public class fragment_profile_myinfo extends baseFragment {
             }
         });
 
+    }
+
+    private void load_Business() {
+        Businesse.Repository businessrepo = GuideApplication.getLoopBackAdapter().createRepository(Businesse.Repository.class);
+        HashMap<String, String> param = new HashMap<>();
+        param.put("customerId", config.customer.getId());
+
+        businessrepo.findOne(param, new ObjectCallback<Businesse>() {
+            @Override
+            public void onSuccess(Businesse business) {
+                config.Businesse = business;
+
+                //send refresh to profile page to activel all business tabs
+                EventBus.getDefault().post(new ProfileRefreshEvent(null));
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
     }
 
     private void setup_info_view(Customer customer) {

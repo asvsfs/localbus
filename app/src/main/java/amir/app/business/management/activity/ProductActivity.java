@@ -31,6 +31,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.common.collect.ImmutableMap;
 import com.strongloop.android.loopback.callbacks.ListCallback;
 import com.strongloop.android.loopback.callbacks.ObjectCallback;
 import com.strongloop.android.loopback.callbacks.VoidCallback;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.zip.Inflater;
 
@@ -50,7 +52,9 @@ import amir.app.business.config;
 import amir.app.business.fragments.baseFragment;
 import amir.app.business.fragments.product.fragment_comment;
 import amir.app.business.models.Comment;
+import amir.app.business.models.Inventory;
 import amir.app.business.models.Product;
+import amir.app.business.models.StringCallback;
 import amir.app.business.models.db.Basket;
 import amir.app.business.util;
 import amir.app.business.widget.CircleIndicator;
@@ -80,6 +84,8 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
     Toolbar toolbar;
     @BindView(R.id.txtverification)
     FarsiTextView txtverification;
+    @BindView(R.id.txtAmount)
+    TextView txtAmount;
     @BindView(R.id.txtmorecomments)
     View txtmorecomments;
     @BindView(R.id.commentProgress)
@@ -108,6 +114,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
     Product product;
     String productid;
     GoogleMap map;
+    Product.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Product.Repository.class);
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -146,6 +153,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 
         load_product_images();
 
+        load_remained();
     }
 
     private void load_product_images() {
@@ -223,8 +231,6 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
     private void load_similar_product_list() {
         similarRecyclerview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
-        Product.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Product.Repository.class);
-
         repository.findAll(new ListCallback<Product>() {
             @Override
             public void onSuccess(List<Product> items) {
@@ -243,6 +249,22 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 
             @Override
             public void onError(Throwable t) {
+            }
+        });
+    }
+
+    //load remained of products
+    private void load_remained() {
+
+        repository.getRemained(productid, new StringCallback() {
+            @Override
+            public void onSuccess(String amount) {
+                txtAmount.setText(String.format(Locale.ENGLISH, "موجودی: %s عدد", amount));
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
             }
         });
     }
@@ -303,6 +325,10 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_inventory:
+                add_to_product();
+                break;
+
             case R.id.action_edit:
                 edit_product();
                 break;
@@ -311,6 +337,47 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
                 delete_product();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void add_to_product() {
+        View content = LayoutInflater.from(this).inflate(R.layout.view_product_count, null);
+        final EditText editText = (EditText) content.findViewById(R.id.editText);
+        editText.setText("1");
+        editText.setHint("افزایش/کاهش تعداد محصول");
+
+        util.contentDialog(this, content, "تعداد محصول", "تایید", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (editText.getText().toString().isEmpty()) {
+                    util.alertDialog(ProductActivity.this, "تعداد محصول مشخص نشد.", SweetAlertDialog.WARNING_TYPE);
+                    return;
+                }
+
+                if (Integer.parseInt(editText.getText().toString()) == 0) {
+                    util.alertDialog(ProductActivity.this, "حداقل تعداد محصول قابل قبول نیست.", SweetAlertDialog.WARNING_TYPE);
+                    return;
+                }
+
+                Inventory.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Inventory.Repository.class);
+                final Inventory inventory = repository.createObject(ImmutableMap.of("productId", productid));
+                inventory.setAmount(Integer.parseInt(editText.getText().toString()));
+                inventory.setDate("2017-02-21");
+                inventory.setUserId(config.customer.getId());
+                inventory.save(new VoidCallback() {
+                    @Override
+                    public void onSuccess() {
+                        load_remained();
+                        util.alertDialog(ProductActivity.this, "بستن", "تعداد محصول اعمال شد.", SweetAlertDialog.SUCCESS_TYPE);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        util.alertDialog(ProductActivity.this, "بستن", "خطا در تعیین مقدار محصول", SweetAlertDialog.ERROR_TYPE);
+                    }
+                });
+
+            }
+        });
     }
 
     private void delete_product() {

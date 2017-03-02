@@ -20,29 +20,31 @@ public class splash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
 
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                final Admin.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Admin.Repository.class);
-                repository.loginUser("test", "test", new Admin.LoginCallback() {
-                    @Override
-                    public void onSuccess(Token token) {
-                        GuideApplication.getLoopBackAdapter().setAccessToken(token.id);
-                        startActivity(new Intent(splash.this, MainActivity.class));
-                        finish();
-                    }
+                startActivity(new Intent(splash.this, MainActivity.class));
+                finish();
 
-                    @Override
-                    public void onError(Throwable t) {
-                        util.alertDialog(splash.this, "بستن", "خطا در ارتباط با شبکه", "خطا", new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                finish();
-                            }
-                        }, SweetAlertDialog.ERROR_TYPE);
-                    }
-                });
+//                final Admin.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Admin.Repository.class);
+//                repository.loginUser("test", "test", new Admin.LoginCallback() {
+//                    @Override
+//                    public void onSuccess(Token token) {
+//                        GuideApplication.getLoopBackAdapter().setAccessToken(token.id);
+//                        startActivity(new Intent(splash.this, MainActivity.class));
+//                        finish();
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable t) {
+//                        util.alertDialog(splash.this, "بستن", "خطا در ارتباط با شبکه", "خطا", new SweetAlertDialog.OnSweetClickListener() {
+//                            @Override
+//                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+//                                finish();
+//                            }
+//                        }, SweetAlertDialog.ERROR_TYPE);
+//                    }
+//                });
             }
         }, 2000);
 

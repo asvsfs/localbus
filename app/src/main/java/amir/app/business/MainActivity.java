@@ -55,52 +55,18 @@ public class MainActivity extends AppCompatActivity {
         //set default fragment to home page
         switchFragment(new fragment_home(), true);
 
-        Log.d(TAG, "InstanceID token: " + FirebaseInstanceId.getInstance().getToken());
-//        Businesse b = new Businesse();
-//        b.name = "android";
-//        b.description = "android description";
-//        b.location = new Location();
-//        b.location.lat = 52;
-//        b.location.lng = 32;
-//        b.id = "121212";
-//        b.images = new ArrayList<>();
+        init_gps_location();
 
-//        b.setRepository(repository);
-//        b.save(new VoidCallback() {
-//            @Override
-//            public void onSuccess() {
-//                Toast.makeText(MainActivity.this, "saves", Toast.LENGTH_LONG).show();
-//            }
-//
-//            @Override
-//            public void onError(Throwable t) {
-//
-//            }
-//        });
+    }
 
-//        RestHelper.getRestService().businesseFindAll().enqueue(new Callback<List<Businesse>>() {
-//            @Override
-//            public void onResponse(Call<List<Businesse>> call, Response<List<Businesse>> response) {
-//                Toast.makeText(MainActivity.this, "count:" + response.body().size(), Toast.LENGTH_LONG).show();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Businesse>> call, Throwable t) {
-//
-//            }
-//        });
-
-//        repository.getById("57a4ed29713f951ee89f6815", new ObjectCallback<Businesse>() {
-//            @Override
-//            public void onSuccess(Businesse object) {
-//            }
-//
-//            @Override
-//            public void onError(Throwable t) {
-//                Toast.makeText(MainActivity.this, "onError", Toast.LENGTH_LONG).show();
-//            }
-//        });
-
+    private void init_gps_location() {
+        SingleShotLocationProvider.requestSingleUpdate(this,
+                new SingleShotLocationProvider.LocationCallback() {
+                    @Override
+                    public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates location) {
+                        config.lastlocation = location;
+                    }
+                });
     }
 
 

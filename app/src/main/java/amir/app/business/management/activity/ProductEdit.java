@@ -32,15 +32,19 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 import amir.app.business.GuideApplication;
 import amir.app.business.R;
+import amir.app.business.SingleShotLocationProvider;
 import amir.app.business.adapter.GalleryListAdapter;
 import amir.app.business.config;
 import amir.app.business.event.ProductListRefreshEvent;
+import amir.app.business.models.Businesse;
 import amir.app.business.models.Category;
+import amir.app.business.models.Location;
 import amir.app.business.models.Product;
 import amir.app.business.util;
 import amir.app.business.widget.CircleIndicator;
@@ -84,6 +88,8 @@ public class ProductEdit extends AppCompatActivity {
     ViewPager imagePager;
     @BindView(R.id.indicator)
     CircleIndicator indicator;
+    @BindView(R.id.btnDelImage)
+    Button btnDelImage;
 
     Product product;
     String productid;
@@ -254,13 +260,30 @@ public class ProductEdit extends AppCompatActivity {
         product.setCategory(categories.get(categorySpinner.getSelectedIndex()).getId());
         product.setName(editName.getText().toString());
         product.setDescription(editDesc.getText().toString());
-        product.setOwner(config.customer.getId());
+        product.setOwner(config.Businesse.getId());
         product.setPrice(Integer.parseInt(editPrice.getText().toString()));
         product.setQrcode(product.getQrcode());
 
+        SingleShotLocationProvider.GPSCoordinates gpslocation = config.lastlocation;
+        if (gpslocation == null)
+            gpslocation = new SingleShotLocationProvider.GPSCoordinates(0, 0);
+
+        Location location = new Location();
+        location.setLat(gpslocation.latitude);
+        location.setLng(gpslocation.longitude);
+        product.setLocation(location);
+
+        Location userlocation = new Location();
+        location.setLat(gpslocation.latitude);
+        location.setLng(gpslocation.longitude);
+        product.setUserlocation(userlocation);
+
         List<String> _images = new ArrayList<>();
         for (image img : images) {
-            _images.add(img.filename);
+            if(img.added)
+                _images.add(img.filename);
+            else
+                _images.add(img.path);
         }
         product.setImages(_images);
 
@@ -362,6 +385,12 @@ public class ProductEdit extends AppCompatActivity {
 
     }
 
+    @OnClick(R.id.btnDelImage)
+    public void btnDelImage() {
+        images.remove(imagePager.getCurrentItem());
+        load_product_images();
+    }
+
     private void load_product_images() {
         List<String> gallery = new ArrayList<>();
         for (image img : images) {
@@ -373,6 +402,8 @@ public class ProductEdit extends AppCompatActivity {
 
         Display display = getWindowManager().getDefaultDisplay();
         imagePager.getLayoutParams().height = display.getWidth();
+
+        btnDelImage.setVisibility(images.size() > 0 ? View.VISIBLE : View.GONE);
     }
 
     @Override

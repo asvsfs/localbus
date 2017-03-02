@@ -1,5 +1,6 @@
 package amir.app.business.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +24,7 @@ import amir.app.business.R;
 import amir.app.business.adapter.EventListAdapter;
 import amir.app.business.config;
 import amir.app.business.event.ProfileRefreshEvent;
+import amir.app.business.management.activity.EventPage;
 import amir.app.business.models.Event;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -100,9 +102,19 @@ public class fragment_profile_myevent extends baseFragment {
     }
 
     private void setup_recyclerview(List<Event> events) {
-        recyclerview.setAdapter(new amir.app.business.management.adapter.EventListAdapter(getActivity(), events));
+        EventListAdapter adapter = new EventListAdapter(getActivity(), events);
+        recyclerview.setAdapter(adapter);
         progress.setVisibility(View.GONE);
         txtempty.setVisibility(events.size() > 0 ? View.GONE : View.VISIBLE);
+
+        adapter.setOnItemClickListener(new EventListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Event event) {
+                Intent intent=new Intent(getactivity(), EventPage.class);
+                intent.putExtra("event", event);
+                getactivity().startActivity(intent);
+            }
+        });
     }
 
 //    private void setup_recyclerview() {

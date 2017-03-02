@@ -25,7 +25,6 @@ import amir.app.business.callbacks.EmptyCallback;
 
 public class Product extends Model implements Serializable {
 
-
     //    private String id;
     private String name;
     private String description;
@@ -34,6 +33,16 @@ public class Product extends Model implements Serializable {
     private String category;
     private String qrcode;
     private List<String> images;
+    private Location location;
+    private Location userlocation;
+
+    public float[] getLocation() {
+        return new float[]{location.getLat(), location.getLng()};
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 
     public String getName() {
         return name;
@@ -99,6 +108,14 @@ public class Product extends Model implements Serializable {
         this.images = images;
     }
 
+    public float[] getuserLocation() {
+        return new float[]{userlocation.getLat(), userlocation.getLng()};
+    }
+
+    public void setUserlocation(Location userlocation) {
+        this.userlocation = userlocation;
+    }
+
     public static class Repository extends ModelRepository<Product> {
         public Repository() {
             super("product", "products", Product.class);
@@ -122,6 +139,10 @@ public class Product extends Model implements Serializable {
 
             contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/getByOwner", "GET"),
                     getClassName() + ".getByOwner");
+
+            contract.addItem(new RestContractItem("/" + getNameForRestUrl() + "/getRemained", "GET"),
+                    getClassName() + ".getRemained");
+
             return contract;
         }
 
@@ -167,6 +188,21 @@ public class Product extends Model implements Serializable {
 
             invokeStaticMethod("getByOwner", params,
                     new JsonArrayParser<Product>(this, callback));
+        }
+
+        public void getRemained(String id, final StringCallback callback) {
+            invokeStaticMethod("getRemained", ImmutableMap.of("id", id),
+                    new Adapter.BinaryCallback() {
+                        @Override
+                        public void onSuccess(byte[] body, String contentType) {
+                            callback.onSuccess(new String(body));
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+                            callback.onError(t);
+                        }
+                    });
         }
     }
 

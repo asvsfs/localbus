@@ -158,14 +158,14 @@ public class fragment_profile_myproducts extends baseFragment {
             products = new ArrayList<>();
         }
 
-        repository.getByOwner(page, config.customer.getId(), new ListCallback<Product>() {
+        repository.getByOwner(page, config.Businesse.getId(), new ListCallback<Product>() {
             @Override
             public void onSuccess(List<Product> items) {
                 //add new product in page to products collection
                 products.addAll(items);
 
-                if (products.size() > 0)
-                    floatAdd.setVisibility(View.VISIBLE);
+//                if (products.size() > 0)
+                floatAdd.setVisibility(View.VISIBLE);
 
                 setup_adapter_and_views();
             }
@@ -196,7 +196,7 @@ public class fragment_profile_myproducts extends baseFragment {
                     return;
                 }
 
-                if (Integer.parseInt(editText.getText().toString())==0) {
+                if (Integer.parseInt(editText.getText().toString()) == 0) {
                     util.alertDialog(getactivity(), "حداقل تعداد محصول قابل قبول نیست.", SweetAlertDialog.WARNING_TYPE);
                     return;
                 }
