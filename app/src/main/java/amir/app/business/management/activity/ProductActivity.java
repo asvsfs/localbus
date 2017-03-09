@@ -52,6 +52,7 @@ import amir.app.business.config;
 import amir.app.business.fragments.baseFragment;
 import amir.app.business.fragments.product.fragment_comment;
 import amir.app.business.models.Comment;
+import amir.app.business.models.Customer;
 import amir.app.business.models.Inventory;
 import amir.app.business.models.Product;
 import amir.app.business.models.StringCallback;
@@ -87,7 +88,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
     @BindView(R.id.txtAmount)
     TextView txtAmount;
     @BindView(R.id.txtmorecomments)
-    View txtmorecomments;
+    TextView txtmorecomments;
     @BindView(R.id.commentProgress)
     ProgressBar commentProgress;
     //    @BindView(R.id.commentInnerLayout)
@@ -96,6 +97,10 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
     ImageView btnSendComment;
     @BindView(R.id.txtlastcomment)
     TextView txtlastcomment;
+    @BindView(R.id.commentLayout)
+    View commentLayout;
+    @BindView(R.id.txtusername)
+    TextView txtusername;
     @BindView(R.id.lastRatingBar)
     RatingBar lastRatingBar;
     @BindView(R.id.ratingbar)
@@ -212,17 +217,44 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         repository.getByProductId(productid, new ListCallback<Comment>() {
             @Override
             public void onSuccess(List<Comment> comments) {
-                commentProgress.setVisibility(View.GONE);
-//                commentInnerLayout.setVisibility(View.VISIBLE);
+                //calculate average of comments rate
+                int rate = 0;
+                for (Comment comment : comments) {
+                    rate += comment.getRate();
+                }
+                rate = rate / comments.size();
+                ratingbar.setRating(rate);
 
-                if (comments.size() > 0)
-                    txtlastcomment.setText(comments.get(0).getText());
+                commentProgress.setVisibility(View.GONE);
+                if (comments.size() > 1)
+                    txtmorecomments.setText(String.format(Locale.ENGLISH, "همه %d نظر را ببینید", comments.size()));
+                else
+                    txtmorecomments.setVisibility(View.GONE);
+
+                if (comments.size() > 0) {
+                    Comment comment = comments.get(comments.size() - 1);
+                    Customer.Repository customer = GuideApplication.getLoopBackAdapter().createRepository(Customer.Repository.class);
+                    customer.findById(comment.getCustomerId(), new ObjectCallback<Customer>() {
+                        @Override
+                        public void onSuccess(Customer customer) {
+                            txtusername.setText(customer.getRealm());
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+
+                        }
+                    });
+
+                    txtlastcomment.setText(comment.getText());
+                } else
+                    commentLayout.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(Throwable t) {
                 commentProgress.setVisibility(View.GONE);
-//                commentCard.setVisibility(View.GONE);
+                commentLayout.setVisibility(View.GONE);
             }
         });
 
@@ -340,8 +372,9 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     private void add_to_product() {
-        View content = LayoutInflater.from(this).inflate(R.layout.view_product_count, null);
+        View content = LayoutInflater.from(this).inflate(R.layout.view_product_inventroy, null);
         final EditText editText = (EditText) content.findViewById(R.id.editText);
+        final EditText editDesc = (EditText) content.findViewById(R.id.editDesc);
         editText.setText("1");
         editText.setHint("افزایش/کاهش تعداد محصول");
 
@@ -363,6 +396,8 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
                 inventory.setAmount(Integer.parseInt(editText.getText().toString()));
                 inventory.setDate("2017-02-21");
                 inventory.setUserId(config.customer.getId());
+                inventory.setDescription(editDesc.getText().toString());
+
                 inventory.save(new VoidCallback() {
                     @Override
                     public void onSuccess() {

@@ -6,4 +6,5 @@
     <dimen name="tip_radius">4dp</dimen>
     <dimen name="tip_dimen_regular">16dp</dimen>
     <dimen name="tip_dimen_small">12dp</dimen>
+    <dimen name="card_radius">2dp</dimen>
 </resources>

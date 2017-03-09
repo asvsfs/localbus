@@ -299,10 +299,10 @@
                             android:layout_toStartOf="@+id/imgavatar"
                             android:gravity="right|center_vertical"
                             android:singleLine="false"
-                            android:text="امین تقدسی"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="#000"
-                            app:FarsiTypeface="IRANSansBold" />
+                            app:FarsiTypeface="IRANSansBold"
+                            tools:text="امین تقدسی" />
 
                     </LinearLayout>
 
@@ -330,8 +330,8 @@
                         android:ems="10"
                         android:inputType="textPersonName"
                         android:padding="10dp"
-                        android:text="همه 10 نظر را ببینید"
-                        android:textColor="#000" />
+                        android:textColor="#000"
+                        tools:text="همه 10 نظر را ببینید" />
 
                     <RatingBar
                         android:id="@+id/lastRatingBar"

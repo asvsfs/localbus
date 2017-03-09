@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:foreground="@drawable/card_color_selector"
+        android:foreground="@drawable/card_foreground"
         app:cardBackgroundColor="#fff">
 
         <RelativeLayout

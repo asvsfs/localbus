@@ -22,6 +22,7 @@ public class Inventory extends Model {
 
     private String productId;
     private int amount;
+    private String description;
     private int remained;
     private String date;
     private String userId;
@@ -73,6 +74,14 @@ public class Inventory extends Model {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public static class Repository extends ModelRepository<Inventory> {

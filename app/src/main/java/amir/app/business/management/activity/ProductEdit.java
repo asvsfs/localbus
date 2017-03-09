@@ -44,8 +44,10 @@ import amir.app.business.config;
 import amir.app.business.event.ProductListRefreshEvent;
 import amir.app.business.models.Businesse;
 import amir.app.business.models.Category;
+import amir.app.business.models.Inventory;
 import amir.app.business.models.Location;
 import amir.app.business.models.Product;
+import amir.app.business.models.StringCallback;
 import amir.app.business.util;
 import amir.app.business.widget.CircleIndicator;
 import butterknife.BindView;
@@ -80,6 +82,8 @@ public class ProductEdit extends AppCompatActivity {
     MaterialSpinner categorySpinner;
     @BindView(R.id.editPrice)
     EditText editPrice;
+    @BindView(R.id.editCount)
+    EditText editCount;
     @BindView(R.id.btnSave)
     Button btnSave;
     @BindView(R.id.progress)
@@ -102,7 +106,7 @@ public class ProductEdit extends AppCompatActivity {
     List<image> images = new ArrayList<>();
     MaterialDialog dlg;
     BottomSheetDialog bottomsheet;
-
+    int amount = 0;
     Product.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Product.Repository.class);
 
     @Override
@@ -156,6 +160,8 @@ public class ProductEdit extends AppCompatActivity {
                 product = object;
 
                 setup_product_info();
+
+                load_remained();
                 load_product_images();
                 load_category_list();
             }
@@ -172,6 +178,23 @@ public class ProductEdit extends AppCompatActivity {
         categorySpinner.setSelectedIndex(0);
     }
 
+
+    //load remained of products
+    private void load_remained() {
+
+        repository.getRemained(product.getId().toString(), new StringCallback() {
+            @Override
+            public void onSuccess(String amount) {
+                editCount.setText(amount);
+                ProductEdit.this.amount = Integer.parseInt(amount);
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+        });
+    }
 
     private void load_category_list() {
         Category.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Category.Repository.class);
@@ -280,7 +303,7 @@ public class ProductEdit extends AppCompatActivity {
 
         List<String> _images = new ArrayList<>();
         for (image img : images) {
-            if(img.added)
+            if (img.added)
                 _images.add(img.filename);
             else
                 _images.add(img.path);
@@ -292,13 +315,27 @@ public class ProductEdit extends AppCompatActivity {
             public void onSuccess() {
                 EventBus.getDefault().post(new ProductListRefreshEvent(product.getName() + " به لیست محصولات اضافه شد."));
 
-                dlg.dismiss();
-                util.alertDialog(ProductEdit.this, "بستن", "محصول با موفقیت ثبت شد.", "نتیجه", new SweetAlertDialog.OnSweetClickListener() {
+                dlg.setContent("در حال تعیین موجودی اولیه...");
+                int count = Integer.parseInt(editCount.getText().toString());
+                add_to_product(product.getId().toString(), count, "ویرایش موجودی اولیه", new ProductDefine.completeInterface() {
                     @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        onBackPressed();
+                    public void onComplete() {
+                        dlg.dismiss();
+
+                        util.alertDialog(ProductEdit.this, "بستن", "محصول با موفقیت ثبت شد.", "نتیجه", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                onBackPressed();
+                            }
+                        }, SweetAlertDialog.SUCCESS_TYPE);
                     }
-                }, SweetAlertDialog.SUCCESS_TYPE);
+
+                    @Override
+                    public void onFail() {
+                        util.alertDialog(ProductEdit.this, "بستن", "خطا در تعیین مقدار محصول", SweetAlertDialog.ERROR_TYPE);
+                    }
+                });
+
             }
 
             @Override
@@ -471,5 +508,28 @@ public class ProductEdit extends AppCompatActivity {
         });
 
         imageTakerManager.reinitialize("");
+    }
+
+    private void add_to_product(final String productid, int newcount, String description, final ProductDefine.completeInterface event) {
+        Inventory.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Inventory.Repository.class);
+        final Inventory inventory = repository.createObject(ImmutableMap.of("productId", productid));
+        inventory.setAmount(newcount - amount);
+        inventory.setDate("2017-02-21");
+        inventory.setUserId(config.customer.getId());
+        inventory.setDescription(description);
+
+        inventory.save(new VoidCallback() {
+            @Override
+            public void onSuccess() {
+                event.onComplete();
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                event.onFail();
+
+            }
+        });
+
     }
 }
