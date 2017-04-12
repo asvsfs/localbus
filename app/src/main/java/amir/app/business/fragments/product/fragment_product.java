@@ -46,6 +46,7 @@ import amir.app.business.config;
 import amir.app.business.fragments.baseFragment;
 import amir.app.business.models.Businesse;
 import amir.app.business.models.Comment;
+import amir.app.business.models.Customer;
 import amir.app.business.models.Followed;
 import amir.app.business.models.Following;
 import amir.app.business.models.Product;
@@ -92,6 +93,8 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
     ImageView btnSendComment;
     @BindView(R.id.txtlastcomment)
     TextView txtlastcomment;
+    @BindView(R.id.txtusername)
+    TextView txtusername;
     @BindView(R.id.lastRatingBar)
     RatingBar lastRatingBar;
     @BindView(R.id.ratingbar)
@@ -268,7 +271,22 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
                     txtmorecomments.setVisibility(View.GONE);
 
                 if (comments.size() > 0) {
-                    txtlastcomment.setText(comments.get(comments.size() - 1).getText());
+                    Comment comment = comments.get(comments.size() - 1);
+                    Customer.Repository customer = GuideApplication.getLoopBackAdapter().createRepository(Customer.Repository.class);
+                    customer.findById(comment.getCustomerId(), new ObjectCallback<Customer>() {
+                        @Override
+                        public void onSuccess(Customer customer) {
+                            txtusername.setText(customer.getRealm());
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+
+                        }
+                    });
+
+                    txtlastcomment.setText(comment.getText());
+                    lastRatingBar.setRating(comment.getRate());
                 } else
                     commentLayout.setVisibility(View.GONE);
             }
@@ -436,6 +454,11 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
     }
 
     private void checkfollowState() {
+        if (config.customer == null) {
+            btnfollow.setVisibility(View.GONE);
+            return;
+        }
+
         Following.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Following.Repository.class);
 
         HashMap<String, String> filter = new HashMap<>();
@@ -524,13 +547,19 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
     private void load_similar_product_list() {
         similarRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
-        HashMap<String, String> filter = new HashMap<>();
-        filter.put("category", product.getCategory());
-
-        repository.find(filter, new ListCallback<Product>() {
+        repository.productByCategory(0, product.getCategory(), new ListCallback<Product>() {
             @Override
             public void onSuccess(List<Product> items) {
                 //setup top product view
+                int foundindex = -1;
+                for (int i = 0; i < items.size(); i++) {
+                    if (items.get(i).getId().equals(product.getId()))
+                        foundindex = i;
+                }
+
+                if (foundindex > -1)
+                    items.remove(foundindex);
+
                 ProductHorizontalListAdapter adapter = new ProductHorizontalListAdapter(getActivity(), items);
                 adapter.setOnItemClickListener(new ProductHorizontalListAdapter.OnItemClickListener() {
                     @Override

@@ -3,6 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
@@ -10,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         app:cardBackgroundColor="#fff"
-        android:foreground="@drawable/card_color_selector">
+        >
 
         <RelativeLayout
             android:layout_width="wrap_content"

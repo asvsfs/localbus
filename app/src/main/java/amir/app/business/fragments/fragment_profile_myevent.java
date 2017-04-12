@@ -96,6 +96,7 @@ public class fragment_profile_myevent extends baseFragment {
 
             @Override
             public void onError(Throwable t) {
+                progress.setVisibility(View.GONE);
             }
         });
 

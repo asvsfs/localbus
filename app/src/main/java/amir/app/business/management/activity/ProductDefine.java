@@ -248,7 +248,7 @@ public class ProductDefine extends AppCompatActivity {
 
                 dlg.setContent("در حال تعیین موجودی اولیه...");
                 int count = Integer.parseInt(editCount.getText().toString());
-                add_to_product(product.getId().toString(), count, new completeInterface() {
+                add_to_product(product.getId().toString(), count, "موجودی اولیه", new completeInterface() {
                     @Override
                     public void onComplete() {
                         dlg.dismiss();
@@ -420,12 +420,14 @@ public class ProductDefine extends AppCompatActivity {
         imageTakerManager.reinitialize("");
     }
 
-    private void add_to_product(final String productid, int amount, final completeInterface event) {
+    private void add_to_product(final String productid, int amount, String description, final completeInterface event) {
         Inventory.Repository repository = GuideApplication.getLoopBackAdapter().createRepository(Inventory.Repository.class);
         final Inventory inventory = repository.createObject(ImmutableMap.of("productId", productid));
         inventory.setAmount(amount);
         inventory.setDate("2017-02-21");
         inventory.setUserId(config.customer.getId());
+        inventory.setDescription(description);
+
         inventory.save(new VoidCallback() {
             @Override
             public void onSuccess() {

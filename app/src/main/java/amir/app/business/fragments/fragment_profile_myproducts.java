@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.common.collect.ImmutableMap;
@@ -146,7 +147,8 @@ public class fragment_profile_myproducts extends baseFragment {
     }
 
     //read all product and fill list
-    private void load_product_list(int page) {
+    private void load_product_list(final int page) {
+
         if (config.customer == null) {
             progress.setVisibility(View.GONE);
             txtempty.setVisibility(View.VISIBLE);
@@ -154,13 +156,13 @@ public class fragment_profile_myproducts extends baseFragment {
             return;
         }
 
-        if (products == null || page == 0) {
-            products = new ArrayList<>();
-        }
-
         repository.getByOwner(page, config.Businesse.getId(), new ListCallback<Product>() {
             @Override
             public void onSuccess(List<Product> items) {
+                if (products == null || page == 0) {
+                    products = new ArrayList<>();
+                }
+
                 //add new product in page to products collection
                 products.addAll(items);
 
