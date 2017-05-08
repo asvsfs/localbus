@@ -49,10 +49,10 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
     Toolbar toolbar;
     @BindView(R.id.adverPager)
     ViewPager adverPager;
-    @BindView(R.id.txttoptitle)
-    FarsiTextView txttoptitle;
-    @BindView(R.id.topRecyclerview)
-    RecyclerView topRecyclerview;
+//    @BindView(R.id.txttoptitle)
+//    FarsiTextView txttoptitle;
+//    @BindView(R.id.w)
+//    RecyclerView topRecyclerview;
     @BindView(R.id.productRecyclerview)
     RecyclerView productRecyclerview;
     @BindView(R.id.indicator)
@@ -117,7 +117,7 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
 
     //setup recyclerview lists
     private void init_layout() {
-        topRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        //topRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         productRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
     }
 
@@ -162,15 +162,15 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
         init_layout();
 
         //setup top products view
-        topadapter = new ProductHorizontalListAdapter(getActivity(), products);
-        topadapter.setOnItemClickListener(new ProductHorizontalListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Product product) {
-                switch_to_product_page(product);
-            }
-        });
-        topRecyclerview.setAdapter(topadapter);
-        topRecyclerview.setNestedScrollingEnabled(false);
+//        topadapter = new ProductHorizontalListAdapter(getActivity(), products);
+//        topadapter.setOnItemClickListener(new ProductHorizontalListAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(Product product) {
+//                switch_to_product_page(product);
+//            }
+//        });
+//        topRecyclerview.setAdapter(topadapter);
+//        topRecyclerview.setNestedScrollingEnabled(false);
 
 
         //setup main products view

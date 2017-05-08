@@ -112,7 +112,7 @@ public class BasketListAdapter extends RecyclerView.Adapter<BasketListAdapter.Vi
 
         if (basket.image!="")
             Glide.with(context.getApplicationContext())
-                    .load(context.getString(R.string.server)+"/images/" + basket.image)
+                    .load(context.getString(R.string.server)+"/images/"+basket.productid+"/" + basket.image)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.imgproduct);
 

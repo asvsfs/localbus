@@ -235,7 +235,7 @@ public class fragment_profile_myproducts extends baseFragment {
                 public void onSuccess(final QrCode qrCode) {
                     progress.dismiss();
 
-                    util.confirmDialog(getActivity(), "تایید", "بستن", "اضافه کردن مدل", "محصولی با این کد موجود است. به این مدل اضافه میکنید؟", new SweetAlertDialog.OnSweetClickListener() {
+                    util.confirmDialog(getActivity(), "تایید", "بستن", "اضافه کردن آیتم", "محصولی با این کد موجود است. به این آیتم اضافه میکنید؟", new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             add_to_product(qrCode.getProductId());

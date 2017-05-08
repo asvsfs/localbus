@@ -89,7 +89,7 @@ public class ProductHorizontalListAdapter extends RecyclerView.Adapter<ProductHo
         List<String> images = product.getImages();
         if (images != null && images.size() > 0)
             Glide.with(context.getApplicationContext())
-                    .load(context.getString(R.string.server) + "/images/" + images.get(0))
+                    .load(context.getString(R.string.server) +"/images/"+ product.getId().toString()+"/" + images.get(0))
                     .into(holder.imgProduct);
     }
 
