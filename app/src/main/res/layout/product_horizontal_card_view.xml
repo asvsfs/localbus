@@ -18,19 +18,18 @@
             <view
                 android:id="@+id/imgproduct"
                 class="amir.app.business.widget.SquareImageViewHeight_Based"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
-                android:scaleType="centerInside"
                 android:src="@drawable/product_logo"
                 android:transitionName="@string/fragment_image_trans" />
 
             <view
                 android:id="@+id/txtname"
                 class="amir.app.business.widget.FarsiTextView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/imgproduct"
                 android:layout_centerHorizontal="true"
@@ -45,7 +44,7 @@
             <view
                 android:id="@+id/txtdesc"
                 class="amir.app.business.widget.FarsiTextView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/imgproduct"
                 android:layout_centerHorizontal="true"
