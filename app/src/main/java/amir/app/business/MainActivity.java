@@ -74,12 +74,12 @@ public class MainActivity extends AppCompatActivity {
     private void init_bottombar() {
         bottombar.setTabMode(TabLayout.MODE_FIXED);
 
-        bottombar.addTab(bottombar.newTab().setCustomView(getTabView(R.drawable.ic_home_black_24dp)));
-        bottombar.addTab(bottombar.newTab().setCustomView(getTabView(R.drawable.ic_list_black_24dp)));
-        bottombar.addTab(bottombar.newTab().setCustomView(getTabView(R.drawable.ic_search_black_24dp)));
-        bottombar.addTab(bottombar.newTab().setCustomView(getTabView(R.drawable.ic_notifications_black_24dp)));
-        bottombar.addTab(bottombar.newTab().setCustomView(getTabView(R.drawable.ic_person_black_24dp)));
-        bottombar.addTab(bottombar.newTab().setCustomView(getTabView(R.drawable.ic_shopping_basket_black_24dp)));
+        bottombar.addTab(bottombar.newTab().setCustomView(getTabView(R.drawable.ic_home_white_24dp)));
+        bottombar.addTab(bottombar.newTab().setCustomView(getTabView(R.drawable.ic_view_module_white_24dp)));
+        bottombar.addTab(bottombar.newTab().setCustomView(getTabView(R.drawable.ic_search_white_24dp)));
+        bottombar.addTab(bottombar.newTab().setCustomView(getTabView(R.drawable.ic_notifications_white_24dp)));
+        bottombar.addTab(bottombar.newTab().setCustomView(getTabView(R.drawable.ic_person_outline_white_24dp)));
+        bottombar.addTab(bottombar.newTab().setCustomView(getTabView(R.drawable.ic_shopping_cart_white_24dp)));
 
         bottombar.setOnTabSelectedListener(bottombarTabListener);
 

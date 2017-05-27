@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -96,7 +97,7 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
         //template
         adver.add("");
         adver.add("");
-        adver.add("");
+        //adver.add("");
         //template
 
         adverPager.setAdapter(new AdverListAdapter(getactivity(), adver));
@@ -132,8 +133,9 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
 
     //setup recyclerview lists
     private void init_layout() {
-        topRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        businessRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        topRecyclerview.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+
+        businessRecyclerview.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
     }
 
 
@@ -175,6 +177,7 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
     }
 
     private void setup_adapter_and_views() {
+
         //setup init views
         init_layout();
 

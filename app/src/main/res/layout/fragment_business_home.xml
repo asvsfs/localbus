@@ -25,11 +25,18 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@android:color/transparent"
                 android:theme="?attr/actionBarTheme"
                 app:theme="@style/AppTheme"
                 app:title="@string/app_name"
                 app:titleTextColor="#000" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                app:srcCompat="@drawable/logo" />
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
@@ -75,31 +82,6 @@
                     android:layout_alignBottom="@+id/adverPager" />
 
             </RelativeLayout>
-
-            <view
-                android:id="@+id/txttoptitle"
-                class="amir.app.business.widget.FarsiTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:background="@color/white_gray_color"
-                android:gravity="right|center_vertical"
-                android:padding="10dp"
-                android:singleLine="true"
-                android:text="برترین‌ها"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="#000"
-                app:FarsiTypeface="IRANSansBold" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/topRecyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/adverPager"
-                android:background="@color/white_gray_color"
-                tools:layout_editor_absoluteX="0dp">
-
-            </android.support.v7.widget.RecyclerView>
 
             <view
                 android:id="@+id/view"

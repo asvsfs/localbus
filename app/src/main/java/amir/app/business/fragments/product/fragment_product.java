@@ -244,7 +244,13 @@ public class fragment_product extends baseFragment implements OnMapReadyCallback
         mapview.getMapAsync(this);
 
 //       mapview.setClickable(false);
-        mapview.getMap().getUiSettings().setScrollGesturesEnabled(false);
+        try{
+            mapview.getMap().getUiSettings().setScrollGesturesEnabled(false);
+        }catch(Exception e){
+
+        }
+
+
     }
 
     //load comments and select last comment to show on UI

@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:background="#eee"
         android:scaleType="centerCrop"
-        android:src="@drawable/adver"
+        android:src="@drawable/car_default"
         app:layout_collapseMode="parallax"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />

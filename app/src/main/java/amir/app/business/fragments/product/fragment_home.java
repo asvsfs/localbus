@@ -7,8 +7,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
@@ -118,7 +120,10 @@ public class fragment_home extends baseFragment implements OnMapReadyCallback {
     //setup recyclerview lists
     private void init_layout() {
         //topRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        productRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+       //productRecyclerview.setHasFixedSize(true);
+        productRecyclerview.addItemDecoration(new cardViewDecoration(0));
+
+        productRecyclerview.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL));
     }
 
 

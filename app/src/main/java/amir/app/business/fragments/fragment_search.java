@@ -55,7 +55,7 @@ public class fragment_search extends baseFragment {
 
         //config toolbar
         getactivity().setSupportActionBar(toolbar);
-        getactivity().getSupportActionBar().setTitle("");
+//        getactivity().getSupportActionBar().setTitle("جستوجو");
         getactivity().getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getactivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
