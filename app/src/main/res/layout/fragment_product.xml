@@ -269,104 +269,6 @@
                     android:background="#ddd"
                     android:orientation="vertical"></LinearLayout>
 
-                <RelativeLayout
-                    android:id="@+id/commentLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#fff"
-                    android:padding="10dp">
-
-                    <LinearLayout
-                        android:id="@+id/linearLayout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignBottom="@+id/imgavatar"
-                        android:layout_alignTop="@+id/imgavatar"
-                        android:layout_marginRight="10dp"
-                        android:layout_toLeftOf="@+id/imgavatar"
-                        android:layout_toRightOf="@+id/lastRatingBar"
-                        android:layout_toStartOf="@+id/imgavatar"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <view
-                            android:id="@+id/txtusername"
-                            class="amir.app.business.widget.FarsiTextView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignTop="@+id/imgavatar"
-                            android:layout_toLeftOf="@+id/imgavatar"
-                            android:layout_toStartOf="@+id/imgavatar"
-                            android:gravity="right|center_vertical"
-                            android:singleLine="false"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="#000"
-                            app:FarsiTypeface="IRANSansBold"
-                            tools:text="امین تقدسی" />
-
-                    </LinearLayout>
-
-                    <view
-                        android:id="@+id/txtlastcomment"
-                        class="amir.app.business.widget.FarsiTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@+id/linearLayout"
-                        android:padding="5dp"
-                        android:textColor="#000"
-                        app:FarsiTypeface="IRANSans"
-                        tools:text="خیلی خوب بود. کلی استفاده کردم. فقط ای کاش وقتش رو بیشتر میکردید چند روزی" />
-
-                    <view
-                        android:id="@+id/txtmorecomments"
-                        class="amir.app.business.widget.FarsiTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignEnd="@+id/imgavatar"
-                        android:layout_alignRight="@+id/imgavatar"
-                        android:layout_below="@+id/txtlastcomment"
-                        android:ems="10"
-                        android:inputType="textPersonName"
-                        android:padding="10dp"
-                        android:textColor="#000"
-                        tools:text="همه 10 نظر را ببینید" />
-
-                    <RatingBar
-                        android:id="@+id/lastRatingBar"
-                        style="@android:style/Widget.Holo.Light.RatingBar.Small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignTop="@+id/linearLayout"
-                        android:layout_weight="1"
-                        android:numStars="5" />
-
-                    <amir.app.business.widget.CircleImageView
-                        android:id="@+id/imgavatar"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_gravity="center_horizontal"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/amin"
-                        app:border_color="#fff"
-                        app:border_width="4dp" />
-
-                    <ProgressBar
-                        android:id="@+id/commentProgress"
-                        style="?android:attr/progressBarStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true" />
-
-                </RelativeLayout>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
@@ -390,19 +292,6 @@
                         android:layout_alignLeft="@+id/btnroute"
                         android:layout_alignStart="@+id/btnroute"
                         android:layout_alignTop="@+id/btnroute" />
-
-                    <view
-                        class="amir.app.business.widget.FarsiButton"
-                        app:FarsiTypeface="IRANSans"
-                        android:id="@+id/btnroute"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_margin="5dp"
-                        android:padding="10dp"
-                        android:text="مسیریابی" />
 
                 </RelativeLayout>
 

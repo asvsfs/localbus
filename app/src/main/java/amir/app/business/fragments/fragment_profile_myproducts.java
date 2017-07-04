@@ -181,7 +181,7 @@ public class fragment_profile_myproducts extends baseFragment {
 
     @OnClick(R.id.floatAdd)
     public void floatAdd() {
-        getactivity().startActivityForResult(new Intent(getActivity(), BarCodeScannerActivity.class), 1);
+        getactivity().startActivityForResult(new Intent(getActivity(), ProductDefine.class), 1);
     }
 
     private void add_to_product(final String productid) {
@@ -227,35 +227,40 @@ public class fragment_profile_myproducts extends baseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
         if (resultCode == Activity.RESULT_OK && requestCode == 1) {
-            final String qrcode = data.getExtras().getString("content");
-            final MaterialDialog progress = util.progressDialog(getActivity(), "جستجوی محصول", "منتظر باشید...");
 
-            qrcoderepository.findById(qrcode, new ObjectCallback<QrCode>() {
-                @Override
-                public void onSuccess(final QrCode qrCode) {
-                    progress.dismiss();
+            Intent intent = new Intent(getActivity(), ProductDefine.class);
+            startActivity(intent);
 
-                    util.confirmDialog(getActivity(), "تایید", "بستن", "اضافه کردن آیتم", "محصولی با این کد موجود است. به این آیتم اضافه میکنید؟", new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            add_to_product(qrCode.getProductId());
-                        }
-                    }, SweetAlertDialog.WARNING_TYPE);
-                }
 
-                @Override
-                public void onError(Throwable t) {
-                    progress.dismiss();
-                    util.confirmDialog(getActivity(), "تایید", "بستن", "ثبت محصول جدید", "محصولی با کد شناسایی موردنظر موجود نمیباشد.\nآیا میخواهید محصول جدید ثبت کنید؟", new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            Intent intent = new Intent(getActivity(), ProductDefine.class);
-                            intent.putExtra("qrcode", qrcode);
-                            startActivity(intent);
-                        }
-                    }, SweetAlertDialog.WARNING_TYPE);
-                }
-            });
+//            final String qrcode = data.getExtras().getString("content");
+//            final MaterialDialog progress = util.progressDialog(getActivity(), "جستجوی محصول", "منتظر باشید...");
+
+//            qrcoderepository.findById(qrcode, new ObjectCallback<QrCode>() {
+//                @Override
+//                public void onSuccess(final QrCode qrCode) {
+//                    progress.dismiss();
+//
+//                    util.confirmDialog(getActivity(), "تایید", "بستن", "اضافه کردن آیتم", "محصولی با این کد موجود است. به این آیتم اضافه میکنید؟", new SweetAlertDialog.OnSweetClickListener() {
+//                        @Override
+//                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+//                            add_to_product(qrCode.getProductId());
+//                        }
+//                    }, SweetAlertDialog.WARNING_TYPE);
+//                }
+//
+//                @Override
+//                public void onError(Throwable t) {
+//                    progress.dismiss();
+//                    util.confirmDialog(getActivity(), "تایید", "بستن", "ثبت محصول جدید", "محصولی با کد شناسایی موردنظر موجود نمیباشد.\nآیا میخواهید محصول جدید ثبت کنید؟", new SweetAlertDialog.OnSweetClickListener() {
+//                        @Override
+//                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+//                            Intent intent = new Intent(getActivity(), ProductDefine.class);
+//                            intent.putExtra("qrcode", qrcode);
+//                            startActivity(intent);
+//                        }
+//                    }, SweetAlertDialog.WARNING_TYPE);
+//                }
+//            });
 
         } else if (resultCode == Activity.RESULT_OK && requestCode == 2) {
             products.clear();

@@ -130,8 +130,8 @@ public class ProductDefine extends AppCompatActivity {
             }
         });
 
-        qrcode = getIntent().getExtras().getString("qrcode");
-        editCode.setText(qrcode);
+//        qrcode = getIntent().getExtras().getString("qrcode");
+//        editCode.setText(qrcode);
 
         initialize_ImageChooser();
         initialize_ImageTaker();
@@ -219,7 +219,7 @@ public class ProductDefine extends AppCompatActivity {
         product.setDescription(editDesc.getText().toString());
         product.setOwner(config.Businesse.getId());
         product.setPrice(Integer.parseInt(editPrice.getText().toString()));
-        product.setQrcode(qrcode);
+//        product.setQrcode(qrcode);
 
         SingleShotLocationProvider.GPSCoordinates gpslocation = config.lastlocation;
         if (gpslocation == null)
